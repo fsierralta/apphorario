@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Control de Asistencia - Gestión de Horarios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #64748b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #e2e8f0;
+            --border: #cbd5e1;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--secondary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--light);
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-warning {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+
+        .days-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .day-pill {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .day-working {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .day-rest {
+            background-color: var(--gray);
+            color: var(--secondary);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--secondary);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+        }
+
+        .days-selector {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .day-selector {
+            flex: 1;
+            text-align: center;
+        }
+
+        .day-button {
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background-color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .day-button.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .days-selector {
+                flex-wrap: wrap;
+            }
+            
+            .day-selector {
+                flex: 0 0 calc(33.333% - 10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-clock"></i>
+                <h1>Sistema de Control de Asistencia</h1>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">AD</div>
+                <span>Admin User</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Horarios de Trabajo</h2>
+                    <button class="btn btn-primary" id="addScheduleBtn">
+                        <i class="fas fa-plus"></i> Nuevo Horario
+                    </button>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Horario</th>
+                            <th>Días Laborales</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Turno Mañana</td>
+                            <td>
+                                08:00 - 16:00
+                                <div class="badge badge-warning">Descanso: 12:00-13:00</div>
+                            </td>
+                            <td>
+                                <div class="days-container">
+                                    <div class="day-pill day-working">L</div>
+                                    <div class="day-pill day-working">M</div>
+                                    <div class="day-pill day-working">X</div>
+                                    <div class="day-pill day-working">J</div>
+                                    <div class="day-pill day-working">V</div>
+                                    <div class="day-pill day-rest">S</div>
+                                    <div class="day-pill day-rest">D</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-outline edit-btn">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn btn-outline btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Turno Tarde</td>
+                            <td>
+                                14:00 - 22:00
+                                <div class="badge badge-warning">Descanso: 17:00-18:00</div>
+                            </td>
+                            <td>
+                                <div class="days-container">
+                                    <div class="day-pill day-working">L</div>
+                                    <div class="day-pill day-working">M</div>
+                                    <div class="day-pill day-working">X</div>
+                                    <div class="day-pill day-working">J</div>
+                                    <div class="day-pill day-working">V</div>
+                                    <div class="day-pill day-rest">S</div>
+                                    <div class="day-pill day-rest">D</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-outline edit-btn">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn btn-outline btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Fin de Semana</td>
+                            <td>
+                                07:00 - 15:00
+                            </td>
+                            <td>
+                                <div class="days-container">
+                                    <div class="day-pill day-rest">L</div>
+                                    <div class="day-pill day-rest">M</div>
+                                    <div class="day-pill day-rest">X</div>
+                                    <div class="day-pill day-rest">J</div>
+                                    <div class="day-pill day-rest">V</div>
+                                    <div class="day-pill day-working">S</div>
+                                    <div class="day-pill day-working">D</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-outline edit-btn">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn btn-outline btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para crear/editar horario -->
+    <div class="modal-overlay" id="scheduleModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Crear Nuevo Horario</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="scheduleForm">
+                    <div class="form-group">
+                        <label for="scheduleName">Nombre del Horario</label>
+                        <input type="text" class="form-control" id="scheduleName" placeholder="Ej: Turno Mañana" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startTime">Hora de Entrada</label>
+                            <input type="time" class="form-control" id="startTime" value="08:00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime">Hora de Salida</label>
+                            <input type="time" class="form-control" id="endTime" value="17:00" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tolerance">Tolerancia (minutos)</label>
+                        <input type="number" class="form-control" id="tolerance" value="15" min="0" max="60">
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="hasBreak">
+                        <label for="hasBreak">Incluir tiempo de descanso</label>
+                    </div>
+                    
+                    <div id="breakTimeGroup" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="breakStart">Inicio Descanso</label>
+                                <input type="time" class="form-control" id="breakStart" value="12:00">
+                            </div>
+                            <div class="form-group">
+                                <label for="breakEnd">Fin Descanso</label>
+                                <input type="time" class="form-control" id="breakEnd" value="13:00">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Días Laborales</label>
+                        <div class="days-selector">
+                            <div class="day-selector">
+                                <button type="button" class="day-button active" data-day="1">Lun</button>
+                            </div>
+                            <div class="day-selector">
+                                <button type="button" class="day-button active" data-day="2">Mar</button>
+                            </div>
+                            <div class="day-selector">
+                                <button type="button" class="day-button active" data-day="3">Mié</button>
+                            </div>
+                            <div class="day-selector">
+                                <button type="button" class="day-button active" data-day="4">Jue</button>
+                            </div>
+                            <div class="day-selector">
+                                <button type="button" class="day-button active" data-day="5">Vie</button>
+                            </div>
+                            <div class="day-selector">
+                                <button type="button" class="day-button" data-day="6">Sáb</button>
+                            </div>
+                            <div class="day-selector">
+                                <button type="button" class="day-button" data-day="7">Dom</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelBtn">Cancelar</button>
+                <button class="btn btn-primary" id="saveScheduleBtn">Guardar Horario</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById('scheduleModal');
+        const addBtn = document.getElementById('addScheduleBtn');
+        const closeBtn = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const editBtns = document.querySelectorAll('.edit-btn');
+        const saveBtn = document.getElementById('saveScheduleBtn');
+        const hasBreak = document.getElementById('hasBreak');
+        const breakTimeGroup = document.getElementById('breakTimeGroup');
+        const dayButtons = document.querySelectorAll('.day-button');
+
+        // Toggle modal
+        function toggleModal() {
+            modal.classList.toggle('active');
+        }
+
+        // Open modal for adding new schedule
+        addBtn.addEventListener('click', () => {
+            document.getElementById('modalTitle').textContent = 'Crear Nuevo Horario';
+            toggleModal();
+        });
+
+        // Open modal for editing
+        editBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('modalTitle').textContent = 'Editar Horario';
+                // In a real app, we would populate form with existing data
+                toggleModal();
+            });
+        });
+
+        // Close modal
+        closeBtn.addEventListener('click', toggleModal);
+        cancelBtn.addEventListener('click', toggleModal);
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                toggleModal();
+            }
+        });
+
+        // Toggle break time fields
+        hasBreak.addEventListener('change', () => {
+            if (hasBreak.checked) {
+                breakTimeGroup.style.display = 'block';
+            } else {
+                breakTimeGroup.style.display = 'none';
+            }
+        });
+
+        // Toggle day selection
+        dayButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('active');
+            });
+        });
+
+        // Save schedule
+        saveBtn.addEventListener('click', () => {
+            const scheduleName = document.getElementById('scheduleName').value;
+            if (!scheduleName) {
+                alert('Por favor ingresa un nombre para el horario');
+                return;
+            }
+            
+            // Get selected days
+            const selectedDays = [];
+            dayButtons.forEach(button => {
+                if (button.classList.contains('active')) {
+                    selectedDays.push(button.textContent);
+                }
+            });
+            
+            alert(`Horario "${scheduleName}" guardado con éxito! Días: ${selectedDays.join(', ')}`);
+            toggleModal();
+        });
+
+        // Simulate break time toggle on page load
+        hasBreak.checked = true;
+        breakTimeGroup.style.display = 'block';
+    </script>
+</body>
+</html>
