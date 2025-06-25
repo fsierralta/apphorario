@@ -109,15 +109,23 @@ class EmployeeScheduleController extends Controller
     }
 
     public function forEmployeeSchedules(){
-        $empleado=Empleado::with('schedules')->get()
+        $empleados = Empleado::with([
+        'schedules' => function ($q) {
+            $q->with(['days']) // Asumiendo que la relación se llama 'days'
+              ->orderByPivot('start_date', 'desc');
+        }
+    ])
+    ->whereHas('schedules')
+    ->select('id', 'name', 'email', 'is_active')
+    ->get();
             ;
-        info('empleado', ['empleado' => $empleado]);
+      //  info('empleados', ['empleado' => $empleados]);
 
                                   /*   $schedules = $empleado->schedules()
             ->orderByPivot('start_date', 'desc')
             ->paginate(10);
  */
-        return response()->json(["empleado"=>$empleado]);
+        return response()->json(["empleado"=>$empleados]);
 
 
     }
