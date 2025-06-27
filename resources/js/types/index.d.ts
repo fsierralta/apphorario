@@ -77,3 +77,48 @@ export interface  Horario{
     
   
 }
+
+export interface Day {
+  id: number;
+  day_of_week: number; // 1 = Lunes, ..., 7 = Domingo
+  is_working_day: boolean;
+  // Puedes agregar más campos si tu modelo los tiene
+}
+
+export interface Schedule {
+  id: number;
+  name: string;
+  start_time: string;
+  end_time: string;
+  has_break: boolean;
+  break_start: string | null;
+  break_end: string | null;
+  tolerance_minutes: number;
+  pivot: {
+    empleado_id: number;
+    schedule_id: number;
+    start_date: string;
+    end_date: string | null;
+    is_active: boolean;
+    // Otros campos de la tabla pivote si existen
+  };
+  days: Day[];
+}
+
+export interface Empleado {
+  id: number;
+  nombre: string;
+  apellido: string;
+  cedula: string;
+  // Otros campos si los necesitas
+  schedules: Schedule[];
+}
+
+export interface EmpleadoHorarioDaysPaginated {
+  data: Empleado[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+  // Otros campos de paginación si los necesitas
+}

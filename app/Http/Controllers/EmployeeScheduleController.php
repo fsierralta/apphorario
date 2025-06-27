@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
+use function Pest\Laravel\json;
+
 class EmployeeScheduleController extends Controller
 {
     /**
@@ -109,23 +111,21 @@ class EmployeeScheduleController extends Controller
     }
 
     public function forEmployeeSchedules(){
-        $empleados = Empleado::with([
-        'schedules' => function ($q) {
+      $empleados = Empleado::with([
+         'schedules' => function ($q) {
             $q->with(['days']) // Asumiendo que la relación se llama 'days'
               ->orderByPivot('start_date', 'desc');
         }
-    ])
-    ->whereHas('schedules')
-    ->select('id', 'name', 'email', 'is_active')
-    ->get();
-            ;
-      //  info('empleados', ['empleado' => $empleados]);
+    ])->whereHas('schedules')
+    ->select('id', 'nombre', 'cedula', 'apellido')
+    ->paginate(2); 
+            
+       
 
-                                  /*   $schedules = $empleado->schedules()
-            ->orderByPivot('start_date', 'desc')
-            ->paginate(10);
- */
-        return response()->json(["empleado"=>$empleados]);
+      //  return response()->json($empleados);                         
+      return    Inertia::render('Empleado/EmpleadoHorarioIndex', [
+            'empleados' => $empleados,
+        ]);   
 
 
     }

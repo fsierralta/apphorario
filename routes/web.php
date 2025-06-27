@@ -93,6 +93,8 @@ Route::prefix('employee-schedules')->group(function () {
     Route::post('/assign', [EmployeeScheduleController::class, 'assign']);
     Route::put('/{assignment}', [EmployeeScheduleController::class, 'update']);
     Route::get('/employee/{empleado}', [EmployeeScheduleController::class, 'forEmployee']);
+     Route::get('/eh', [EmployeeScheduleController::class, 'forEmployeeSchedules'])
+   ->name('empleado.horario');
 
   
     Route::get('/schedule/{schedule}', [EmployeeScheduleController::class, 'forSchedule']);
@@ -100,8 +102,7 @@ Route::prefix('employee-schedules')->group(function () {
         ->name('asignar.show');
 
 })->middleware(['auth', 'verified']);
- Route::get('/eh', [EmployeeScheduleController::class, 'forEmployeeSchedules'])
-   ->name('empleado.horario');
-   
+
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

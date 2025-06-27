@@ -32,7 +32,12 @@ const mainNavItems: NavItem[] = [
         icon:UserPen
 
 
+    },{
+        title:'Horario Empleado',
+        href:route('empleado.horario'),
+        icon:UserPen
     }
+
 
 
 
