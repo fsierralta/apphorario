@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-use function Pest\Laravel\json;
 
 class EmployeeScheduleController extends Controller
 {

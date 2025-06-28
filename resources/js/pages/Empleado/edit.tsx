@@ -1,4 +1,4 @@
-import { useForm, Head, Link, usePage } from '@inertiajs/react';
+import { useForm, Head, Link, usePage,router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 
 
@@ -16,12 +16,13 @@ interface Empleado {
   [key: string]: unknown;
 }
 interface CargosProps {
+  [x: string]: any;
   cargos: string[];
 }
 
 const Edit = () => {
   const { empleado,cargos } = usePage<{ empleado: Empleado, cargos:CargosProps }>().props;
-  const { data, setData, post, processing, errors, reset } = useForm<{
+  const { data, setData, put, processing, errors, reset } = useForm<{
     nombre: string;
     apellido: string;
     cedula: string;
@@ -36,24 +37,28 @@ const Edit = () => {
     cedula: empleado.cedula,
     telefono: empleado.telefono,
     direccion: empleado.direccion,
-    foto_url: empleado.foto_url || null,
+    foto_url:null,
     cargo: empleado.cargo,
-    email: empleado.email,
+    email: empleado.email? empleado.email:'s@gmail.com' ,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post('/empleados', {
+  put(route('empleados.update',empleado.id),
+   data,
+  {
       forceFormData: true,
-      onSuccess: () => reset('foto_url'),
-    });
+      onSuccess: () => console.log('data')
+    }
+  );
+
   };
   console.log(empleado);
   console.log(cargos);
 
   return (
     <AppLayout>
-      <Head title="Crear Empleado" />
+      <Head title="Editar Empleado" />
       <div className="max-w-full mt-8 bg-white p-6 rounded shadow text-black mx-[20%] " >
         <div className="mb-4">
           <Link
@@ -115,16 +120,27 @@ const Edit = () => {
             />
             {errors.direccion && <div className="text-red-500 text-sm">{errors.direccion}</div>}
           </div>
-          <div>
-            <label className="block font-semibold">Email</label>
-            <input
-              type="email"
-              value={data.email}
-              onChange={e => setData('email', e.target.value)}
-              className="w-full border rounded px-3 py-2"
-            />
-            {errors.email && <div className="text-red-500 text-sm">{errors.email}</div>}
-          </div>
+          
+            <div>
+                <label className="block font-semibold">Email</label>
+                <input
+                  type="email"
+                  value={data.email}
+                  onChange={e => setData('email', e.target.value)}
+                  className="w-full border rounded px-3 py-2"
+                />
+                {errors.email && <div className="text-red-500 text-sm">{errors.email}</div>}
+           </div>
+           <div className='flex gap-4'>
+          
+            <div>
+               <label>Foto actual </label>
+               {empleado.foto_url ?(
+               <img src={`/${empleado.foto_url}`} alt="foto"
+                className="h-10 w-10 rounded-full object-cover border"
+                 
+                />):<span>Sin foto</span>}
+            </div>
           <div>
             <label className="block font-semibold">Foto</label>
             <input
@@ -135,6 +151,8 @@ const Edit = () => {
             />
             {errors.foto_url && <div className="text-red-500 text-sm">{errors.foto_url}</div>}
           </div>
+
+          </div>
           <div>
             <label className="block font-semibold">Cargo</label>
             <select
@@ -144,7 +162,7 @@ const Edit = () => {
               required
             >
               <option value="">Seleccione un cargo</option>
-              {cargos.length > 0 ? cargos.map((cargo: string) => (
+              {cargos  ? cargos.map((cargo: string) => (
                 <option key={cargo} value={cargo}>{cargo}</option>
               )) : <p>No hay cargo</p>}
             </select>

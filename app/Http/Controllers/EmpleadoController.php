@@ -88,12 +88,16 @@ class EmpleadoController extends Controller
         //
         try {
             $empleado = Empleado::findOrFail($id);
+         
+
 
             return Inertia::render('Empleado/edit', [
                 'empleado' => $empleado,
                 'cargos' => $this->cargos,
             ]);
         } catch (\Exception $e) {
+              info('ruta',['ruta'=>$e->getMessage()]);
+
             return redirect()->route('empleados.index')->with('error', 'Error al cargar el empleado: '.$e->getMessage());
         }
     }
@@ -101,10 +105,48 @@ class EmpleadoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EmpleadoRequest $request, string $id)
     {
         //
+     
+       try {
+        //code...
+          
+         if ($request->hasFile('foto_url')) {
+                $path = $request->file('foto_url')->store('empleados', 'public');
+
+            } else {
+                $path =null;
+            }   
+             info('update',['id'=>$id,'r'=>$request->nombre,
+                         'path'=>$path]);
+         
+             $empleado=Empleado::find((int) $id);
+            $empleado->nombre = $request->nombre;
+            $empleado->apellido = $request->apellido;
+            $empleado->cedula = $request->cedula;
+             $empleado->email = $request->email;
+            $empleado->save();
+            /*
+            
+            $empleado->telefono = $request->telefono;
+            $empleado->direccion = $request->direccion;
+           // $empleado->foto_url = $path && 'storage/'.$path ;
+                                  
+                                  // Guardar la ruta de la imagen
+            $empleado->cargo = $request->cargo;
+           
+            $empleado->save(); */
+            return redirect()->route('empleados.index');
+
+       } catch (\Throwable $th) {
+        //throw $th;
+        info('error',['error'=>$th->getMessage()]);
+        return back()->with('errors',$th->getMessage());
+
+
     }
+}
 
     /**
      * Remove the specified resource from storage.

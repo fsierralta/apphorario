@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class EmpleadoRequest extends FormRequest
 {
+    public $ruta;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -14,6 +15,12 @@ class EmpleadoRequest extends FormRequest
         return true;
     }
 
+     public function __construct()
+     {
+            parent::__construct();
+            $this->ruta = request()->url();
+            info('ruta', ['ruta' => $this->ruta]);
+     }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,8 +37,12 @@ class EmpleadoRequest extends FormRequest
             'direccion' => 'required|string|max:255',
             'foto_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'cargo' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255|unique:empleados,email,'.$this->route('empleado'),
+            'email' => 'nullable|email|max:255|unique:empleados,email,'.$this->route('empleados'),
 
         ];
+    }
+    public function __unset($name)
+    {
+        
     }
 }

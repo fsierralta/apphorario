@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('direccion')->comment('Dirección del empleado');
             $table->string('foto_url')->nullable()->comment('URL de la foto del empleado');
             $table->string('cargo')->nullable()->comment('Cargo del empleado');
+             $table->string('email')->unique();
+            
 
         });
     }
