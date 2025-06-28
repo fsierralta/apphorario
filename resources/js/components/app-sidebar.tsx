@@ -14,7 +14,7 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Empleado',
+        title: 'Empleados',
         href: route('empleados.index'),
         icon: UserCircle2,
 

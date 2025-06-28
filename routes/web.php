@@ -17,7 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 Route::get('empleados', [EmpleadoController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+     ->middleware(['auth', 'verified'])
     ->name('empleados.index');
 
 Route::get('empleados/create', [EmpleadoController::class, 'create'])

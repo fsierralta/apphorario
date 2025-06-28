@@ -25,9 +25,10 @@ class EmpleadoController extends Controller
     public function index()
     {
         //   const {auth}=usePage
+        info('empleados', ['cargos' => $this->cargos]);
+
         try {
-            // Verificar si el usuario tiene el rol de admin
-            // Define la cantidad de elementos por página usando la propiedad protegida
+        
             $users = User::query()->select('id', 'name')->get();
 
             $empleados = Empleado::query()->select('id', 'nombre', 'apellido',

@@ -23,9 +23,6 @@ interface PageProps {
   [key: string]: unknown;
 }
 
-
-
-
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Inicio', href: '/' },
   { title: 'Empleados', href: '/empleados' }
