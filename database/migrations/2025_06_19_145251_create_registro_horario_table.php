@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('empleado_id');
             $table->unsignedBigInteger('schedule_id');
-            $table->date('dia_trabajo')->default(now()->format('d-m-Y'));
+            $table->date('dia_trabajo');
             $table->foreign('empleado_id')->references('id')->on('empleados');    ;
             $table->foreign('schedule_id')->references('id')->on('schedules');
             $table->time('hora_registro');
