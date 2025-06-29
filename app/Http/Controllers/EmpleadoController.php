@@ -7,6 +7,7 @@ use App\Models\Empleado;
 use App\Models\User;
 use App\service\EmpleadoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class EmpleadoController extends Controller
@@ -25,11 +26,12 @@ class EmpleadoController extends Controller
     public function index()
     {
         //   const {auth}=usePage
-        info('empleados', ['cargos' => $this->cargos]);
+        
 
         try {
         
             $users = User::query()->select('id', 'name')->get();
+            
 
             $empleados = Empleado::query()->select('id', 'nombre', 'apellido',
                 'cedula', 'telefono', 'direccion',
@@ -41,6 +43,7 @@ class EmpleadoController extends Controller
             );
 
         } catch (\Exception $e) {
+            info('empleados', ['user' => $e->getMessage()]);
             return redirect()->route('home')->with('error', 'Error al verificar permisos: '.$e->getMessage());
         }
 

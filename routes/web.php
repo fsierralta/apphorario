@@ -16,9 +16,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 });
+
 Route::get('empleados', [EmpleadoController::class, 'index'])
      ->middleware(['auth', 'verified'])
-    ->name('empleados.index');
+      ->name('empleados.index');
 
 Route::get('empleados/create', [EmpleadoController::class, 'create'])
     ->middleware(['auth', 'verified'])
@@ -102,6 +103,7 @@ Route::prefix('employee-schedules')->group(function () {
         ->name('asignar.show');
 
 })->middleware(['auth', 'verified']);
+
 
 
 require __DIR__.'/settings.php';

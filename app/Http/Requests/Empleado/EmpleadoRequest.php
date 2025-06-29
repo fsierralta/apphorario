@@ -18,7 +18,7 @@ class EmpleadoRequest extends FormRequest
      public function __construct()
      {
             parent::__construct();
-            $this->ruta = request()->url();
+            $this->ruta = request();
             info('ruta', ['ruta' => $this->ruta]);
      }
     /**
@@ -35,9 +35,9 @@ class EmpleadoRequest extends FormRequest
             'cedula' => 'required|string|max:20|unique:empleados,cedula,'.$this->route('empleado'),
             'telefono' => 'required|string|max:20',
             'direccion' => 'required|string|max:255',
-            'foto_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+           'foto_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'cargo' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255|unique:empleados,email,'.$this->route('empleados'),
+            'email' => 'nullable|email|max:255|unique:empleados,email,'.$this->route('empleado'),
 
         ];
     }

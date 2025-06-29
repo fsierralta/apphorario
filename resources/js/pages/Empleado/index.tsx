@@ -34,7 +34,7 @@ const Index = () => {
   const empleadosTyped = empleados as { data: Empleado[]; links: PaginationLink[] };
   const data: Empleado[] = empleadosTyped.data || []; // Cambia esto según la estructura de tu respuesta 
   const links: PaginationLink[] = empleadosTyped.links || []; // Cambia esto según la estructura de tu respuesta 
-
+  console.log(empleados);
  
 
 

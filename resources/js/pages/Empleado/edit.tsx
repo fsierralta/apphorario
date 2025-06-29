@@ -22,7 +22,7 @@ interface CargosProps {
 
 const Edit = () => {
   const { empleado,cargos } = usePage<{ empleado: Empleado, cargos:CargosProps }>().props;
-  const { data, setData, put, processing, errors, reset } = useForm<{
+  const { data, setData, put, processing, errors } = useForm<{
     nombre: string;
     apellido: string;
     cedula: string;
@@ -37,22 +37,28 @@ const Edit = () => {
     cedula: empleado.cedula,
     telefono: empleado.telefono,
     direccion: empleado.direccion,
-    foto_url:null,
+    foto_url:"/",
     cargo: empleado.cargo,
     email: empleado.email? empleado.email:'s@gmail.com' ,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  put(route('empleados.update',empleado.id),
-   data,
-  {
-      forceFormData: true,
-      onSuccess: () => console.log('data')
-    }
-  );
+    console.log(data)
+    if (data.cedula===""||data.cedula===null) {
+          put(route('empleados.update', empleado.id),
+            data,
+              {
+                forceFormData: true,
+                onSuccess: () => console.log('data'),
+              }
+          );
 
+  }else {
+    alert('Por favor, complete todos los campos antes de enviar el formulario.');
+    return
   };
+}
   console.log(empleado);
   console.log(cargos);
 
@@ -151,6 +157,21 @@ const Edit = () => {
             />
             {errors.foto_url && <div className="text-red-500 text-sm">{errors.foto_url}</div>}
           </div>
+          <div>
+            <label className=''>Foto </label>
+              {data.foto_url
+              ? data.foto_url instanceof File
+                ? (
+                  <img src={URL.createObjectURL(data.foto_url)} alt="Foto" className="h-10 w-10 rounded-full object-cover border" />
+                )
+                : (
+                  <span>No hay foto seleccionada</span>
+                )
+              : (
+                <span>No hay foto seleccionada</span>
+              )
+            }
+           </div>
 
           </div>
           <div>
