@@ -14,13 +14,17 @@ interface Empleado {
     email: string;
     [key: string]: unknown;
 }
+/**
+ * Props for the Cargos component.
+ * @property {string[] | null} cargos - Lista de cargos, representada como un array de strings o null.
+ */
 interface CargosProps {
-    [x: string]: any;
     cargos: string[];
 }
 
 const Edit = () => {
     const { empleado, cargos } = usePage<{ empleado: Empleado; cargos: CargosProps }>().props;
+
     const { data, setData, post, processing, errors } = useForm<{
         nombre: string;
         apellido: string;
@@ -170,12 +174,11 @@ const Edit = () => {
                             required
                         >
                             <option value="">Seleccione un cargo</option>
-                            {cargos ? (
-                                cargos.map((cargo: string) => (
+                            {cargos ?(cargos.map((cargo:string) => (
                                     <option key={cargo} value={cargo}>
                                         {cargo}
                                     </option>
-                                ))
+                                    ))
                             ) : (
                                 <p>No hay cargo</p>
                             )}
