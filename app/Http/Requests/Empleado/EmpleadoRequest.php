@@ -17,9 +17,9 @@ class EmpleadoRequest extends FormRequest
 
      public function __construct()
      {
-            parent::__construct();
+           /*  parent::__construct();
             $this->ruta = request();
-            info('ruta', ['ruta' => $this->ruta]);
+            info('ruta', ['ruta' => $this->ruta]); */
      }
     /**
      * Get the validation rules that apply to the request.

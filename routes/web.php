@@ -37,7 +37,7 @@ Route::get('empleados/{empleado}/edit', [EmpleadoController::class, 'edit'])
     ->middleware(['auth', 'verified'])
     ->name('empleados.edit');
 
-Route::put('empleados/{empleado}', [EmpleadoController::class, 'update'])
+Route::post('empleados/{empleado}', [EmpleadoController::class, 'update'])
     ->middleware(['auth', 'verified'])
     ->name('empleados.update');
 

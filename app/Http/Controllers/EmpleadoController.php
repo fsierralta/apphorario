@@ -112,8 +112,8 @@ class EmpleadoController extends Controller
     public function update(EmpleadoRequest $request, string $id)
     {
         //
-     
-       try {
+        info('update', ['id' => $id, 'request' =>$request->input('nombre') ]);
+  try {
         //code...
           
          if ($request->hasFile('foto_url')) {
@@ -130,17 +130,11 @@ class EmpleadoController extends Controller
             $empleado->apellido = $request->apellido;
             $empleado->cedula = $request->cedula;
              $empleado->email = $request->email;
-            $empleado->save();
-            /*
-            
             $empleado->telefono = $request->telefono;
             $empleado->direccion = $request->direccion;
-           // $empleado->foto_url = $path && 'storage/'.$path ;
-                                  
-                                  // Guardar la ruta de la imagen
+            $empleado->foto_url = $path ? "storage/".$path:$empleado->foto_url;
             $empleado->cargo = $request->cargo;
-           
-            $empleado->save(); */
+            $empleado->save(); 
             return redirect()->route('empleados.index');
 
        } catch (\Throwable $th) {
