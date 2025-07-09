@@ -36,6 +36,11 @@ const mainNavItems: NavItem[] = [
         title:'Horario Empleado',
         href:route('empleado.horario'),
         icon:UserPen
+    },
+    {
+        title:'Registrar Entrada',
+        href:route('showformhorario.show'),
+        icon:UserPen
     }
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Empleado;
+use App\Models\RegistroEntradas;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -151,4 +152,69 @@ class EmployeeScheduleController extends Controller
             'schedules' => $schedules,
         ]);
     }
+
+    public function showEmpleadoHorario(){
+
+        $empleados=Empleado::with(['schedules'=>function($q){
+            $q->with(['days'])
+            ->orderByPivot('start_date', 'desc');
+        },
+        "registroEntradas"=>function($q){
+            $q->where('registro_fecha', now()->toDateString());
+        }])
+        ->get();
+
+      //return response()->json($empleados);
+
+        return Inertia::render("Empleado/registrarEntrada", [
+            'empleados' => $empleados,
+        ]);
+
+
+
+
+    }
+
+    public function showEmpleadoHorarioRegister(Empleado $empleado, $tipo)
+    {
+        // Obtener el horario del empleado
+        info('empleado', ['empleado' => $empleado]);
+        
+        try {
+            //code
+            $empleado= Empleado::with(['schedules' => function ($query)  {
+                                        $query->with('days')
+                                        ->orderByPivot('start_date', 'desc');
+                                        }
+                                       
+                                        ])->findOrFail($empleado->id);
+       //   return response()->json($empleado);
+            $registroEntrada=RegistroEntradas::firstOrCreate(
+                [
+                    'empleado_id' => $empleado->id,
+                    'registro_fecha' => now()->toDateString(),
+                    'tipo' => $tipo,
+                ],
+                [
+                    'schedule_id' => $empleado->schedules->first()->id ?? null,
+                    'registro_hora' => now(),
+                    'evento' => 1, // o el número de evento correspondiente
+                    'observacion' => null,
+                ]
+            );
+            return $this->showEmpleadoHorario();
+
+
+
+
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            info('error',['error'=>$th->getMessage()]);
+        }
+     
+
+
+    }   
 }

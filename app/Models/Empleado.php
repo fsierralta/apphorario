@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Empleado extends Model
 {
@@ -81,4 +82,9 @@ class Empleado extends Model
     public function users():BelongsToMany{
         return $this->belongsToMany(User::class);
     }
+    public function registroEntradas():HasMany{
+        return $this->hasMany(RegistroEntradas::class);
+    }
+
+    
 }

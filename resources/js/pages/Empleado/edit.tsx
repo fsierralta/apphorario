@@ -19,7 +19,10 @@ interface Empleado {
  * @property {string[] | null} cargos - Lista de cargos, representada como un array de strings o null.
  */
 interface CargosProps {
-    cargos: string[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [x: string]: any;
+  
+    cargos: string[]|null;
 }
 
 const Edit = () => {
@@ -174,11 +177,12 @@ const Edit = () => {
                             required
                         >
                             <option value="">Seleccione un cargo</option>
-                            {cargos ?(cargos.map((cargo:string) => (
+                            {cargos ? (
+                                cargos.map((cargo: string) => (
                                     <option key={cargo} value={cargo}>
                                         {cargo}
                                     </option>
-                                    ))
+                                ))
                             ) : (
                                 <p>No hay cargo</p>
                             )}
