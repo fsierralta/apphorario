@@ -8,7 +8,7 @@ use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-
+use Carbon\Carbon;
 
 class EmployeeScheduleController extends Controller
 {
@@ -115,7 +115,7 @@ class EmployeeScheduleController extends Controller
          'schedules' => function ($q) {
             $q->with(['days']) // Asumiendo que la relación se llama 'days'
               ->orderByPivot('start_date', 'desc');
-        }
+              }
     ])->whereHas('schedules')
     ->select('id', 'nombre', 'cedula', 'apellido')
     ->paginate(2); 
@@ -164,7 +164,7 @@ class EmployeeScheduleController extends Controller
         }])
         ->get();
 
-      //return response()->json($empleados);
+     //return response()->json($empleados);
 
         return Inertia::render("Empleado/registrarEntrada", [
             'empleados' => $empleados,
@@ -178,7 +178,7 @@ class EmployeeScheduleController extends Controller
     public function showEmpleadoHorarioRegister(Empleado $empleado, $tipo)
     {
         // Obtener el horario del empleado
-        info('empleado', ['empleado' => $empleado]);
+      //  info('empleado', ['empleado' => $empleado]);
         
         try {
             //code
@@ -202,6 +202,8 @@ class EmployeeScheduleController extends Controller
                     'observacion' => null,
                 ]
             );
+            info('registroEntrada', ['registroEntrada' => $registroEntrada]);
+
             return $this->showEmpleadoHorario();
 
 
@@ -217,4 +219,64 @@ class EmployeeScheduleController extends Controller
 
 
     }   
+    public function showEmpleadoAsistencia(Request $request)
+    {
+      
+      try {
+          // Default to today's date if not provided
+         $fechai = $request->has('fechai') ? Carbon::parse($request->fechai)->toDateString() : now()->toDateString();
+         $fechaf = $request->has('fechaf') ? Carbon::parse($request->fechaf)->toDateString() : now()->toDateString();
+         $empleado_id = (Int) $request->empleado_id;
+
+        info('fechai', ['fechai' =>$fechai]);
+        info('fechaf', ['fechaf' => $fechaf]);
+        info('empleado_id', ['empleado_id' => $empleado_id]);
+
+        $empleadosQuery = Empleado::with([
+            'schedules' => function ($q) {
+                $q->with(['days'])
+                  ->orderByPivot('start_date', 'asc');
+            },
+            'registroEntradas' => function ($q) use ($fechai, $fechaf, $empleado_id) {
+                $q->whereBetween('registro_fecha', [$fechai,$fechaf])
+                ->orderBy('registro_fecha', 'asc');
+                
+      
+
+                // Solo filtrar por empleado si se solicita uno específico
+                if ($empleado_id !== 0) {
+                    $q->where('empleado_id', $empleado_id);
+                }
+               
+            }
+        ]);
+
+        if ($empleado_id !== 0) {
+            $empleadosQuery->where('id', $empleado_id);
+        }
+
+        $empleados = $empleadosQuery->get();
+            //return response()->json($empleados);
+         return Inertia::render('Empleado/Asistencia',[
+            'empleados'=>$empleados,
+            'fechai' => $fechai,
+            'fechaf' => $fechaf,
+            'empleado_id' => $empleado_id,
+
+           
+         ]);
+
+
+         
+      }
+      catch (\Throwable $th){
+        //throw $th;
+        info('error',['error'=>$th->getMessage()]);
+      }
+
+      
+         
+ 
+    }
+
 }

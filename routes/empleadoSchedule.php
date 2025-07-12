@@ -1,6 +1,8 @@
 
 <?php
 use App\Http\Controllers\EmployeeScheduleController;
+use App\Http\Middleware\AdminEmpleado;
+
 Route::prefix('employee-schedules')->group(function () {
     Route::post('/assign', [EmployeeScheduleController::class, 'assign']);
     Route::put('/{assignment}', [EmployeeScheduleController::class, 'update']);
@@ -15,4 +17,4 @@ Route::prefix('employee-schedules')->group(function () {
    Route::get('/show', [EmployeeScheduleController::class, 'show'])
         ->name('asignar.show');
 
-})->middleware(['auth', 'verified']);
+})->middleware(['auth', 'verified',AdminEmpleado::class]);

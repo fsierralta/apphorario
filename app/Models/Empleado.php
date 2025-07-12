@@ -83,7 +83,8 @@ class Empleado extends Model
         return $this->belongsToMany(User::class);
     }
     public function registroEntradas():HasMany{
-        return $this->hasMany(RegistroEntradas::class);
+        return $this->hasMany(RegistroEntradas::class, 'empleado_id', 'id')
+            ->orderBy('registro_fecha', 'desc');
     }
 
     

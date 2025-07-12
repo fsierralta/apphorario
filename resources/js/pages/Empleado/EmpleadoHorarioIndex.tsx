@@ -44,63 +44,60 @@ interface Props {
 
 const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
-const EmpleadoHorarioDays: React.FC<Props> = ({ empleados }) => (
+const EmpleadoHorarioDays: React.FC<Props> = ({ empleados }) => {
+  console.log(empleados);
 
-
- 
-  <AppLayout>
-  <div className="overflow-x-auto ">
-    <table className="min-w-full border border-gray-300 rounded shadow">
-      <thead className="bg-blue-600">
-        <tr>
-          <th className="px-2 py-2 text-white border">Empleado</th>
-          <th className="px-2 py-2 text-white border">Cédula</th>
-          <th className="px-2 py-2 text-white border">Horario</th>
-          <th className="px-2 py-2 text-white border">Inicio</th>
-          <th className="px-2 py-2 text-white border">Fin</th>
-          <th className="px-2 py-2 text-white border">Días Laborales</th>
-          <th className="px-2 py-2 text-white border">Días Descanso</th>
-        </tr>
-      </thead>
-      <tbody>
-        {empleados.data.map((empleado) =>
-          empleado.schedules.map((schedule) => (
-            <tr key={`${empleado.id}-${schedule.id}`}>
-              <td className="border px-2 py-1">{empleado.nombre} {empleado.apellido}</td>
-              <td className="border px-2 py-1">{empleado.cedula}</td>
-              <td className="border px-2 py-1">{schedule.name}</td>
-              <td className="border px-2 py-1">{schedule.start_time}</td>
-              <td className="border px-2 py-1">{schedule.end_time}</td>
-              <td className="border px-2 py-1">
-                {schedule.days
-                  .filter(day => day.is_working_day)
-                  .map(day => diasSemana[day.day_of_week - 1])
-                  .join(', ') || <span className="text-gray-400">Sin días</span>}
-              </td>
-              <td>
-               { 
-                schedule.days
-                  .filter(day => !day.is_working_day)
-                  .map(day => diasSemana[day.day_of_week - 1])
-                  .join(', ') || <span className="text-gray-400">Sin días</span>
-                  }
-
-              </td>
-
+  return (
+    <AppLayout>
+      <div className="overflow-x-auto ">
+        <table className="min-w-full border border-gray-300 rounded shadow">
+          <thead className="bg-blue-600">
+            <tr>
+              <th className="px-2 py-2 text-white border">Empleado</th>
+              <th className="px-2 py-2 text-white border">Cédula</th>
+              <th className="px-2 py-2 text-white border">Horario</th>
+              <th className="px-2 py-2 text-white border">Inicio</th>
+              <th className="px-2 py-2 text-white border">Fin</th>
+              <th className="px-2 py-2 text-white border">Días Laborales</th>
+              <th className="px-2 py-2 text-white border">Días Descanso</th>
             </tr>
-          ))
-        )}
-      </tbody>
-    </table>
-    <div className='mt-4 flex justify-center mb-4'>
-     <Pagination
-     links={empleados.links }
-      />
-    </div>  
-  </div>
- </AppLayout> 
-  
-
-);
+          </thead>
+          <tbody>
+            {empleados.data.map((empleado) =>
+              empleado.schedules.map((schedule) => (
+                <tr key={`${empleado.id}-${schedule.id}`}>
+                  <td className="border px-2 py-1">{empleado.nombre} {empleado.apellido}</td>
+                  <td className="border px-2 py-1">{empleado.cedula}</td>
+                  <td className={`border px-2 py-1 ${schedule.pivot.is_active ? 'text-green-500': 'text-red-500'} `}>{schedule.name}</td>
+                  <td className="border px-2 py-1">{schedule.start_time}</td>
+                  <td className="border px-2 py-1">{schedule.end_time}</td>
+                  <td className="border px-2 py-1">
+                    {schedule.days
+                      .filter(day => day.is_working_day)
+                      .map(day => diasSemana[day.day_of_week - 1])
+                      .join(', ') || <span className="text-gray-400">Sin días</span>}
+                  </td>
+                  <td>
+                    { 
+                      schedule.days
+                        .filter(day => !day.is_working_day)
+                        .map(day => diasSemana[day.day_of_week - 1])
+                        .join(', ') || <span className="text-gray-400">Sin días</span>
+                    }
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+        <div className='mt-4 flex justify-center mb-4'>
+          <Pagination
+            links={empleados.links }
+          />
+        </div>  
+      </div>
+    </AppLayout> 
+  );
+};
 
 export default EmpleadoHorarioDays;

@@ -17,11 +17,12 @@ class AdminEmpleado
      */
     public function handle(Request $request, Closure $next): Response
     {
-        
+      
         
         if (!auth()->user()->hasRole('admin')) {
-            return Redirect::route('home');
+            return Redirect::route('actividad.index');
         }
+
         
         return $next($request);
         // Si no es admin, redirigir a la página de inicio o a una página de error

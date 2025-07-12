@@ -1,4 +1,4 @@
-import { usePage,router } from '@inertiajs/react';
+import { usePage,router, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/auth/auth-simple-layout';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -88,6 +88,13 @@ export default function TimeTrackingIndex() {
      
         
         >
+              <div>
+                <Link
+                  href={route('logout')}
+                  method='post'
+                  className='bg-amber-300 rounded-md px-4 py-2 hover:bg-amber-700'
+                >Salir</Link>
+              </div>
 
                 <div className="max-w-3xl mx-auto py-8 flex gap-4 mt-8 ">
                     {empleados.map((empleado) => (
