@@ -228,9 +228,7 @@ class EmployeeScheduleController extends Controller
          $fechaf = $request->has('fechaf') ? Carbon::parse($request->fechaf)->toDateString() : now()->toDateString();
          $empleado_id = (Int) $request->empleado_id;
 
-        info('fechai', ['fechai' =>$fechai]);
-        info('fechaf', ['fechaf' => $fechaf]);
-        info('empleado_id', ['empleado_id' => $empleado_id]);
+       
 
         $empleadosQuery = Empleado::with([
             'schedules' => function ($q) {
