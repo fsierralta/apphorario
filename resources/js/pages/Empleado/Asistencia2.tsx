@@ -42,35 +42,6 @@ interface Schedule {
     };
     days: ScheduleDay[];
 }
-interface RegistroEntradas{
-    id: number;
-    registro_fecha: string;
-    registro_hora: string;
-    evento: number;
-    tipo:string;
-    empleado_id:number;
-    schedule_id:number;
-
-}
-
-interface DataProps{
-    data:Empleado[];
-    schedules:Schedule[];
-    registro_entradas:RegistroEntradas[];
-    links:Link[];
-     current_page: number;
-        from: number;
-        last_page: number;
-        path: string;
-        per_page: number;
-        to: number;
-        total: number;
-    
-
-
-
- 
-    }   
 
 export interface Empleado {
     id: number;
@@ -111,7 +82,7 @@ const tipoIcono = {
     regreso_descanso: <FaArrowRight className="inline mr-1 text-blue-600" title="Regreso de Descanso" />,
 };
 
-export default function Asistencia({ empleados,fechai,fechaf }: { empleados: DataProps; fechai: string; fechaf: string; }) {
+export default function Asistencia({ empleados,fechai,fechaf }: { empleados: Empleado[]; fechai: string; fechaf: string; }) {
     const [fechaInicio, setFechaInicio] = useState<string>(fechai );
     const [fechaFin, setFechaFin] = useState<string>(fechaf);
     const [empleadoId, setEmpleadoId] = useState<number>(0);

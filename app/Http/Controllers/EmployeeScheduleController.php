@@ -266,7 +266,7 @@ class EmployeeScheduleController extends Controller
             "empleado_id" => $empleado_id
 
         ]);
-     //return response()->json($empleados);
+  //  return response()->json($empleados);
          return Inertia::render('Empleado/Asistencia',[
             'empleados'=>$empleados,
             'fechai' => $fechai,
