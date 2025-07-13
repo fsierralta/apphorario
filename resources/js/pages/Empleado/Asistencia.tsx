@@ -240,7 +240,9 @@ export default function Asistencia({ empleados,fechai,fechaf }: { empleados: Emp
                         <div>
 
                             <Pagination
-                                links={empleados.links }
+                                links={empleados.links as Link[]}
+                                className="mt-4 mb-12 py-6"
+
                                
                             />  
                         </div>
