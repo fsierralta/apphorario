@@ -85,10 +85,11 @@ export default function Asistencia({ empleados,fechai,fechaf }: { empleados: Emp
     const [empleadoId, setEmpleadoId] = useState<number>(0);
     const [cargando, setCargando] = useState<boolean>(false);
     const [datos, setDatos] = useState<Empleado[]>([]);
+      
     console.log(empleados);
     
     useEffect(() => {
-        setDatos(empleados);
+        setDatos(empleados.data);   
     }, [empleados]);
 
     const buscarAsistencias = () => {
@@ -236,6 +237,13 @@ export default function Asistencia({ empleados,fechai,fechaf }: { empleados: Emp
                                 ))}
                             </tbody>
                         </table>
+                        <div>
+
+                            <Pagination
+                                links={empleados.links }
+                               
+                            />  
+                        </div>
                         
                     </div>
                 </div>

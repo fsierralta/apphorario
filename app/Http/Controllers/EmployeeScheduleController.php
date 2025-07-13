@@ -254,9 +254,21 @@ class EmployeeScheduleController extends Controller
         if ($empleado_id !== 0) {
             $empleadosQuery->where('id', $empleado_id);
         }
+     
 
-        $empleados = $empleadosQuery->get();
-            //return response()->json($empleados);
+      
+        
+       
+
+        $empleados = $empleadosQuery->paginate(2);
+
+         $empleados->appends([
+            "fechai" => $fechai,
+            "fechaf" => $fechaf,
+            "empleado_id" => $empleado_id
+
+        ]);
+     //return response()->json($empleados);
          return Inertia::render('Empleado/Asistencia',[
             'empleados'=>$empleados,
             'fechai' => $fechai,
