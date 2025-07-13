@@ -41,6 +41,11 @@ const mainNavItems: NavItem[] = [
         title:'Registrar Entrada',
         href:route('showformhorario.show'),
         icon:UserPen
+    },
+    {
+        title:'Lista de Asistencia',  
+        href:route('asistencia.index'),
+        icon:UserPen  
     }
 
 
