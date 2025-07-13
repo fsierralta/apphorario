@@ -66,17 +66,18 @@ class Empleado extends Model
     /**
      * Empleados con este horario activo actualmente
      */
-    public function activeEmpleados()
+    public function activeEmpleados($fechai,$fechaf)
     {
 
         return $this->empleados()
             ->wherePivot('is_active', true)
-            ->where('start_date', '<=', now())
+            ->where('start_date', '<=', $fechai)
             ->where(function ($query) {
                 $query->whereNull('end_date')
-                    ->orWhere('end_date', '>=', now());
+                    ->orWhere('end_date', '>=', $fechaf);
 
             });
+
 
     }
     public function users():BelongsToMany{

@@ -148,7 +148,7 @@ export default function Asistencia({ empleados,fechai,fechaf }: { empleados: Dat
           >
            
         <div className="py-12">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
+            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8  ">
                 <div className="bg-white shadow-sm sm:rounded-lg p-6">
                     <h2 className="text-2xl font-semibold mb-6 text-indigo-700">Control de Asistencia</h2>
                     
@@ -202,7 +202,7 @@ export default function Asistencia({ empleados,fechai,fechaf }: { empleados: Dat
 
                     {/* Tabla de resultados */}
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200 border rounded-lg">
+                        <table className="min-w-full divide-y divide-gray-200 border rounded-lg ">
                             <thead className="bg-indigo-100">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider">Empleado</th>
@@ -211,7 +211,7 @@ export default function Asistencia({ empleados,fechai,fechaf }: { empleados: Dat
                                     <th className="px-6 py-3 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider">Asistencias</th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-100">
+                            <tbody className="bg-white divide-y divide-gray-100 ">
                                 {datos.map((empleado) => (
                                     <tr key={empleado.id} className="hover:bg-indigo-50 transition">
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -267,16 +267,18 @@ export default function Asistencia({ empleados,fechai,fechaf }: { empleados: Dat
                                         </td>
                                     </tr>
                                 ))}
-                            </tbody>
-                        </table>
-                        <div>
+                                 <div className="py-4 mt-4q">
 
-                            <Pagination
-                                links={empleados.links as Link[]}
-                               
-                               
-                            />  
-                        </div>
+                                    <Pagination
+                                        links={empleados.links as Link[]}
+                                    
+                                    
+                                    />  
+                                    </div>
+                            </tbody>
+
+                        </table>
+                       
                         
                     </div>
                 </div>

@@ -289,4 +289,23 @@ class EmployeeScheduleController extends Controller
  
     }
 
-}
+    public function reporteFallas($fechai,$fechaf,$empleado_id){
+
+        try {
+            //code...
+            $empleadosQuery = Empleado::with([
+                    'schedules'=>function($q) use($fechai,$fechaf){
+                         $q->with('days');
+                    }
+            ]);
+            return reponse()->json($empleadQuery);
+        } catch (\Throwable $th) {
+            //throw $th;
+            info('erro',['errr'=>$th->getMessage()]);
+        }
+
+
+    
+    
+        }
+    }
