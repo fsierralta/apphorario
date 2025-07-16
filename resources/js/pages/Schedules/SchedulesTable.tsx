@@ -22,11 +22,13 @@ const getDayName = (day: number): string => {
     return days[day % 7];
 };
 
-export default function SchedulesTable({ 
+const SchedulesTable = ({ 
     schedules, 
-    onEdit = () => {}, 
-    onDelete = () => {} 
-}: SchedulesTableProps) {
+    onEdit = undefined, 
+    onDelete = undefined 
+}: SchedulesTableProps) => {
+    const showActions = onEdit !== undefined || onDelete !== undefined;
+    
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -35,7 +37,9 @@ export default function SchedulesTable({
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Horario</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Días Laborales</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                        {showActions && (
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                        )}
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -72,25 +76,32 @@ export default function SchedulesTable({
                                     })}
                                 </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button
-                                    onClick={() => onEdit(schedule)}
-                                    className="text-indigo-600 hover:text-indigo-900 mr-3"
-                                >
-                                    Editar
-                                </button>
-                                <button
-                                    onClick={() => schedule.id !== null && onDelete(schedule.id)}
-                                    className="text-red-600 hover:text-red-900"
-                                    disabled={schedule.id === null}
-                                >
-                                    Eliminar
-                                </button>
-                            </td>
+                            {showActions && (
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    {onEdit && (
+                                        <button
+                                            onClick={() => onEdit(schedule)}
+                                            className="text-indigo-600 hover:text-indigo-900 mr-3"
+                                        >
+                                            Editar
+                                        </button>
+                                    )}
+                                    {onDelete && schedule.id !== null && (
+                                        <button
+                                            onClick={() => onDelete(schedule.id)}
+                                            className="text-red-600 hover:text-red-900"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    )}
+                                </td>
+                            )}
                         </tr>
                     ))}
                 </tbody>
             </table>
         </div>
     );
-}
+};
+
+export default SchedulesTable;
