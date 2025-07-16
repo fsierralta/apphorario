@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Head, usePage, router } from '@inertiajs/react';
 import ScheduleForm from './ScheduleForm';
-import { useState } from 'react';
+import SchedulesTable from './SchedulesTable';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Horario } from '@/types';
+
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Inicio', href: '/' }
 ];
+
 interface ScheduleDay {
-  day_of_week: number|null;        // 1 = Lunes, 2 = Martes, ..., 7 = Domingo
-  is_working_day: boolean|null;
+  day_of_week: number | null;
+  is_working_day: boolean | null;
 }
 
 interface ArregloHorario {
     schedules: Horario[];
-    days:ScheduleDay[]|null
-    [key: string]: unknown; // Index signature to satisfy PageProps constraint
+    days: ScheduleDay[] | null;
+    [key: string]: unknown;
 }
 
 export default function SchedulesIndex() {
@@ -24,15 +26,19 @@ export default function SchedulesIndex() {
     const [editingSchedule, setEditingSchedule] = useState<Horario | null>(null);
     const [showForm, setShowForm] = useState(false);
 
-
-    const handleDelete = (id:number) => {
+    const handleDelete = (id: number) => {
         if (confirm('¿Eliminar este horario?')) {
             router.delete(route('schedules.destroy', id));
         }
     };
-    console.log(schedules)
+
+    const handleEdit = (schedule: Horario) => {
+        setEditingSchedule(schedule);
+        setShowForm(true);
+    };
+
     return (
-     <AppLayout breadcrumbs={breadcrumbs}>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestión de Horarios" />
 
             <div className="py-6">
@@ -52,89 +58,23 @@ export default function SchedulesIndex() {
                                 </button>
                             </div>
 
-                            {/* Lista de Horarios */}
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Horario</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Días Laborales</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
-                                        {schedules.map((schedule) => (
-                                            <tr key={schedule.id}>
-                                                <td className="px-6 py-4 whitespace-nowrap text-black">{schedule.name}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    {schedule.start_time} - {schedule.end_time}
-                                                    {schedule.has_break && (
-                                                        <span className="block text-sm text-gray-500">
-                                                            Descanso: {schedule.break_start} - {schedule.break_end}
-                                                        </span>
-                                                    )}
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="flex space-x-1">
-                                                        {[1, 2, 3, 4, 5, 6, 7].map((day) => {
-                                                            const scheduleDay = schedule.days?.find(d => d.day_of_week === day);
-                                                            const isWorking = scheduleDay?.is_working_day;
-                                                            
-                                                            return (
-                                                                <div 
-                                                                    key={day} 
-                                                                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                                                        isWorking 
-                                                                            ? 'bg-green-500 text-white' 
-                                                                            : 'bg-gray-200 text-gray-500'
-                                                                    }`}
-                                                                    title={getDayName(day)}
-                                                                >
-                                                                    {dayNameInitials[day as 1|2|3|4|5|6|7]}
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                    <button
-                                                        onClick={() => {
-                                                            setEditingSchedule(schedule);
-                                                            setShowForm(true);
-                                                        }}
-                                                        className="text-indigo-600 hover:text-indigo-900 mr-3"
-                                                    >
-                                                        Editar
-                                                    </button>
-                                                    <button
-                                                        onClick={() => {
-                                                            if (schedule.id !== null) handleDelete(schedule.id);
-                                                        }}
-                                                        className="text-red-600 hover:text-red-900"
-                                                        disabled={schedule.id === null}
-                                                    >
-                                                        Eliminar
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                            <SchedulesTable 
+                                schedules={schedules}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                            />
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Modal para crear/editar */}
-            {(showForm ) && (
+            {showForm && (
                 <ScheduleForm 
                     schedule={editingSchedule} 
                     onClose={() => setShowForm(false)} 
                 />
             )}
-     </AppLayout>
+        </AppLayout>
     );
 }
 

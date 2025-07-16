@@ -34,6 +34,8 @@ interface PageProps {
 }
 
 
+
+
 export default function TimeTrackingIndex() {
     const { empleados } = usePage<PageProps>().props;
     

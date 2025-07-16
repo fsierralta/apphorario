@@ -227,17 +227,23 @@ class EmployeeScheduleController extends Controller
          $fechai = $request->has('fechai') ? Carbon::parse($request->fechai)->toDateString() : now()->toDateString();
          $fechaf = $request->has('fechaf') ? Carbon::parse($request->fechaf)->toDateString() : now()->toDateString();
          $empleado_id = (Int) $request->empleado_id;
+         $tipo = $request->has('tipo') ?    $request->tipo : '';
 
+        
        
 
         $empleadosQuery = Empleado::with([
             'schedules' => function ($q) {
                 $q->with(['days'])
-                  ->orderByPivot('start_date', 'asc');
+                ->wherePivot('is_active',true)
+                ->orderByPivot('start_date', 'asc');
             },
-            'registroEntradas' => function ($q) use ($fechai, $fechaf, $empleado_id) {
+            'registroEntradas' => function ($q) use ($fechai, $fechaf, $empleado_id,$tipo) {
                 $q->whereBetween('registro_fecha', [$fechai,$fechaf])
                 ->orderBy('registro_fecha', 'asc');
+                if($tipo!==''){
+                    $q->where('tipo','=',$tipo);
+                }
                       
                
             }
@@ -257,7 +263,9 @@ class EmployeeScheduleController extends Controller
          $empleados->appends([
             "fechai" => $fechai,
             "fechaf" => $fechaf,
-            "empleado_id" => $empleado_id
+            "empleado_id" => $empleado_id,
+            "tipo" => $tipo
+
 
         ]);
   //  return response()->json($empleados);
@@ -312,8 +320,23 @@ class EmployeeScheduleController extends Controller
                 }
             $empleados=$empleadosQuery->get();
             info('data',["data"=>$empleados]);
-            
-            return response()->json($empleados);
+             // Filtrar empleados sin entradas
+       
+            $empleadosSinEntradas = $empleados->filter(function ($empleado) {
+            return $empleado->registroEntradas->
+                             countBy();
+         });
+       
+
+        info('data', ["empleados_sin_entradas" => $empleadosSinEntradas]);
+        
+        return response()->json([
+            'empleados_sin_entradas' => $empleadosSinEntradas,
+            'total_empleados' => $empleados->count(),
+          
+        ]);
+
+       //     return response()->json($empleados);
         } catch (\Throwable $th) {
             //throw $th;
             info('erro',['errr'=>$th->getMessage()]);
