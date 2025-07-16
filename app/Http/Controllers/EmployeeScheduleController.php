@@ -238,13 +238,7 @@ class EmployeeScheduleController extends Controller
             'registroEntradas' => function ($q) use ($fechai, $fechaf, $empleado_id) {
                 $q->whereBetween('registro_fecha', [$fechai,$fechaf])
                 ->orderBy('registro_fecha', 'asc');
-                
-      
-
-                // Solo filtrar por empleado si se solicita uno específico
-                if ($empleado_id !== 0) {
-                    $q->where('empleado_id', $empleado_id);
-                }
+                      
                
             }
         ]);
@@ -289,16 +283,37 @@ class EmployeeScheduleController extends Controller
  
     }
 
-    public function reporteFallas($fechai,$fechaf,$empleado_id){
+    public function reporteFallas($fechai,$fechaf,$empleado_id,$tipo){
 
         try {
             //code...
             $empleadosQuery = Empleado::with([
-                    'schedules'=>function($q) use($fechai,$fechaf){
-                         $q->with('days');
-                    }
-            ]);
-            return reponse()->json($empleadQuery);
+                    'schedules'=>function($q) use($fechai,$fechaf)
+                                         {
+                                                $q->with('days')
+                                               ->orderByPivot('start_date', 'asc');
+                                         },
+                    'registroEntradas'=> function ($q) use($fechai, $fechaf,$empleado_id,$tipo)
+                                        {
+                                            $q->orderBy('registro_fecha','asc')
+                                            ->whereBetween('registro_fecha',[$fechai,$fechaf]);
+
+                                           
+                                            if($tipo!==''){
+                                                $q->where('tipo','=',$tipo);
+                                            }
+
+                                        }
+                   
+                    ]);
+                      
+             if ($empleado_id !== 0) {
+                        $empleadosQuery->where('id', $empleado_id);
+                }
+            $empleados=$empleadosQuery->get();
+            info('data',["data"=>$empleados]);
+            
+            return response()->json($empleados);
         } catch (\Throwable $th) {
             //throw $th;
             info('erro',['errr'=>$th->getMessage()]);
