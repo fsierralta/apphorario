@@ -4,7 +4,11 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
+import 'antd/dist/reset.css';
+import 'dayjs/locale/es';
+import dayjs from 'dayjs';
 
+dayjs.locale('es')
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({

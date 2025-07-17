@@ -303,12 +303,12 @@ export default function Asistencia({ empleados,fechai,fechaf }: { empleados: Dat
                                             </td>
                                             <td className="px-6 py-4">
                                                
-                                                {empleado.registro_entradas.length > 0 ? (
+                                                {empleado.schedules[0].entradas.length > 0 ? (
                                                     <ul className="space-y-1 max-h-40 overflow-y-auto pr-2">
-                                                        {empleado.registro_entradas.map((registro) => (
+                                                        {empleado.schedules[0].entradas.map((registro) => (
                                                             <li key={registro.id} className="flex items-center text-sm text-gray-700">
                                                                 <span className="mr-2">
-                                                                    {tipoIcono[registro.tipo as keyof typeof tipoIcono] ?? null}
+                                                                        {tipoIcono[registro.tipo as keyof typeof tipoIcono] ?? null}
                                                                 </span>
                                                                 <span className="font-mono text-xs bg-gray-100 px-2 py-1 rounded mr-2">
                                                                     {formatDate(registro.registro_fecha)}

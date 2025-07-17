@@ -2,6 +2,11 @@ import { LucideIcon } from 'lucide-react';
 import { JSX } from 'react/jsx-runtime';
 import type { Config } from 'ziggy-js';
 
+export interface PageProps<T = Record<string, unknown>> {
+    auth: Auth;
+    [key: string]: any;
+}
+
 export interface Auth {
     user: User;
 }

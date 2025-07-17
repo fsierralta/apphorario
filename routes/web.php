@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\EmployeeScheduleController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\AdminEmpleado;
@@ -14,6 +15,13 @@ Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () 
     })->name('dashboard');
 });
 
+Route::get("re",[EmployeeScheduleController::class,'re'])
+->middleware('auth','verified');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/reportes/asistencia', [EmployeeScheduleController::class, 'report'])
+         ->name('reports.attendance');
+});
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
