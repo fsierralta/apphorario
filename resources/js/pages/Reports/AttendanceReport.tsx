@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import { Button, Table, Select, DatePicker, Space, Card, Row, Col, Typography } from 'antd';
+import { Button, Table, Select, DatePicker, Space, Card, Row, Col, Typography, Modal } from 'antd';
 import { DownloadOutlined, SearchOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -10,6 +10,8 @@ import 'dayjs/locale/es';
 import { AttendanceFilters } from '@/types/attendance';
 import { AttendanceRecord } from '@/types/attendance';
 import { Employee } from '@/types/employee';
+import Pagination from "@/components/pagination/pagination";
+import AppLayout from "@/layouts/app-layout";
 
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
@@ -21,8 +23,29 @@ interface AttendanceReportProps extends PageProps {
     last_page: number;
     per_page: number;
     total: number;
+    links: Array<{
+        url: string | null;
+        label: string;
+        active: boolean;
+    }>;
+
   };
   employees: Employee[];
+}
+
+interface ScheduleDetails {
+  id: number;
+  name: string;
+  start_time: string;
+  end_time: string;
+  days: Array<{
+    day: string;
+    is_working_day: boolean;
+    start_time: string;
+    end_time: string;
+    break_start?: string;
+    break_end?: string;
+  }>;
 }
 
 const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employees }) => {
@@ -37,10 +60,48 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
     },
     ...(initialFilters || {})
 });
+ console.log(attendance)
   const [loading, setLoading] = useState(false);
+  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
+  const [scheduleDetails, setScheduleDetails] = useState<ScheduleDetails | null>(null);
+  const [scheduleLoading, setScheduleLoading] = useState(false);
+
+  const fetchScheduleDetails = async (scheduleId: number) => {
+    try {
+      setScheduleLoading(true);
+      const response = await fetch(route('api.schedules.show', scheduleId));
+      if (!response.ok) throw new Error('Error al cargar el horario');
+      const data = await response.json();
+      setScheduleDetails(data);
+      setScheduleModalVisible(true);
+    } catch (error) {
+      console.error('Error:', error);
+      // Aquí podrías mostrar un mensaje de error al usuario
+    } finally {
+      setScheduleLoading(false);
+    }
+  };
+
+  const handleScheduleClick = (scheduleId: number) => {
+    fetchScheduleDetails(scheduleId);
+  };
 
   const handleSearch = () => {
-    router.get(route('reports.attendance'), filters, {
+    // Resetear a la primera página al realizar una nueva búsqueda
+    const searchFilters = { ...filters, page: 1 };
+    setFilters(searchFilters);8
+    router.get(route('reports.attendance'), searchFilters, {
+      preserveState: true,
+      onStart: () => setLoading(true),
+      onFinish: () => setLoading(false),
+    });
+  };
+
+  const handlePageChange = (page: number) => {
+    const newFilters = { ...filters, page };
+    setFilters(newFilters);
+    router.get(route('reports.attendance'), newFilters, {
+     // preserveState: true,
       onStart: () => setLoading(true),
       onFinish: () => setLoading(false),
     });
@@ -116,11 +177,23 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
       title: 'Horario',
       dataIndex: 'horario',
       key: 'horario',
+      render: (_, record) => (
+        <Space size="middle">
+          <a onClick={() => handleScheduleClick(record.schedule_id)}>{record.schedule_id}</a>
+        </Space>
+      ),
     },
   ];
+ 
 
   return (
     <>
+    <AppLayout
+    breadcrumbs={[
+        { title: 'Reporte de Asistencia', href: route('reports.attendance') },
+    ]}  
+    >
+
       <Head title="Reporte de Asistencia" />
       
       <div className="py-6">
@@ -203,16 +276,12 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
               <Table
                 columns={columns}
                 dataSource={attendance.data}
-                rowKey="id"
+               // rowKey={(record, index) => `${record.id}-${index}`}
                 pagination={{
                   current: attendance.current_page,
                   total: attendance.total,
                   pageSize: attendance.per_page,
-
-                  onChange: (page) => {
-                    setFilters(prev => ({ ...prev, page }));
-                    handleSearch();
-                  },
+                  onChange: handlePageChange,
                 }}
                 loading={loading}
                 scroll={{ x: true }}
@@ -221,6 +290,81 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
           </Card>
         </div>
       </div>
+      {/* Modal de Detalles de Horario */}
+      <Modal
+        title={`Detalles del Horario ${scheduleDetails?.name || ''}`}
+        open={scheduleModalVisible}
+        onCancel={() => setScheduleModalVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setScheduleModalVisible(false)}>
+            Cerrar
+          </Button>,
+        ]}
+        width={800}
+      >
+        {scheduleLoading ? (
+          <div className="text-center p-4">Cargando detalles del horario...</div>
+        ) : scheduleDetails ? (
+          <div>
+            <div className="mb-4">
+              <p><strong>Horario:</strong> {scheduleDetails.start_time} - {scheduleDetails.end_time}</p>
+            </div>
+            <Table 
+              dataSource={scheduleDetails.days}
+              rowKey="day"
+              pagination={false}
+              columns={[
+                {
+                  title: 'Día',
+                  dataIndex: 'day',
+                  key: 'day',
+                  render: (day) => {
+                    const daysMap: Record<string, string> = {
+                      monday: 'Lunes',
+                      tuesday: 'Martes',
+                      wednesday: 'Miércoles',
+                      thursday: 'Jueves',
+                      friday: 'Viernes',
+                      saturday: 'Sábado',
+                      sunday: 'Domingo'
+                    };
+                    return daysMap[day] || day;
+                  }
+                },
+                {
+                  title: 'Día Laboral',
+                  dataIndex: 'is_working_day',
+                  key: 'is_working_day',
+                  render: (isWorking) => isWorking ? 'Sí' : 'No'
+                },
+                {
+                  title: 'Hora Inicio',
+                  dataIndex: 'start_time',
+                  key: 'start_time',
+                  render: (time) => time || '-'
+                },
+                {
+                  title: 'Hora Fin',
+                  dataIndex: 'end_time',
+                  key: 'end_time',
+                  render: (time) => time || '-'
+                },
+                {
+                  title: 'Descanso',
+                  key: 'break',
+                  render: (_, record) => 
+                    record.break_start && record.break_end 
+                      ? `${record.break_start} - ${record.break_end}` 
+                      : 'Sin descanso'
+                }
+              ]}
+            />
+          </div>
+        ) : (
+          <div>No se encontraron detalles del horario</div>
+        )}
+      </Modal>
+      </AppLayout>
     </>
   );
 };

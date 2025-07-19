@@ -11,6 +11,7 @@ export interface AttendanceRecord {
     inicio_descanso: string | null;
     fin_descanso: string | null;
     horario: string;
+    schedule_id: number;  
   }
   
   export interface Employee {

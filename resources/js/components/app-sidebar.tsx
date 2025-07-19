@@ -44,7 +44,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title:'Lista de Asistencia',  
-        href:route('asistencia.index'),
+        href:route('reports.attendance'),
         icon:UserPen  
     }
 

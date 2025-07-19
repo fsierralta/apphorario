@@ -350,111 +350,7 @@ class EmployeeScheduleController extends Controller
     
     
         }
-        public function re(Request $request) {
-            try {
-                $perPage = $request->input('per_page', 10); // Default to 10 items per page
-                $fechai = $request->has('fechai') ? Carbon::parse($request->fechai)->toDateString() : now()->toDateString();
-              $fechaf = $request->has('fechaf') ? Carbon::parse($request->fechaf)->toDateString() : now()->toDateString();
-                 $empleado_id = (Int) $request->empleado_id;
-                $tipo = $request->has('tipo') ?    $request->tipo : '';
-              
-
-                // Get all active employees with their schedules (paginated)
-                $paginatedEmployees = DB::table('empleados')
-                    ->select([
-                        'empleados.id',
-                        'empleados.nombre',
-                        'empleados.apellido',
-                        'empleados.cedula',
-                        'empleados.cargo',
-                        'empleados.foto_url',
-                        'schedules.id as schedule_id',
-                        'schedules.name as schedule_name',
-                        'schedules.start_time',
-                        'schedules.end_time',
-                        'schedules.break_start',
-                        'schedules.break_end'
-                    ])
-                    ->join('employee_schedule', 'empleados.id', '=', 'employee_schedule.empleado_id')
-                    ->join('schedules', 'schedules.id', '=', 'employee_schedule.schedule_id')
-                    ->where('employee_schedule.is_active', true)
-                    ->groupBy('empleados.id', 'schedules.id') // Group by both employee and schedule
-                    ->paginate($perPage);
-        
-                // Get all employee IDs from the paginated result
-                $employeeIds = $paginatedEmployees->pluck('id')->unique();
-                $scheduleIds = $paginatedEmployees->pluck('schedule_id')->unique();
-        
-                // Get attendance records only for the paginated employees and their schedules
-                $attendance = DB::table('registroentradas')
-                    ->select([
-                        'empleado_id',
-                        'schedule_id',
-                        'registro_fecha',
-                        DB::raw("MIN(CASE WHEN tipo = 'entrada' THEN registro_hora END) as hora_entrada"),
-                        DB::raw("MAX(CASE WHEN tipo = 'salida' THEN registro_hora END) as hora_salida"),
-                        DB::raw("MIN(CASE WHEN tipo = 'descanso' THEN registro_hora END) as inicio_descanso"),
-                        DB::raw("MAX(CASE WHEN tipo = 'regreso_descanso' THEN registro_hora END) as fin_descanso")
-                    ])
-                    ->whereIn('empleado_id', $employeeIds)
-                    ->whereIn('schedule_id', $scheduleIds)
-                    ->groupBy(['empleado_id', 'schedule_id', 'registro_fecha'])
-                    ->get()
-                    ->groupBy(['empleado_id', 'schedule_id']);
-        
-                // Structure the response
-                $result = collect($paginatedEmployees->items())
-                    ->groupBy('id')
-                    ->map(function ($employeeSchedules) use ($attendance) {
-                        $employee = $employeeSchedules->first();
-                        
-                        $schedules = $employeeSchedules->map(function ($schedule) use ($attendance) {
-                            $scheduleAttendance = $attendance
-                                ->get($schedule->id, collect())
-                                ->get($schedule->schedule_id, collect())
-                                ->sortByDesc('registro_fecha')
-                                ->values();
-        
-                            return [
-                                'id' => $schedule->schedule_id,
-                                'name' => $schedule->schedule_name,
-                                'start_time' => $schedule->start_time,
-                                'end_time' => $schedule->end_time,
-                                'break_start' => $schedule->break_start,
-                                'break_end' => $schedule->break_end,
-                                'attendance' => $scheduleAttendance
-                            ];
-                        });
-        
-                        return [
-                            'id' => $employee->id,
-                            'nombre' => $employee->nombre,
-                            'apellido' => $employee->apellido,
-                            'cedula' => $employee->cedula,
-                            'cargo' => $employee->cargo,
-                            'foto_url' => $employee->foto_url,
-                            'schedules' => $schedules
-                        ];
-                    })
-                    ->values();
-        
-                // Return paginated response with metadata
-                return response()->json([
-                    'data' => $result,
-                    'current_page' => $paginatedEmployees->currentPage(),
-                    'per_page' => $paginatedEmployees->perPage(),
-                    'total' => $paginatedEmployees->total(),
-                    'last_page' => $paginatedEmployees->lastPage()
-                ]);
-        
-            } catch (\Throwable $th) {
-                return response()->json([
-                    'error' => $th->getMessage(),
-                    'file' => $th->getFile(),
-                    'line' => $th->getLine()
-                ], 500);
-            }
-        }
+    
      
         ////
 
@@ -474,6 +370,7 @@ public function report(Request $request)
             'empleados.cedula',
             'empleados.cargo',
             'registroentradas.registro_fecha',
+            'registroentradas.schedule_id',
             DB::raw("MIN(CASE WHEN registroentradas.tipo = 'entrada' THEN registroentradas.registro_hora END) as hora_entrada"),
             DB::raw("MAX(CASE WHEN registroentradas.tipo = 'salida' THEN registroentradas.registro_hora END) as hora_salida"),
             DB::raw("MIN(CASE WHEN registroentradas.tipo = 'descanso' THEN registroentradas.registro_hora END) as inicio_descanso"),
@@ -494,6 +391,7 @@ public function report(Request $request)
             'empleados.cedula',
             'empleados.cargo',
             'registroentradas.registro_fecha',
+            'registroentradas.schedule_id',
             'schedules.name'
         ]);
 
@@ -528,15 +426,27 @@ public function report(Request $request)
 
     $attendance = $query->orderBy('registroentradas.registro_fecha', 'asc')
                        ->paginate(5)
-                       ->withQueryString();
-//     return response()->json(  ['attendance' => $attendance,
-//     'employees' => $employees,
-//     'filters' => $request->all(['fechai', 'fechaf', 'empleado_id', 'tipo']),
-// ]);
+                       ->withQueryString()
+                       ->through(function ($item) {
+                        return $item;
+                    });
+
+                  
+
+  //info("data",["data"=>dd($attendance)]);
+
     return Inertia::render('Reports/AttendanceReport', [
-        'attendance' => $attendance,
+        'attendance' => [
+            'data' => $attendance->items(),
+            'current_page' => $attendance->currentPage(),
+            'last_page' => $attendance->lastPage(),
+            'per_page' => $attendance->perPage(),
+            'total' => $attendance->total(),
+            'links' => $attendance->linkCollection()->toArray(),
+        ],
         'employees' => $employees,
         'filters' => $request->all(['fechai', 'fechaf', 'empleado_id', 'tipo']),
     ]);
 }
-    }
+   
+}
