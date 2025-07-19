@@ -12,7 +12,7 @@ import { AttendanceRecord } from '@/types/attendance';
 import { Employee } from '@/types/employee';
 import Pagination from "@/components/pagination/pagination";
 import AppLayout from "@/layouts/app-layout";
-import { toast } from 'react-toastify';
+import { toast,ToastContainer } from 'react-toastify';
 
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
@@ -76,7 +76,7 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
       setScheduleDetails(data);
       setScheduleModalVisible(true);
      // indicar que se carga La data 
-     // toast.success('Horario cargado correctamente');
+      toast.success('Horario cargado correctamente');
     } catch (error) {
       console.error('Error:', error);
 
@@ -203,6 +203,7 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
       
       <div className="py-6">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <ToastContainer/>
           <Card>
             <Title level={4} className="mb-6">Reporte de Asistencia</Title>
             
