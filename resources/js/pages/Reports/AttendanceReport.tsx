@@ -12,6 +12,7 @@ import { AttendanceRecord } from '@/types/attendance';
 import { Employee } from '@/types/employee';
 import Pagination from "@/components/pagination/pagination";
 import AppLayout from "@/layouts/app-layout";
+import { toast } from 'react-toastify';
 
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
@@ -74,8 +75,12 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
       const data = await response.json();
       setScheduleDetails(data);
       setScheduleModalVisible(true);
+     // indicar que se carga La data 
+     // toast.success('Horario cargado correctamente');
     } catch (error) {
       console.error('Error:', error);
+
+      toast.error('Error al cargar el horario');       
       // Aquí podrías mostrar un mensaje de error al usuario
     } finally {
       setScheduleLoading(false);
