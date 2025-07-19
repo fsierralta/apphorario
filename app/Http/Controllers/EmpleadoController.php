@@ -21,6 +21,14 @@ class EmpleadoController extends Controller
         'Analista de Sistemas',
         'Asistente Administrativo',
         'Jefe de Logística',
+        'Estilista',
+        'Peluquero',
+        'Maquillador',
+        "Empleado",
+        'Vendedor',
+        'Encargado',
+
+
     ];
 
     public function index()

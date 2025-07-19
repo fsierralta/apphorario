@@ -2,7 +2,7 @@ import React, { FormEventHandler } from 'react';
 import { useForm,usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Horario } from '@/types';
-
+import SimpleLayout from '@/layouts/auth/auth-simple-layout';
 interface Props{
     schedule:Horario|null;
     onClose:()=>void
@@ -63,7 +63,12 @@ export default function ScheduleForm({ schedule, onClose }: Props) {
     };
 
     return (
-        <AppLayout>
+        <SimpleLayout
+          title={schedule ? 'Editar Horario' : 'Crear Nuevo Horario'}
+          description="Crear los horarios"
+
+
+        >
             <div className="fixed inset-0  bg-black bg-opacity-10 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
                 <div className="p-6  rounded-md">
@@ -222,11 +227,11 @@ export default function ScheduleForm({ schedule, onClose }: Props) {
                             )}
                         </div>
 
-                        <div className="flex justify-end space-x-3">
+                        <div className="flex justify-end space-x-3 gap-2">
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                                className="px-4 py-2 border border-gray-300 rounded-md  text-black font-bold hover:bg-gray-50"
                             >
                                 Cancelar
                             </button>
@@ -242,7 +247,7 @@ export default function ScheduleForm({ schedule, onClose }: Props) {
                 </div>
             </div>
             </div>
-       </AppLayout>
+       </SimpleLayout>     
     );
     
 }
