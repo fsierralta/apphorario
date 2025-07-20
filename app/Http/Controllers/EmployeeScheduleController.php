@@ -164,7 +164,7 @@ class EmployeeScheduleController extends Controller
         "registroEntradas"=>function($q){
             $q->where('registro_fecha', now()->toDateString());
         }])
-        ->paginate(4)
+        ->paginate(3)
         ->withQueryString();
         
 
@@ -208,7 +208,8 @@ class EmployeeScheduleController extends Controller
             );
             info('registroEntrada', ['registroEntrada' => $registroEntrada]);
 
-            return redirect()->route('showformhorario.show');
+          // return redirect()->route('showformhorario.show');
+           return back();
 
 
 
