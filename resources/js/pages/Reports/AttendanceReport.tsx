@@ -1,6 +1,6 @@
 // resources/js/Pages/Reports/AttendanceReport.tsx
-import React, { useState, useEffect } from 'react';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import  { useState  } from 'react';
+import { Head,  router, usePage } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { Button, Table, Select, DatePicker, Space, Card, Row, Col, Typography, Modal } from 'antd';
 import { DownloadOutlined, SearchOutlined } from '@ant-design/icons';
@@ -10,7 +10,7 @@ import 'dayjs/locale/es';
 import { AttendanceFilters } from '@/types/attendance';
 import { AttendanceRecord } from '@/types/attendance';
 import { Employee } from '@/types/employee';
-import Pagination from "@/components/pagination/pagination";
+
 import AppLayout from "@/layouts/app-layout";
 import { toast,ToastContainer } from 'react-toastify';
 
@@ -94,7 +94,7 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
   const handleSearch = () => {
     // Resetear a la primera página al realizar una nueva búsqueda
     const searchFilters = { ...filters, page: 1 };
-    setFilters(searchFilters);8
+    setFilters(searchFilters);
     router.get(route('reports.attendance'), searchFilters, {
       preserveState: true,
       onStart: () => setLoading(true),
@@ -123,7 +123,7 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
     window.location.href = exportUrl;
   };
 
-  const handleDateChange = (dates: any, dateStrings: [string, string]) => {
+  const handleDateChange = (dates: unknown, dateStrings: [string, string]) => {
     setFilters(prev => ({
       ...prev,
       fechai: dateStrings[0],

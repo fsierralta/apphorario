@@ -98,37 +98,36 @@ export default function TimeTrackingIndex() {
                 >Salir</Link>
               </div>
 
-                <div className="max-w-3xl mx-auto py-8 flex gap-4 mt-8 ">
+                <div className="max-w-4xl mx-auto py-4 flex flex-wrap gap-4 justify-center">
                     {empleados.map((empleado) => (
                         <Card
                             key={empleado.id}
-                            className="bg-amber-100 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl mb-8"
+                            className="bg-amber-100 shadow-md hover:shadow-lg transition-shadow duration-300 rounded-xl mb-2 w-[220px] min-w-[180px]"
                         >
-                            <CardHeader className="text-amber-700 text-2xl border-b border-amber-300 pb-2">
-                                <CardTitle>Registro de Asistencia</CardTitle>
+                            <CardHeader className="text-amber-700 text-lg border-b border-amber-300 pb-1 text-center">
+                                <CardTitle>Asistencia</CardTitle>
                             </CardHeader>
-                            <CardContent className="p-6">
-                                <div className="flex items-center gap-6 mb-6">
+                            <CardContent className="p-3">
+                                <div className="flex flex-col items-center gap-2 mb-3">
                                     <Avatar>
                                         <AvatarImage
                                             src={`/${empleado.foto_url}`}
-                                            className="h-16 w-16 rounded-full object-cover border-2 border-amber-400"
+                                            className="h-10 w-10 rounded-full object-cover border-2 border-amber-400"
                                             alt={`Foto de ${empleado.nombre}`}
                                         />
                                     </Avatar>
-                                    <div>
-                                        <h2 className="text-xl font-bold text-amber-700">{empleado.nombre} {empleado.apellido}</h2>
-                                        <p className="text-amber-600 font-semibold">Cédula: {empleado.cedula}</p>
-                                        <p className="text-amber-500 text-sm">Cargo: {empleado.cargo}</p>
-                                        <p className="text-muted-foreground text-xs">ID: {empleado.id}</p>
+                                    <div className="text-center">
+                                        <h2 className="text-base font-bold text-amber-700">{empleado.nombre} {empleado.apellido}</h2>
+                                        <p className="text-amber-600 font-semibold text-xs">Cédula: {empleado.cedula}</p>
+                                        <p className="text-amber-500 text-xs">Cargo: {empleado.cargo}</p>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-2 gap-4 mt-4">
+                                <div className="grid grid-cols-2 gap-2 mt-2">
                                     {actions.map((action) => (
                                         <Button
                                             key={action.id}
-                                            size="lg"
-                                            className="h-20 w-full text-base font-semibold bg-amber-300 hover:bg-amber-500 text-amber-900 rounded-lg shadow truncate break-words whitespace-normal text-center transition"
+                                            size="sm"
+                                            className="h-8 w-full text-xs font-semibold bg-amber-300 hover:bg-amber-500 text-amber-900 rounded shadow truncate break-words whitespace-normal text-center transition"
                                             onClick={() => handleAction(action.id, +empleado.id)}
                                             disabled={empleadoFind(empleado.id,action.id)}
                                         >
@@ -138,7 +137,7 @@ export default function TimeTrackingIndex() {
                                 </div>
                             </CardContent>
                         </Card>
-                ))}
+                    ))}
                 </div>
         </AppLayout>
     )
