@@ -107,6 +107,7 @@ return (
                                     <Avatar>
                                         <AvatarImage
                                             src={`/${empleado.foto_url}`}
+                                            
                                             className="h-100 w-100 rounded-full object-cover border-2 border-amber-400"
                                             alt={`Foto de ${empleado.nombre}`}
                                         />
