@@ -43,7 +43,7 @@ export default function TimeTrackingIndex() {
     const actions = [
         { id: 'entrada', label: 'Entrada' },
         { id: 'descanso', label: 'Descanso' },
-        { id: 'regreso_descanso', label: 'Regreso de Descanso' },
+        { id: 'regreso_descanso', label: 'R.Descanso' },
         { id: 'salida', label: 'Salida' }
     ];
   
@@ -104,7 +104,7 @@ export default function TimeTrackingIndex() {
                     {empleados.map((empleado) => (
                         <Card
                             key={empleado.id}
-                            className="bg-amber-100 shadow-md hover:shadow-lg transition-shadow duration-300 rounded-xl mb-2 w-[220px] min-w-[180px]"
+                            className="bg-amber-100 shadow-md hover:shadow-lg transition-shadow duration-300 rounded-xl mb-2 w-full max-w-xs sm:min-w-[320px] sm:max-w-[480px]"
                         >
                             <CardHeader className="text-amber-700 text-lg border-b border-amber-300 pb-1 text-center">
                                 <CardTitle>Asistencia</CardTitle>
@@ -114,7 +114,7 @@ export default function TimeTrackingIndex() {
                                     <Avatar>
                                         <AvatarImage
                                             src={`/${empleado.foto_url}`}
-                                            className="h-10 w-10 rounded-full object-cover border-2 border-amber-400"
+                                            className="h-12 w-12 rounded-full object-cover border-2 border-amber-400"
                                             alt={`Foto de ${empleado.nombre}`}
                                         />
                                     </Avatar>
@@ -129,8 +129,8 @@ export default function TimeTrackingIndex() {
                                         <Button
                                             key={action.id}
                                             size="sm"
-                                            className="h-8 w-full text-xs font-semibold bg-amber-300 hover:bg-amber-500 text-amber-900 rounded shadow text-center transition whitespace-nowrap overflow-hidden text-ellipsis px-2"
-                                            style={{maxWidth: '100px'}}
+                                            className="h-9 w-full text-xs font-semibold bg-amber-300 hover:bg-amber-500 text-amber-900 rounded shadow text-center transition whitespace-nowrap overflow-hidden text-ellipsis px-2"
+                                            style={{maxWidth: '100%'}}
                                             onClick={() => handleAction(action.id, +empleado.id)}
                                             disabled={empleadoFind(empleado.id,action.id)}
                                         >
