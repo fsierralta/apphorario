@@ -90,7 +90,7 @@ export default function TimeTrackingIndex() {
      
         
         >
-              <div>
+              <div className='justify-between items-center mx-auto'>
                 <Link
                   href={route('logout')}
                   method='post'
@@ -98,7 +98,9 @@ export default function TimeTrackingIndex() {
                 >Salir</Link>
               </div>
 
-                <div className="max-w-4xl mx-auto py-4 flex flex-wrap gap-4 justify-center">
+                <div className="max-w-4xl mx-auto py-4 flex flex-col items-center">
+                   
+                    <div className="flex flex-wrap gap-4 justify-center w-full">
                     {empleados.map((empleado) => (
                         <Card
                             key={empleado.id}
@@ -127,17 +129,19 @@ export default function TimeTrackingIndex() {
                                         <Button
                                             key={action.id}
                                             size="sm"
-                                            className="h-8 w-full text-xs font-semibold bg-amber-300 hover:bg-amber-500 text-amber-900 rounded shadow truncate break-words whitespace-normal text-center transition"
+                                            className="h-8 w-full text-xs font-semibold bg-amber-300 hover:bg-amber-500 text-amber-900 rounded shadow text-center transition whitespace-nowrap overflow-hidden text-ellipsis px-2"
+                                            style={{maxWidth: '100px'}}
                                             onClick={() => handleAction(action.id, +empleado.id)}
                                             disabled={empleadoFind(empleado.id,action.id)}
                                         >
-                                            {action.label}
+                                            {action.label.length > 14 ? action.label.slice(0, 12) + '…' : action.label}
                                         </Button>
                                     ))}
                                 </div>
                             </CardContent>
                         </Card>
                     ))}
+                    </div>
                 </div>
         </AppLayout>
     )

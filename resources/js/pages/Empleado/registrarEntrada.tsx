@@ -83,7 +83,7 @@ export default function TimeTrackingIndex() {
                 console.error(`Error al registrar la acción ${actionType}:`, error);
             },
             preserveScroll: true,
-            preserveState:true
+            preserveState: true
         }); 
 
 
@@ -107,8 +107,7 @@ return (
                                     <Avatar>
                                         <AvatarImage
                                             src={`/${empleado.foto_url}`}
-                                            
-                                            className="h-100 w-100 rounded-full object-cover border-2 border-amber-400"
+                                            className=" rounded-full object-cover border-2 border-amber-400"
                                             alt={`Foto de ${empleado.nombre}`}
                                         />
                                     </Avatar>
