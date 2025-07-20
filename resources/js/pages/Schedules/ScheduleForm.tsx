@@ -1,8 +1,8 @@
-import React, { FormEventHandler } from 'react';
+import  { FormEventHandler } from 'react';
 import { useForm,usePage } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import { Horario } from '@/types';
-import SimpleLayout from '@/layouts/auth/auth-simple-layout';
+
+import { BreadcrumbItem, Horario } from '@/types';
+
 interface Props{
     schedule:Horario|null;
     onClose:()=>void
@@ -63,14 +63,9 @@ export default function ScheduleForm({ schedule, onClose }: Props) {
     };
 
     return (
-        <SimpleLayout
-          title={schedule ? 'Editar Horario' : 'Crear Nuevo Horario'}
-          description="Crear los horarios"
-
-
-        >
-            <div className="fixed inset-0  bg-black bg-opacity-10 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+      
+            <div className="fixed inset-0   flex items-center justify-center p-4 z-50">
+            <div className="bg-blue-400 rounded-lg shadow-xl w-full max-w-2xl">
                 <div className="p-6  rounded-md">
                     <h2 className="text-xl font-bold mb-4">
                         {schedule ? 'Editar Horario' : 'Crear Nuevo Horario'}
@@ -86,11 +81,11 @@ export default function ScheduleForm({ schedule, onClose }: Props) {
                                     type="text"
                                     value={data.name}
                                     onChange={e => setData('name', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500
-                                            text-black
-                                     focus:ring-indigo-500"
-                                />
-                                {errors.name && (
+                                 className="mt-1 block w-full rounded-md
+                                  border-gray-300 shadow-sm
+                                   focus:border-indigo-500 focus:ring-indigo-500"
+                                /> 
+                               {errors.name && (
                                     <p className="mt-1 text-sm text-red-600">{errors.name}</p>
                                 )}
                             </div>
@@ -233,7 +228,7 @@ export default function ScheduleForm({ schedule, onClose }: Props) {
                                 onClick={onClose}
                                 className="px-4 py-2 border border-gray-300 rounded-md  text-black font-bold hover:bg-gray-50"
                             >
-                                Cancelar
+                                Cancelar 
                             </button>
                             <button
                                 type="submit"
@@ -247,7 +242,7 @@ export default function ScheduleForm({ schedule, onClose }: Props) {
                 </div>
             </div>
             </div>
-       </SimpleLayout>     
+    
     );
     
 }

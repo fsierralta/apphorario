@@ -12,7 +12,6 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AttendanceExport;
 
-
 class EmployeeScheduleController extends Controller
 {
     /**
@@ -165,7 +164,9 @@ class EmployeeScheduleController extends Controller
         "registroEntradas"=>function($q){
             $q->where('registro_fecha', now()->toDateString());
         }])
-        ->get();
+        ->paginate(4)
+        ->withQueryString();
+        
 
      //return response()->json($empleados);
 
@@ -207,7 +208,7 @@ class EmployeeScheduleController extends Controller
             );
             info('registroEntrada', ['registroEntrada' => $registroEntrada]);
 
-            return $this->showEmpleadoHorario();
+            return redirect()->route('showformhorario.show');
 
 
 

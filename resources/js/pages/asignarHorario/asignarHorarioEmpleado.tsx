@@ -91,7 +91,7 @@ const EmployeeScheduleAssigner = () => {
          breadcrumbs={breadcrumbs}
         >
                
-        <div className="rounded-lg bg-white p-6 shadow-md">
+        <div className="rounded-lg bg-blue-500 p-6 shadow-md">
             <ToastContainer/>
              <Head title="Asignar Horario" />
             <h2 className="mb-4 text-xl font-bold">Asignar Horario a Empleado</h2>
@@ -103,7 +103,7 @@ const EmployeeScheduleAssigner = () => {
                         <select
                             value={data.empleado_id}
                             onChange={(e) => setData('empleado_id', e.target.value)}
-                            className="w-full rounded border p-2 text-black"
+                            className="w-full rounded border p-2 text-black bg-blue-500"
                             required
                         >
                             <option value="">Seleccionar empleado</option>
@@ -123,7 +123,7 @@ const EmployeeScheduleAssigner = () => {
                         <select
                             value={data.schedule_id}
                             onChange={(e) => setData('schedule_id', e.target.value)}
-                            className="w-full rounded border p-2 text-black"
+                            className="w-full rounded border p-2 text-black bg-blue-500"
                             required
                         >
                             <option value="">Seleccionar horario</option>
