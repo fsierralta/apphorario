@@ -1,7 +1,13 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 
+type PageProps = {
+    auth?: {
+        user?: unknown;
+    };
+};
+
 export default function Welcome() {
-    const { auth } = usePage().props;
+    const { auth } = usePage<PageProps>().props;
 
     return (
         <>
@@ -28,12 +34,12 @@ export default function Welcome() {
                                 >
                                     Iniciar sesión
                                 </Link>
-                                <Link
+                                {/* <Link
                                     href={route('register')}
                                     className="rounded bg-amber-300 px-6 py-2 text-amber-900 font-semibold shadow hover:bg-amber-400 transition"
                                 >
                                     Registrarse
-                                </Link>
+                                </Link> */}
                             </>
                         )}
                     </nav>

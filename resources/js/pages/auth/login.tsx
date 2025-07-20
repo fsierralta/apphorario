@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+
 
 type LoginForm = {
     email: string;
@@ -104,8 +104,8 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                     <div className="text-center text-sm text-amber-800">
                         ¿No tienes cuenta?{' '}
-                        <TextLink href={route('register')} tabIndex={5} className="text-amber-900 font-semibold">
-                            Regístrate
+                        <TextLink href={"#"} tabIndex={5} className="text-amber-900 font-semibold">
+                            Solicita Regístrarte 
                         </TextLink>
                     </div>
                 </form>
