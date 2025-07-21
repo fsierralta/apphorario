@@ -24,7 +24,8 @@ return new class extends Migration
             $table->unsignedTinyInteger('evento')->default(1); // NUEVO: número de evento del día
             $table->string('observacion')->nullable(); // NUEVO: comentarios
         });
-        
+         
+
     }   
 
     /**

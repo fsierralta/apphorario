@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shedule_time_ranges');
+        Schema::dropIfExists('schedule_time_ranges');
     }
 };
