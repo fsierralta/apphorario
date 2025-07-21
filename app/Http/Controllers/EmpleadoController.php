@@ -130,18 +130,18 @@ class EmpleadoController extends Controller
             } else {
                 $path =null;
             }   
-             info('update',['id'=>$id,'r'=>$request->nombre,
+             info('update',['id'=>$id,'r'=>$request->input("nombre"),
                          'path'=>$path]);
          
              $empleado=Empleado::find((int) $id);
-            $empleado->nombre = $request->nombre;
-            $empleado->apellido = $request->apellido;
-            $empleado->cedula = $request->cedula;
-             $empleado->email = $request->email;
-            $empleado->telefono = $request->telefono;
-            $empleado->direccion = $request->direccion;
-            $empleado->foto_url = $path ? "storage/".$path:$empleado->foto_url;
-            $empleado->cargo = $request->cargo;
+            $empleado->nombre = $request->input("nombre");
+            $empleado->apellido = $request->input("apellido");
+            $empleado->cedula = $request->input("cedula");
+             $empleado->email = $request->input('email');
+            $empleado->telefono = $request->input('telefono');
+            $empleado->direccion = $request->input('direccion');
+            $empleado->foto_url = $path ? "storage/".$path:$empleado->input('foto_url');
+            $empleado->cargo = $request->input('cargo');
             $empleado->save(); 
             return redirect()->route('empleados.index');
 

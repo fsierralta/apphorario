@@ -22,10 +22,10 @@ class ActividadController extends Controller
         "registroEntradas"=>function($q){
             $q->where('registro_fecha', now()->toDateString());
         }])
-        ->where("id","=",auth()->user()->id)
+        ->where("user_id","=",auth()->user()->id)
         ->get();
 
-      //return response()->json($empleados);
+     info("empleado:",["data"=>$empleados,"user"=>auth()->user()]);
 
         return Inertia::render("movimiento/registro", [
             'empleados' => $empleados,

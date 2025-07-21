@@ -20,12 +20,22 @@ export default function Welcome() {
                     </p>
                     <nav className="flex justify-center gap-6 mt-4">
                         {auth?.user ? (
+                            <div className=''>
                             <Link
                                 href={route('dashboard')}
                                 className="rounded bg-amber-700 px-6 py-2 text-white font-semibold shadow hover:bg-amber-800 transition"
                             >
                                 Ir al Panel
                             </Link>
+                            <Link
+                            method='post'
+                             href={route('logout')}
+                               className="rounded bg-amber-700 px-6 py-2 text-white font-semibold shadow hover:bg-amber-800 transition"
+                            >
+                               Log
+                               out
+                            </Link>
+                            </div>
                         ) : (
                             <>
                                 <Link

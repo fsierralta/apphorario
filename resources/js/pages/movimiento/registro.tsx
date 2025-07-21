@@ -39,7 +39,7 @@ interface PageProps {
 export default function TimeTrackingIndex() {
     const { empleados } = usePage<PageProps>().props;
     
-    
+    console.log(empleados)
     const actions = [
         { id: 'entrada', label: 'Entrada' },
         { id: 'descanso', label: 'Descanso' },

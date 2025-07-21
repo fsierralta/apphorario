@@ -33,8 +33,8 @@ class EmpleadoService
             $user=User::create(
                 [
                   "name"=>strtoupper(str_replace(' ','',$request->input('nombre'))),
-                  'email'=>strtolower(trim($request->email)),
-                  'password'=>bcrypt(trim($request->cedula)),
+                  'email'=>strtolower(trim($request->input("email"))),
+                  'password'=>bcrypt(trim($request->input("cedula"))),
                   'role'=>'empleado',
 ]
 
@@ -42,14 +42,14 @@ class EmpleadoService
                 
 
             $empleado = new Empleado;
-            $empleado->nombre = $request->nombre;
-            $empleado->apellido = $request->apellido;
-            $empleado->cedula = $request->cedula;
-            $empleado->telefono = $request->telefono;
-            $empleado->direccion = $request->direccion;
+            $empleado->nombre = $request->input("nombre");
+            $empleado->apellido = $request->input("apellido")  ;
+            $empleado->cedula = $request->input('cedula');
+            $empleado->telefono = $request->input('telefono');
+            $empleado->direccion = $request->input('direccion');
             $empleado->foto_url = $path ? 'storage/'.$path : null; // Guardar la ruta de la imagen
-            $empleado->cargo = $request->cargo;
-            $empleado->email = $request->email;
+            $empleado->cargo = $request->input('cargo');
+            $empleado->email = $request->input('email');
             $empleado->user_id = $user->id; // Asignar el ID del usuario creado
             $empleado->save();
             return redirect()->route('empleados.index')->with('success', 'Empleado creado exitosamente.');

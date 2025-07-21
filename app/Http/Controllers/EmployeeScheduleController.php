@@ -191,11 +191,11 @@ class EmployeeScheduleController extends Controller
                                         ->orderByPivot('start_date', 'desc');
                                         }
                                        
-                                        ])->findOrFail($empleado->id);
+                                        ])->findOrFail($empleado->input('id'));
        //   return response()->json($empleado);
             $registroEntrada=RegistroEntradas::firstOrCreate(
                 [
-                    'empleado_id' => $empleado->id,
+                    'empleado_id' => $empleado->input('id'),
                     'registro_fecha' => now()->toDateString(),
                     'tipo' => $tipo,
                 ],
@@ -229,10 +229,10 @@ class EmployeeScheduleController extends Controller
       
       try {
           // Default to today's date if not provided
-         $fechai = $request->has('fechai') ? Carbon::parse($request->fechai)->toDateString() : now()->toDateString();
-         $fechaf = $request->has('fechaf') ? Carbon::parse($request->fechaf)->toDateString() : now()->toDateString();
-         $empleado_id = (Int) $request->empleado_id;
-         $tipo = $request->has('tipo') ?    $request->tipo : '';
+         $fechai = $request->has('fechai') ? Carbon::parse($request->input('fechai'))->toDateString() : now()->toDateString();
+         $fechaf = $request->has('fechaf') ? Carbon::parse($request->input('fechaf'))->toDateString() : now()->toDateString();
+         $empleado_id = (Int) $request->input('empleado_id');
+         $tipo = $request->has('tipo') ?    $request->input('tipo') : '';
          
         
        
@@ -360,10 +360,10 @@ class EmployeeScheduleController extends Controller
 public function report(Request $request)
 {
     info($request->all());
-    $fechai = $request->has('fechai') ? Carbon::parse($request->fechai)->toDateString() : now()->toDateString();
-    $fechaf = $request->has('fechaf') ? Carbon::parse($request->fechaf)->toDateString() : now()->toDateString();
-    $empleado_id = (Int) $request->empleado_id;
-    $tipo = $request->has('tipo') ?    $request->tipo : null;
+    $fechai = $request->has('fechai') ? Carbon::parse($request->input('fechai'))->toDateString() : now()->toDateString();
+    $fechaf = $request->has('fechaf') ? Carbon::parse($request->input('fechaf'))->toDateString() : now()->toDateString();
+    $empleado_id = (Int) $request->input('empleado_id');
+    $tipo = $request->has('tipo') ?    $request->input('tipo') : null;
     $query = DB::table('empleados')
         ->select([
             'empleados.id',
