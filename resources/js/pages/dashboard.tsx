@@ -12,10 +12,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Dashboard() {
     return (
-        <div className="min-h-screen flex flex-col bg-gradient-to-br from-amber-100 via-amber-300 to-amber-500 p-6 text-[#1b1b18] dark:bg-[#0a0a0a]">
+        
             <AppLayout breadcrumbs={breadcrumbs}>
                 <Head title="Dashboard" />
-                <div className="w-full max-w-6xl mx-auto flex flex-col items-center justify-center">
+                <div className="w-full max-w-6xl mx-auto flex flex-col items-center justify-center ">
                     <h1 className="text-4xl font-extrabold text-amber-900 drop-shadow-lg mb-6 text-center">Panel Principal</h1>
                     <p className="text-lg text-amber-800 font-medium mb-8 text-center">
                         Bienvenido al panel de control del sistema de horarios. Aquí puedes gestionar empleados, horarios, asistencia y visualizar reportes.
@@ -62,6 +62,6 @@ export default function Dashboard() {
                     </footer>
                 </div>
             </AppLayout>
-        </div>
+      
     );
 }

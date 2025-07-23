@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d34d5348bf68c754b4273f62e2e1a428",
+    "content-hash": "19640136997c218f02879574fd82d1da",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1850,81 +1850,17 @@
             "time": "2025-01-27T14:24:01+00:00"
         },
         {
-            "name": "laraveljutsu/zap",
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ludoguenet/laravel-zap.git",
-                "reference": "55364de294dd9da96f0c81eff3bd49d57f7fba4f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ludoguenet/laravel-zap/zipball/55364de294dd9da96f0c81eff3bd49d57f7fba4f",
-                "reference": "55364de294dd9da96f0c81eff3bd49d57f7fba4f",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.2"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.20",
-                "orchestra/testbench": "^9.10",
-                "pestphp/pest": "^3.7"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Zap": "Zap\\Facades\\Zap"
-                    },
-                    "providers": [
-                        "Zap\\ZapServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zap\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Laravel Jutsu",
-                    "email": "ludo@epekta.com",
-                    "homepage": "https://laraveljutsu.net"
-                }
-            ],
-            "description": "A flexible, performant, and developer-friendly schedule management system for Laravel",
-            "keywords": [
-                "booking",
-                "calendar",
-                "laravel",
-                "management",
-                "schedule"
-            ],
-            "support": {
-                "issues": "https://github.com/ludoguenet/laravel-zap/issues",
-                "source": "https://github.com/ludoguenet/laravel-zap/tree/v1.1.1"
-            },
-            "time": "2025-07-06T20:32:14+00:00"
-        },
-        {
             "name": "league/commonmark",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "6fbb36d44824ed4091adbcf4c7d4a3923cdb3405"
+                "reference": "10732241927d3971d28e7ea7b5712721fa2296ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/6fbb36d44824ed4091adbcf4c7d4a3923cdb3405",
-                "reference": "6fbb36d44824ed4091adbcf4c7d4a3923cdb3405",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/10732241927d3971d28e7ea7b5712721fa2296ca",
+                "reference": "10732241927d3971d28e7ea7b5712721fa2296ca",
                 "shasum": ""
             },
             "require": {
@@ -1953,7 +1889,7 @@
                 "symfony/process": "^5.4 | ^6.0 | ^7.0",
                 "symfony/yaml": "^2.3 | ^3.0 | ^4.0 | ^5.0 | ^6.0 | ^7.0",
                 "unleashedtech/php-coding-standard": "^3.1.1",
-                "vimeo/psalm": "^4.24.0 || ^5.0.0"
+                "vimeo/psalm": "^4.24.0 || ^5.0.0 || ^6.0.0"
             },
             "suggest": {
                 "symfony/yaml": "v2.3+ required if using the Front Matter extension"
@@ -2018,7 +1954,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-05T12:20:28+00:00"
+            "time": "2025-07-20T12:47:49+00:00"
         },
         {
             "name": "league/config",

@@ -72,7 +72,7 @@ class Empleado extends Model
         return $this->empleados()
             ->wherePivot('is_active', true)
             ->where('start_date', '<=', $fechai)
-            ->where(function ($query) {
+            ->where(function ($query) use ($fechaf) {
                 $query->whereNull('end_date')
                     ->orWhere('end_date', '>=', $fechaf);
 
@@ -83,9 +83,9 @@ class Empleado extends Model
     public function users():BelongsToMany{
         return $this->belongsToMany(User::class);
     }
-    public function registroEntradas():HasMany{
-        return $this->hasMany(RegistroEntradas::class, 'empleado_id', 'id')
-            ->orderBy('registro_fecha', 'desc');
+    public function registroEntradas(): HasMany
+    {
+        return $this->hasMany(RegistroEntradas::class, 'empleado_id', 'id');
     }
 
     

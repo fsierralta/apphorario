@@ -282,7 +282,7 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
               <Table
                 columns={columns}
                 dataSource={attendance.data}
-               // rowKey={(record, index) => `${record.id}-${index}`}
+               rowKey={(record, index) => `${record.id}-${index}`}
                 pagination={{
                   current: attendance.current_page,
                   total: attendance.total,

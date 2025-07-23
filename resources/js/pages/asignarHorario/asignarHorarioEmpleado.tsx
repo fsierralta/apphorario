@@ -24,7 +24,9 @@ interface PageProps {
   empleados: Empleado[] ;
   schedules: HorarioEmpleado[] ;
   flash:{error:string |null,
-         message:string|null
+         message:string|null,
+         success:string|null
+
 
   }
   [key: string]: unknown;
@@ -76,14 +78,51 @@ const EmployeeScheduleAssigner = () => {
                 progress: undefined,
                 theme: "light",
                 transition: Bounce,
-            });
+            })
         }
+
+            if(type === 'success'){
+                toast.success(msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                })
+            }
+        
+            if(type === 'message'){
+                toast.info(msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                })
+            }
+
     }
    
     useEffect(() => {
         if (flash.error) {
             toastMessage('error', flash.error);
         }
+        if(flash.message){
+            toastMessage('success', flash.message);
+        }
+
+        if(flash.success){
+            toastMessage('success', flash.success);
+        }
+
     }, [flash]);
 
      return (

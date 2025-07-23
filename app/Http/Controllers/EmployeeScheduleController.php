@@ -22,47 +22,49 @@ class EmployeeScheduleController extends Controller
 
         try {
             // code...
-            info('horario', ['r' => $request]);
+            info('horario', ['r' => $request->toArray()]);
             $validated = $request->validate([
                 'empleado_id' => 'required|exists:empleados,id',
                 'schedule_id' => 'required|exists:schedules,id',
                 'start_date' => 'required|date',
-                'end_date' => 'nullable|date|after:start_date',
+                'end_date' => 'required|date|after:start_date',
                 'is_active' => 'boolean',
+                'deactivate_others' => 'required|boolean',
+
             ]);
 
             $empleado = Empleado::findOrFail($validated['empleado_id']);
 
             // Desactivar asignaciones anteriores si es necesario
-            if ($request->input('deactivate_others', false)) {
-                $empleado->schedules()->updateExistingPivot(null, [
-                    'is_active' => false,
-                ]);
+            if ($request->input('deactivate_others')) {
+              
+                $empleado->schedules()->where('schedule_id', '!=', $validated['schedule_id'])
+                    ->update(['is_active' => false]);
+
             }
+
             // Asignar nuevo horario
-            $attached = $empleado->schedules()->attach($validated['schedule_id'], [
-                'start_date' => $validated['start_date'],
-                'end_date' => $validated['end_date'] ?? null,
-                'is_active' => $validated['is_active'] ?? true,
-            ]);
-
-            /*  // Asignar nuevo horario
-             $attached = DB::table('employee_schedule')
-                 ->insert(
-                      [
-                         'empleado_id'=>$validated['empleado_id'] ,
-                         'schedule_id' => $validated['schedule_id'],
-                         'start_date' => $validated['start_date'],
-                         'end_date' => $validated['end_date'] ?? null,
-                         'is_active' => $validated['is_active'] ?? true
-                     ]
-                 )
-             */
-
-            info('inserto', ['inserto' => $attached]);
-            if ($attached === false) {
-                throw new \Exception('No se pudo asignar el horario al empleado.');
+            if($empleado->schedules()->where('schedule_id', $validated['schedule_id'])->exists()){
+                $empleado->schedules()->updateExistingPivot($validated['schedule_id'], [
+                    'start_date' => $validated['start_date'],
+                    'end_date' => $validated['end_date'] ?? null,
+                    'is_active' => $validated['is_active'] ?? true,
+                ]);
+                
             }
+            else{
+                $empleado->schedules()->attach($validated['schedule_id'], [
+                    'start_date' => $validated['start_date'],
+                    'end_date' => $validated['end_date'] ?? null,
+                    'is_active' => $validated['is_active'] ?? true,
+                ]);
+
+            }
+            
+
+            
+            return back()->with(['message' => 'Horario asignado correctamente']);
+
         } catch (\Throwable $th) {
             // throw $th;
             info('error', ['error' => $th->getMessage()]);

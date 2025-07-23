@@ -64,8 +64,10 @@ const Index = () => {
                 <td colSpan={9} className="text-center py-4 text-gray-500 border border-gray-300">No hay empleados registrados.</td>
               </tr>
             ) : (
-              data.map((empleado) => (
-                <EmpleadoRow empleado={empleado}/>
+              data.map((empleado,index) => (
+                <EmpleadoRow empleado={empleado}
+                  key={index}
+                />
              
               ))
             )}
