@@ -160,17 +160,71 @@ class EmployeeScheduleController extends Controller
         ]);
     }
 
-    public function showEmpleadoHorario(){
-
+    public function showEmpleadoHorario(Request $request){
+        $search= $request->input('search');
+       
         $empleados=Empleado::with(['schedules'=>function($q){
             $q->with(['days'])
             ->orderByPivot('start_date', 'desc');
         },
         "registroEntradas"=>function($q){
             $q->where('registro_fecha', now()->toDateString());
-        }])
-        ->paginate(3)
-        ->withQueryString();
+        }]);
+
+        if($search) {
+            $empleados->where('nombre', 'like', '%' . $search . '%')
+             ->orWhere('apellido', 'like', '%' . $search . '%')
+             ->orWhere('cedula', 'like', '%' . $search . '%')
+             ->orWhere('cargo', 'like', '%' . $search . '%');
+        }
+        $empleados = $empleados->paginate(3)
+        ->withQueryString(); App\Models\RegistroEntradas {#6412
+                id: 21,
+                created_at: "2025-07-09 09:22:36",
+                updated_at: "2025-07-09 09:22:36",
+                empleado_id: 7,
+                schedule_id: 1,
+                registro_fecha: "2025-07-09",
+                registro_hora: "2025-07-09 09:22:36",
+                tipo: "salida",
+                evento: 1,
+                observacion: null,
+ App\Models\RegistroEntradas {#6412
+                id: 21,
+                created_at: "2025-07-09 09:22:36",
+                updated_at: "2025-07-09 09:22:36",
+                empleado_id: 7,
+                schedule_id: 1,
+                registro_fecha: "2025-07-09",
+                registro_hora: "2025-07-09 09:22:36",
+                tipo: "salida",
+                evento: 1,
+                observacion: null,
+ App\Models\RegistroEntradas {#6412
+                id: 21,
+                created_at: "2025-07-09 09:22:36",
+                updated_at: "2025-07-09 09:22:36",
+                empleado_id: 7,
+                schedule_id: 1,
+                registro_fecha: "2025-07-09",
+                registro_hora: "2025-07-09 09:22:36",
+                tipo: "salida",
+                evento: 1,
+                observacion: null,
+ App\Models\RegistroEntradas {#6412
+                id: 21,
+                created_at: "2025-07-09 09:22:36",
+                updated_at: "2025-07-09 09:22:36",
+                empleado_id: 7,
+                schedule_id: 1,
+                registro_fecha: "2025-07-09",
+                registro_hora: "2025-07-09 09:22:36",
+                tipo: "salida",
+                evento: 1,
+                observacion: null,
+
+       
+       
         
 
      //return response()->json($empleados);
@@ -455,5 +509,6 @@ public function report(Request $request)
         'filters' => $request->all(['fechai', 'fechaf', 'empleado_id', 'tipo']),
     ]);
 }
-   
+ 
+
 }

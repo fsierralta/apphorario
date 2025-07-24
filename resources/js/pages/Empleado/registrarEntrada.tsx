@@ -1,10 +1,12 @@
-import { usePage,router } from '@inertiajs/react';
+import { usePage,router,Link} from '@inertiajs/react';
+
 import AppLayout from '@/layouts/app-layout';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Pagination from '@/components/pagination/pagination';
 import { PaginationLink } from '@/types';
+import { useState } from 'react';
 // Declaración para los registros de entrada recibidos desde el backend
 interface arrayRegistroEntradas {
     id: number;
@@ -43,7 +45,15 @@ interface PageProps {
 export default function TimeTrackingIndex() {
     const { empleados } = usePage<PageProps>().props;
     console.log(empleados  )
-    
+    const [search,setSearch] = useState('');
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value);
+        router.get(route('showformhorario.show'), { search: e.target.value }, {
+            preserveState: true,
+            preserveScroll: true
+        });
+    };
     const actions = [
         { id: 'entrada', label: 'Entrada' },
         { id: 'descanso', label: 'Descanso' },
@@ -93,6 +103,27 @@ return (
         <div className="min-h-screen bg-gradient-to-br from-amber-100 via-amber-300 to-amber-500 py-8 px-4">
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-3xl font-extrabold text-amber-900 mb-8 text-center">Registro de Asistencia</h1>
+                <div className="mb-6 grid grid-cols-1 justify-between items-center mx-auto max-w-full">
+                    <div>
+                        <label 
+                             className="bg-amber-800 text-amber-100 placeholder-amber-400
+                                           rounded-lg px-4 py-2 space-x-2
+                                           flex items-center justify-between w-full max-w-md"
+                                       
+                        >Search:
+                                        <input
+                                            type="text"
+                                            value={search}
+                                            onChange={handleSearch}
+                                            placeholder="Buscar empleado..."
+                                            className="border border-amber-300 rounded-lg px-4 py-2
+                                                    bg-amber-800 text-amber-100 placeholder-amber-400
+                                            w-full max-w-md
+                                                        focus:outline-none focus:ring-2 focus:ring-amber-500"
+                                        />
+                    </label>
+                    </div>
+                  </div> 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {empleados.data.map((empleado) => (
                         <Card
