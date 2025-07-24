@@ -77,19 +77,23 @@ const SchedulesTable = ({
                                 </div>
                             </td>
                             {showActions && (
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-2">
                                     {onEdit && (
                                         <button
                                             onClick={() => onEdit(schedule)}
-                                            className="text-indigo-600 hover:text-indigo-900 mr-3"
+                                            className="bg-yellow-500 hover:bg-yellow-700 text-white px-4 py-2 rounded-md hover:text-indigo-900 mr-3"
                                         >
                                             Editar
                                         </button>
                                     )}
-                                    {onDelete && schedule.id !== null && (
+                                    {onDelete && (
                                         <button
-                                            onClick={() => onDelete(schedule.id)}
-                                            className="text-red-600 hover:text-red-900"
+                                            onClick={() => {
+                                                if (schedule.id !== null) {
+                                                    onDelete(schedule.id);
+                                                }
+                                            }}
+                                            className=" hover:text-red-900 bg-red-500 px-4 py-2 rounded-md hover:bg-red-700"
                                         >
                                             Eliminar
                                         </button>

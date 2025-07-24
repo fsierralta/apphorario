@@ -178,50 +178,10 @@ class EmployeeScheduleController extends Controller
              ->orWhere('cargo', 'like', '%' . $search . '%');
         }
         $empleados = $empleados->paginate(3)
-        ->withQueryString(); App\Models\RegistroEntradas {#6412
-                id: 21,
-                created_at: "2025-07-09 09:22:36",
-                updated_at: "2025-07-09 09:22:36",
-                empleado_id: 7,
-                schedule_id: 1,
-                registro_fecha: "2025-07-09",
-                registro_hora: "2025-07-09 09:22:36",
-                tipo: "salida",
-                evento: 1,
-                observacion: null,
- App\Models\RegistroEntradas {#6412
-                id: 21,
-                created_at: "2025-07-09 09:22:36",
-                updated_at: "2025-07-09 09:22:36",
-                empleado_id: 7,
-                schedule_id: 1,
-                registro_fecha: "2025-07-09",
-                registro_hora: "2025-07-09 09:22:36",
-                tipo: "salida",
-                evento: 1,
-                observacion: null,
- App\Models\RegistroEntradas {#6412
-                id: 21,
-                created_at: "2025-07-09 09:22:36",
-                updated_at: "2025-07-09 09:22:36",
-                empleado_id: 7,
-                schedule_id: 1,
-                registro_fecha: "2025-07-09",
-                registro_hora: "2025-07-09 09:22:36",
-                tipo: "salida",
-                evento: 1,
-                observacion: null,
- App\Models\RegistroEntradas {#6412
-                id: 21,
-                created_at: "2025-07-09 09:22:36",
-                updated_at: "2025-07-09 09:22:36",
-                empleado_id: 7,
-                schedule_id: 1,
-                registro_fecha: "2025-07-09",
-                registro_hora: "2025-07-09 09:22:36",
-                tipo: "salida",
-                evento: 1,
-                observacion: null,
+        ->withQueryString(); 
+
+ 
+ 
 
        
        
