@@ -74,8 +74,7 @@ class ActividadController extends Controller
                     'observacion' => null,
                 ]
             );
-            return $this->index();
-
+            return redirect()->route('actividad.index');
 
 
 

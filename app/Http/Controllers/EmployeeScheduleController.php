@@ -37,11 +37,14 @@ class EmployeeScheduleController extends Controller
 
             // Desactivar asignaciones anteriores si es necesario
             if ($request->input('deactivate_others')) {
-              
-                $empleado->schedules()->where('schedule_id', '!=', $validated['schedule_id'])
+                 if($empleado->schedules()->where('schedule_id', '!=', $validated['schedule_id'])->exists()){
+                    $empleado->schedules()->where('schedule_id', '!=', $validated['schedule_id'])
                     ->update(['is_active' => false]);
-
+                }
+                
             }
+            
+
 
             // Asignar nuevo horario
             if($empleado->schedules()->where('schedule_id', $validated['schedule_id'])->exists()){
@@ -193,11 +196,11 @@ class EmployeeScheduleController extends Controller
                                         ->orderByPivot('start_date', 'desc');
                                         }
                                        
-                                        ])->findOrFail($empleado->input('id'));
+                                        ])->findOrFail($empleado->id);
        //   return response()->json($empleado);
             $registroEntrada=RegistroEntradas::firstOrCreate(
                 [
-                    'empleado_id' => $empleado->input('id'),
+                    'empleado_id' => $empleado->id,
                     'registro_fecha' => now()->toDateString(),
                     'tipo' => $tipo,
                 ],
@@ -210,8 +213,8 @@ class EmployeeScheduleController extends Controller
             );
             info('registroEntrada', ['registroEntrada' => $registroEntrada]);
 
-          // return redirect()->route('showformhorario.show');
-           return back();
+           return redirect()->route('showformhorario.show');
+          // return back();
 
 
 
