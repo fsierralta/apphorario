@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
- 
+
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -32,15 +32,16 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        if(Auth::user()->hasRole('admin')) {
+        if (Auth::user()->hasRole('admin')) {
             $request->session()->put('is_admin', true);
-              return redirect()->intended(route('dashboard', absolute: false));
+
+            return redirect()->intended(route('dashboard', absolute: false));
         } else {
             $request->session()->put('is_admin', false);
+
             return redirect()->intended(route('actividad.index', absolute: false));
         }
 
-      
     }
 
     /**

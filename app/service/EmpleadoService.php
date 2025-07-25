@@ -30,20 +30,19 @@ class EmpleadoService
                 $path = null;
             }            // Crear el empleado
             info('foto_url', ['foto_url' => $path]);
-            $user=User::create(
+            $user = User::create(
                 [
-                  "name"=>strtoupper(str_replace(' ','',$request->input('nombre'))),
-                  'email'=>strtolower(trim($request->input("email"))),
-                  'password'=>bcrypt(trim($request->input("cedula"))),
-                  'role'=>'empleado',
-]
+                    'name' => strtoupper(str_replace(' ', '', $request->input('nombre'))),
+                    'email' => strtolower(trim($request->input('email'))),
+                    'password' => bcrypt(trim($request->input('cedula'))),
+                    'role' => 'empleado',
+                ]
 
-                );
-                
+            );
 
-            $empleado = new Empleado();
-            $empleado->nombre = $request->input("nombre");
-            $empleado->apellido = $request->input("apellido")  ;
+            $empleado = new Empleado;
+            $empleado->nombre = $request->input('nombre');
+            $empleado->apellido = $request->input('apellido');
             $empleado->cedula = $request->input('cedula');
             $empleado->telefono = $request->input('telefono');
             $empleado->direccion = $request->input('direccion');
@@ -52,6 +51,7 @@ class EmpleadoService
             $empleado->email = $request->input('email');
             $empleado->user_id = $user->id; // Asignar el ID del usuario creado
             $empleado->save();
+
             return redirect()->route('empleados.index')->with('success', 'Empleado creado exitosamente.');
         } catch (\Exception $e) {
 

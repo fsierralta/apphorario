@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -66,7 +65,7 @@ class Empleado extends Model
     /**
      * Empleados con este horario activo actualmente
      */
-    public function activeEmpleados($fechai,$fechaf)
+    public function activeEmpleados($fechai, $fechaf)
     {
 
         return $this->empleados()
@@ -78,15 +77,15 @@ class Empleado extends Model
 
             });
 
-
     }
-    public function users():BelongsToMany{
+
+    public function users(): BelongsToMany
+    {
         return $this->belongsToMany(User::class);
     }
+
     public function registroEntradas(): HasMany
     {
         return $this->hasMany(RegistroEntradas::class, 'empleado_id', 'id');
     }
-
-    
 }

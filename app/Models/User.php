@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Empleado;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -22,7 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
     ];
 
     /**
@@ -47,7 +47,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function empleados():BelongsToMany{
+
+    public function empleados(): BelongsToMany
+    {
         return $this->belongsToMany(Empleado::class);
 
     }
@@ -56,6 +58,7 @@ class User extends Authenticatable
     {
         return $this->role === $role;
     }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';

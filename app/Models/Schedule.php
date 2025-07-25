@@ -56,16 +56,17 @@ class Schedule extends Model
     {
         return $this->days()->where('is_working_day', false);
     }
+
     /**
      * Empleados asignados a este horario
      */
-
     public function horarioActivos()
     {
         return $this->belongsToMany(EmployeeSchedule::class);
-    }    
-    public function entradas():HasMany{
-        return $this->hasMany(RegistroEntradas::class);
     }
 
+    public function entradas(): HasMany
+    {
+        return $this->hasMany(RegistroEntradas::class);
+    }
 }

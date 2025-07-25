@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Models\Empleado;
 use App\Models\RegistroEntradas;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ActividadController extends Controller
 {
@@ -15,23 +15,21 @@ class ActividadController extends Controller
     public function index()
     {
         //
-          $empleados=Empleado::with(['schedules'=>function($q){
+        $empleados = Empleado::with(['schedules' => function ($q) {
             $q->with(['days'])
-            ->orderByPivot('start_date', 'desc');
+                ->orderByPivot('start_date', 'desc');
         },
-        "registroEntradas"=>function($q){
-            $q->where('registro_fecha', now()->toDateString());
-        }])
-        ->where("user_id","=",auth()->user()->id)
-        ->get();
+            'registroEntradas' => function ($q) {
+                $q->where('registro_fecha', now()->toDateString());
+            }])
+            ->where('user_id', '=', auth()->user()->id)
+            ->get();
 
-     info("empleado:",["data"=>$empleados,"user"=>auth()->user()]);
+        info('empleado:', ['data' => $empleados, 'user' => auth()->user()]);
 
-        return Inertia::render("movimiento/registro", [
+        return Inertia::render('movimiento/registro', [
             'empleados' => $empleados,
         ]);
-
-       
 
     }
 
@@ -49,19 +47,18 @@ class ActividadController extends Controller
     public function store(Empleado $empleado, $tipo)
     {
         //
-      
-        
-          try {
-            //code
-            $empleado= $empleado->with(['schedules' => function ($query)  {
-                                        $query->with('days')
-                                        ->orderByPivot('start_date', 'desc');
-                                        }
-                                       
-                                        ])->findOrFail($empleado->id);
-      //    return response()->json($empleado);
-        info('empleado', ['empleado' => $empleado]);
-            $registroEntrada=RegistroEntradas::firstOrCreate(
+
+        try {
+            // code
+            $empleado = $empleado->with(['schedules' => function ($query) {
+                $query->with('days')
+                    ->orderByPivot('start_date', 'desc');
+            },
+
+            ])->findOrFail($empleado->id);
+            //    return response()->json($empleado);
+            info('empleado', ['empleado' => $empleado]);
+            $registroEntrada = RegistroEntradas::firstOrCreate(
                 [
                     'empleado_id' => $empleado->id,
                     'registro_fecha' => now()->toDateString(),
@@ -74,19 +71,13 @@ class ActividadController extends Controller
                     'observacion' => null,
                 ]
             );
+
             return redirect()->route('actividad.index');
 
-
-
-
-
         } catch (\Throwable $th) {
-            //throw $th;
-            info('error',['error'=>$th->getMessage()]);
+            // throw $th;
+            info('error', ['error' => $th->getMessage()]);
         }
-     
-
-
 
     }
 

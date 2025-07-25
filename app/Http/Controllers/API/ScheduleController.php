@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Schedule;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ScheduleController extends Controller
@@ -18,7 +17,7 @@ class ScheduleController extends Controller
     public function show($id)
     {
         try {
-            $schedule = Schedule::with(['days' => function($query) {
+            $schedule = Schedule::with(['days' => function ($query) {
                 $query->orderBy('day_of_week');
             }])->findOrFail($id);
 
@@ -37,7 +36,7 @@ class ScheduleController extends Controller
             foreach ($schedule->days as $day) {
                 $formattedDays[] = [
                     'day' => $daysMap[$day->day_of_week] ?? $day->day_of_week,
-                    'is_working_day' => (bool)$day->is_working_day,
+                    'is_working_day' => (bool) $day->is_working_day,
                     'start_time' => $day->is_working_day ? $schedule->start_time : null,
                     'end_time' => $day->is_working_day ? $schedule->end_time : null,
                     'break_start' => $day->is_working_day && $schedule->has_break ? $schedule->break_start : null,
@@ -54,10 +53,11 @@ class ScheduleController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            Log::error('Error fetching schedule details: ' . $e->getMessage());
+            Log::error('Error fetching schedule details: '.$e->getMessage());
+
             return response()->json([
                 'message' => 'Error al cargar el horario',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 404);
         }
     }

@@ -15,17 +15,15 @@ class EmpleadoMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-       if(!auth()->user()->hasRole('empleado')) {
-         return redirect()->route('home');
+        if (! auth()->user()->hasRole('empleado')) {
+            return redirect()->route('home');
 
         }
-          return $next($request);
-         
-            // Aquí puedes agregar lógica específica para empleados si es necesario
-        }
-        // Si no es empleado, redirigir a la página de inicio o a una página de error
-       
-    
 
-    
+        return $next($request);
+
+        // Aquí puedes agregar lógica específica para empleados si es necesario
+    }
+    // Si no es empleado, redirigir a la página de inicio o a una página de error
+
 }

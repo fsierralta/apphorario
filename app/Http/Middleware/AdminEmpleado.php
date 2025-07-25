@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,20 +16,14 @@ class AdminEmpleado
      */
     public function handle(Request $request, Closure $next): Response
     {
-      
-        
-        if (!auth()->user()->hasRole('admin')) {
+
+        if (! auth()->user()->hasRole('admin')) {
             return Redirect::route('actividad.index');
         }
 
-        
         return $next($request);
         // Si no es admin, redirigir a la página de inicio o a una página de error
-      //  return Redirect::route('home')->with('error', 'No tienes permiso para acceder a esta sección.');
+        //  return Redirect::route('home')->with('error', 'No tienes permiso para acceder a esta sección.');
 
-       
-
-
-        
-}
+    }
 }

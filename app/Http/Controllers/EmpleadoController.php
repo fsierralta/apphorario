@@ -6,7 +6,6 @@ use App\Http\Requests\Empleado\EmpleadoRequest;
 use App\Models\Empleado;
 use App\Models\User;
 use App\service\EmpleadoService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -24,22 +23,19 @@ class EmpleadoController extends Controller
         'Estilista',
         'Peluquero',
         'Maquillador',
-        "Empleado",
+        'Empleado',
         'Vendedor',
         'Encargado',
-
 
     ];
 
     public function index()
     {
         //   const {auth}=usePage
-        
 
         try {
-        
+
             $users = User::query()->select('id', 'name')->get();
-            
 
             $empleados = Empleado::query()->select('id', 'nombre', 'apellido',
                 'cedula', 'telefono', 'direccion',
@@ -52,6 +48,7 @@ class EmpleadoController extends Controller
 
         } catch (\Exception $e) {
             info('empleados', ['user' => $e->getMessage()]);
+
             return redirect()->route('home')->with('error', 'Error al verificar permisos: '.$e->getMessage());
         }
 
@@ -100,15 +97,13 @@ class EmpleadoController extends Controller
         //
         try {
             $empleado = Empleado::findOrFail($id);
-         
-
 
             return Inertia::render('Empleado/edit', [
                 'empleado' => $empleado,
                 'cargos' => $this->cargos,
             ]);
         } catch (\Exception $e) {
-              info('ruta',['ruta'=>$e->getMessage()]);
+            info('ruta', ['ruta' => $e->getMessage()]);
 
             return redirect()->route('empleados.index')->with('error', 'Error al cargar el empleado: '.$e->getMessage());
         }
@@ -120,39 +115,40 @@ class EmpleadoController extends Controller
     public function update(EmpleadoRequest $request, string $id)
     {
         //
-        info('update', ['id' => $id, 'request' =>$request->input('nombre') ]);
-  try {
-        //code...
-          
-         if ($request->hasFile('foto_url')) {
+        info('update', ['id' => $id, 'request' => $request->input('nombre')]);
+        try {
+            // code...
+
+            if ($request->hasFile('foto_url')) {
                 $path = $request->file('foto_url')->store('empleados', 'public');
 
             } else {
-                $path =null;
-            }   
-             info('update',['id'=>$id,'r'=>$request->input("nombre"),
-                         'path'=>$path]);
-         
-             $empleado=Empleado::find((int) $id);
-            $empleado->nombre = $request->input("nombre");
-            $empleado->apellido = $request->input("apellido");
-            $empleado->cedula = $request->input("cedula");
-             $empleado->email = $request->input('email');
+                $path = null;
+            }
+            info('update', ['id' => $id, 'r' => $request->input('nombre'),
+                'path' => $path]);
+
+            $empleado = Empleado::find((int) $id);
+            $empleado->nombre = $request->input('nombre');
+            $empleado->apellido = $request->input('apellido');
+            $empleado->cedula = $request->input('cedula');
+            $empleado->email = $request->input('email');
             $empleado->telefono = $request->input('telefono');
             $empleado->direccion = $request->input('direccion');
-            $empleado->foto_url = $path ? "storage/".$path:$empleado->input('foto_url');
+            $empleado->foto_url = $path ? 'storage/'.$path : $empleado->input('foto_url');
             $empleado->cargo = $request->input('cargo');
-            $empleado->save(); 
+            $empleado->save();
+
             return redirect()->route('empleados.index');
 
-       } catch (\Throwable $th) {
-        //throw $th;
-        info('error',['error'=>$th->getMessage()]);
-        return back()->with('errors',$th->getMessage());
+        } catch (\Throwable $th) {
+            // throw $th;
+            info('error', ['error' => $th->getMessage()]);
 
+            return back()->with('errors', $th->getMessage());
 
+        }
     }
-}
 
     /**
      * Remove the specified resource from storage.

@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
+
 class GenerateLicenseKey extends Command
 {
     /**
@@ -28,23 +29,23 @@ class GenerateLicenseKey extends Command
     public function handle()
     {
         //
-        $licencia=[
-            'licencia'=>'ControlHorario',
-            'fecha_expiracion'=>Carbon::parse("2025-07-22")->addDays(365)->toDateString(),
-            'activo'=>true,
+        $licencia = [
+            'licencia' => 'ControlHorario',
+            'fecha_expiracion' => Carbon::parse('2025-07-22')->addDays(365)->toDateString(),
+            'activo' => true,
         ];
         Log::info($licencia);
 
-        $encriptada=$this->encryptLicencia($licencia);
+        $encriptada = $this->encryptLicencia($licencia);
 
-         $this->info('encriptada');
-         $this->line("LICENCIA_APP=\{$encriptada}");
-
+        $this->info('encriptada');
+        $this->line("LICENCIA_APP=\{$encriptada}");
 
     }
 
-    public function encryptLicencia($licencia){
-        
+    public function encryptLicencia($licencia)
+    {
+
         return Crypt::encryptString(json_encode($licencia));
     }
 }
