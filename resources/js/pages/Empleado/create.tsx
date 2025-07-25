@@ -1,8 +1,14 @@
 import { useForm, Head, Link, usePage } from '@inertiajs/react';
+import toastMessage from '@/helper/toastMessage';
 import AppLayout from '@/layouts/app-layout';
+import{ToastContainer} from 'react-toastify';
+import { useEffect } from 'react';
+import { FlashMessage } from '@/types';
+
+
 
 const Create = () => {
-  const { cargos } = usePage<{ cargos: string[] }>().props;
+  const { cargos,flash } = usePage<{ cargos: string[] , flash: FlashMessage }>().props;
   const { data, setData, post, processing, errors, reset } = useForm({
     nombre: '',
     apellido: '',
@@ -16,15 +22,30 @@ const Create = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post('/empleados', {
+    post(route('empleados.store'), {
       forceFormData: true,
       onSuccess: () => reset('foto_url'),
     });
   };
+  useEffect(() => {
+    if(flash.success){
+      toastMessage(flash.success, 'success');
+    }
+    if(flash.error){
+      toastMessage(flash.error, 'error');
+    }
+    
+    if(flash.message){
+      toastMessage(flash.message, 'info');
+    }
+   
+   
+  }, [flash]);
 
   return (
     <AppLayout>
       <Head title="Crear Empleado" />
+      <ToastContainer />
       <div className="max-w-full mt-8 bg-white p-6 rounded shadow text-black mx-[20%] " >
         <div className="mb-4">
           <Link

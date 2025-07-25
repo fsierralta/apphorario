@@ -4,6 +4,7 @@ import type { Config } from 'ziggy-js';
 
 export interface PageProps<T = Record<string, unknown>> {
     auth: Auth;
+    flash: FlashMessage;
     [key: string]: any;
 }
 
@@ -47,11 +48,19 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface FlashMessage {
+    success?: string;
+    error?: string;
+    message?: string;
+}
+
 export interface PaginationLink {
   url: string | null;
   label: string;
   active: boolean;
 }
+
 export interface Paginated<T> {
   map(arg0: (empleado: EmpleadoProps) => JSX.Element): import("react").ReactNode;
   current_page: number;
@@ -127,3 +136,8 @@ export interface EmpleadoHorarioDaysPaginated {
   total: number;
   // Otros campos de paginación si los necesitas
 }
+
+export type SelectOption = {
+    label: string;
+    value: any;
+};

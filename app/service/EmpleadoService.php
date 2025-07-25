@@ -41,7 +41,7 @@ class EmpleadoService
                 );
                 
 
-            $empleado = new Empleado;
+            $empleado = new Empleado();
             $empleado->nombre = $request->input("nombre");
             $empleado->apellido = $request->input("apellido")  ;
             $empleado->cedula = $request->input('cedula');
