@@ -4,7 +4,14 @@ Una breve descripción de tu proyecto.
 
 ## Acerca del Proyecto
 
-Aquí puedes escribir una descripción más detallada sobre tu aplicación. Explica el problema que resuelve y las características principales.
+Este proyecto es un sistema de gestión de horarios para empleados. Permite a los administradores crear, asignar y gestionar los horarios de trabajo de los empleados de manera eficiente.
+
+Las características clave incluyen:
+- **Gestión de Empleados:** Alta, baja y modificación de datos de empleados.
+- **Creación de Horarios:** Definir diferentes turnos y horarios de trabajo (por ejemplo, mañana, tarde, noche).
+- **Asignación de Horarios:** Asignar horarios específicos a los empleados con fechas de inicio y fin.
+- **Historial de Horarios:** Mantener un registro de los horarios asignados a cada empleado, con la capacidad de activar o desactivar asignaciones.
+- **Interfaz Intuitiva:** Una interfaz de usuario amigable para facilitar la gestión de los horarios.
 
 ### Tecnologías Utilizadas
 
