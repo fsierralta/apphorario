@@ -22,7 +22,7 @@ class EmployeeScheduleController extends Controller
 
         try {
             // code...
-            info('horario', ['r' => $request->toArray()]);
+           // info('horario', ['r' => $request->toArray()]);
             $validated = $request->validate([
                 'empleado_id' => 'required|exists:empleados,id',
                 'schedule_id' => 'required|exists:schedules,id',
@@ -39,6 +39,8 @@ class EmployeeScheduleController extends Controller
             if ($request->input('deactivate_others')) {
                 if ($empleado->schedules()->where('schedule_id', '!=', $validated['schedule_id'])->exists()) {
                     $schedulesToDeactivate = $empleado->schedules()->where('schedule_id', '!=', $validated['schedule_id'])->get();
+                    
+
                     foreach ($schedulesToDeactivate as $schedule) {
                         $empleado->schedules()->updateExistingPivot($schedule->id, ['is_active' => false]);
                     }
