@@ -163,7 +163,7 @@ class EmployeeScheduleController extends Controller
                $request->merge(['page' => 1]);
                
          }
-         info( 'page', ['page' => $request->input('page')]);   
+       //  info( 'page', ['page' => $request->input('page')]);   
        
 
         
@@ -195,7 +195,7 @@ class EmployeeScheduleController extends Controller
     public function showEmpleadoHorarioRegister(Request $request,Empleado $empleado, $tipo)
     {
         // Obtener el horario del empleado
-          info('empleado', ['empleado' => $empleado, "PAGE" => $request->input('page')]);
+         // info('empleado', ['empleado' => $empleado, "PAGE" => $request->input('page')]);
 
         try {
             // code
