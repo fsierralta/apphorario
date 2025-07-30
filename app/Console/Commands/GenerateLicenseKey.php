@@ -14,7 +14,7 @@ class GenerateLicenseKey extends Command
      *
      * @var string
      */
-    protected $signature = 'app:generate-license-key';
+    protected $signature = 'app:generate-license-key {fecha} {days}';
 
     /**
      * The console command description.
@@ -26,26 +26,49 @@ class GenerateLicenseKey extends Command
     /**
      * Execute the console command.
      */
+    private $startDate;
+    private $endDate;
     public function handle()
     {
         //
-        $licencia = [
-            'licencia' => 'ControlHorario',
-            'fecha_expiracion' => Carbon::parse('2025-07-22')->addDays(365)->toDateString(),
-            'activo' => true,
-        ];
-        Log::info($licencia);
+        $fecha1=$this->argument('fecha');
+        $fecha2=intval($this->argument('days'));
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha1)) {
+            $this->error('La fecha debe tener el formato YYYY-MM-DD');
+            return 1;
+        }
+        
+       $this->rangeDate($fecha1,$fecha2);
+       
+       
+    }
 
-        $encriptada = $this->encryptLicencia($licencia);
+    public function encryptLicencia($licencia,$endDate)
+
+    {
+      
+
+        $encriptada = Crypt::encryptString(json_encode($licencia));
 
         $this->info('encriptada');
         $this->line("LICENCIA_APP=\{$encriptada}");
 
+        return $encriptada;
     }
 
-    public function encryptLicencia($licencia)
-    {
+    public function rangeDate($startDate, $days=365){
+      
+         
+        $this->startDate = Carbon::parse($startDate)->toDateString();
+        $this->endDate = Carbon::parse($startDate)->addDays($days)->toDateString();
+        Log::info(["startDate"=>$startDate,"endDate"=>$endDate]);
 
-        return Crypt::encryptString(json_encode($licencia));
+        $licencia = [
+            'licencia' => 'ControlHorario',
+            'fecha_expiracion' => $this->endDate,
+            'activo' => true,
+        ];
+          
+        $this->encryptLicencia($licencia,$endDate);
     }
 }

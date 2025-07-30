@@ -37,8 +37,7 @@ export default function ScheduleForm({ schedule, onClose }: Props) {
             is_working_day: i < 5 // Por defecto L-V laborables
         }))
     });
-    console.log(usePage().props)
-
+  
     const handleSubmit:FormEventHandler = (e) => {
         e.preventDefault();
         

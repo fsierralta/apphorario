@@ -79,17 +79,5 @@ export default function SchedulesIndex() {
 }
 
 // Helpers para días
-const dayNameInitials:Record<1 | 2 | 3 | 4 | 5 | 6 | 7, string> = {
-    1: 'L',
-    2: 'M',
-    3: 'X',
-    4: 'J',
-    5: 'V',
-    6: 'S',
-    7: 'D'
-};
 
-const getDayName = (day:number) => {
-    const names = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-    return names[day - 1];
-};
+

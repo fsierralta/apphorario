@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-
+import { usePage } from '@inertiajs/react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
@@ -9,8 +9,18 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+interface PageProps {
+    publicExpira?: string|null; // Fecha de expiración de la licencia
+    [key: string]: unknown;
+}
 
 export default function Dashboard() {
+    const {publicExpira } = usePage<PageProps>().props;
+   
+
+    // Aquí puedes agregar lógica para obtener estadísticas o datos del usuario
+
+    console.log('Fecha de expiración:', publicExpira);
     return (
         
             <AppLayout breadcrumbs={breadcrumbs}>
@@ -59,6 +69,11 @@ export default function Dashboard() {
                         <p className="text-xs text-amber-900 font-semibold">
                             &copy; {new Date().getFullYear()} Freddy Sierralta. Todos los derechos reservados.
                         </p>
+                       
+                        <p className="text-xs text-amber-900 font-semibold">
+                            Fecha de expiración de la licencia: {publicExpira ?  publicExpira : 'No disponible'}
+                        </p>
+                      
                     </footer>
                 </div>
             </AppLayout>

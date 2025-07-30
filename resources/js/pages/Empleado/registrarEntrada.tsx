@@ -1,4 +1,4 @@
-import { usePage,router,Link} from '@inertiajs/react';
+import { usePage,router,Head} from '@inertiajs/react';
 
 import AppLayout from '@/layouts/app-layout';
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Pagination from '@/components/pagination/pagination';
 import { PaginationLink } from '@/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import toastMessage from '@/helper/toastMessage';
+import { ToastContainer } from 'react-toastify';
 // Declaración para los registros de entrada recibidos desde el backend
 interface arrayRegistroEntradas {
     id: number;
@@ -38,12 +40,20 @@ interface PropsData{
 
 interface PageProps {
     empleados: PropsData;
+    flash: {
+        message: string;
+        error: string;
+        success: string;
+        info: string;
+        
+       
+    };
     [key: string]: unknown;
 }
 
 
 export default function TimeTrackingIndex() {
-    const { empleados } = usePage<PageProps>().props;
+    const { empleados,flash } = usePage<PageProps>().props;
     console.log(empleados  )
     const [search,setSearch] = useState('');
 
@@ -82,7 +92,9 @@ export default function TimeTrackingIndex() {
         console.log(`Registrando: ${actionType}- ${id}`);
         router.post(route('showformhorario.register', { empleado: id, tipo: actionType }), {
           empleado_id: id,
-            tipo: actionType
+            tipo: actionType,
+            page: empleados.links.find(link => link.active)?.label, // Obtiene la página actual
+            
         }, {
             onSuccess: () => {
                 // Aquí puedes manejar la respuesta después de registrar la acción
@@ -98,8 +110,25 @@ export default function TimeTrackingIndex() {
 
 
     };
-return (
+
+    useEffect(() => {
+        if (flash?.message) {
+            toastMessage(flash?.message, "info");
+        }
+        if (flash?.error) {
+            toastMessage(flash?.error, "error");
+        }
+        if (flash?.success) {
+            toastMessage(flash?.success, "success");
+        }
+        
+       
+    }, [flash]);
+
+    return (
     <AppLayout>
+        <Head title="Registro de Asistencia" />
+        <ToastContainer />
         <div className="min-h-screen bg-gradient-to-br from-amber-100 via-amber-300 to-amber-500 py-8 px-4">
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-3xl font-extrabold text-amber-900 mb-8 text-center">Registro de Asistencia</h1>

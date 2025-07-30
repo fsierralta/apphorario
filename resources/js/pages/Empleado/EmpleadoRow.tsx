@@ -39,19 +39,19 @@ const EmpleadoRow: React.FC<Props> = ({ empleado }) => (
       )}
     </td>
     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border border-gray-300">{empleado.cargo}</td>
-    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border border-gray-300">
+    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border border-gray-300 gap-4 flex justify-center items-center">
       <Link
         href={`/empleados/${empleado.id}/edit`}
-        className="text-blue-600 hover:underline"
+       
       >
-        Editar
+      <span className='text-black hover:underline bg-yellow-300 px-2 py-1 rounded'> Editar</span>  
       </Link>
       <Link
         href={`/empleados/${empleado.id}`}
         method="delete"
-        className="text-red-600 hover:underline ml-4"
+        
       >
-        Eliminar
+       <span className='text-black hover:underline bg-red-600 px-2 py-1 rounded'> Eliminar</span> 
       </Link>
     </td>
   </tr>

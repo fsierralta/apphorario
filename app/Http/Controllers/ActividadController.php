@@ -46,37 +46,36 @@ class ActividadController extends Controller
      */
     public function store(Empleado $empleado, $tipo)
     {
-        //
+        // 1. Autorización: Verificar que el empleado corresponde al usuario autenticado.
+        if ($empleado->user_id !== auth()->id()) {
+            abort(403, 'No autorizado para esta acción.');
+        }
 
         try {
-            // code
-            $empleado = $empleado->with(['schedules' => function ($query) {
-                $query->with('days')
-                    ->orderByPivot('start_date', 'desc');
-            },
+            // 2. Obtener el horario activo del empleado de forma segura.
+            $activeSchedule = $empleado->activeSchedule()->first();
 
-            ])->findOrFail($empleado->id);
-            //    return response()->json($empleado);
-            info('empleado', ['empleado' => $empleado]);
-            $registroEntrada = RegistroEntradas::firstOrCreate(
+            if (! $activeSchedule) {
+                return back()->with('error', 'El empleado no tiene un horario activo asignado.');
+            }
+
+            // 3. Crear el registro de entrada/salida. firstOrCreate previene duplicados.
+            RegistroEntradas::firstOrCreate(
                 [
                     'empleado_id' => $empleado->id,
                     'registro_fecha' => now()->toDateString(),
                     'tipo' => $tipo,
                 ],
                 [
-                    'schedule_id' => $empleado->schedules->first()->id ?? null,
+                    'schedule_id' => $activeSchedule->id,
                     'registro_hora' => now(),
-                    'evento' => 1, // o el número de evento correspondiente
-                    'observacion' => null,
                 ]
             );
 
-            return redirect()->route('actividad.index');
-
+            return redirect()->route('actividad.index')->with('success', 'Actividad registrada correctamente.');
         } catch (\Throwable $th) {
-            // throw $th;
             info('error', ['error' => $th->getMessage()]);
+            return back()->with('error', 'Ocurrió un error al registrar la actividad.');
         }
 
     }

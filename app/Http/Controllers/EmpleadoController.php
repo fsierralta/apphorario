@@ -6,8 +6,8 @@ use App\Http\Requests\Empleado\EmpleadoRequest;
 use App\Models\Empleado;
 use App\Models\User;
 use App\service\EmpleadoService;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class EmpleadoController extends Controller
 {
@@ -114,39 +114,29 @@ class EmpleadoController extends Controller
      */
     public function update(EmpleadoRequest $request, string $id)
     {
-        //
         info('update', ['id' => $id, 'request' => $request->input('nombre')]);
         try {
-            // code...
+            $empleado = Empleado::findOrFail($id);
+
+            $data = $request->validated();
 
             if ($request->hasFile('foto_url')) {
+                // Opcional: Aquí podrías agregar lógica para eliminar la foto anterior.
+                 if ($empleado->foto_url) {
+                    Storage::disk('public')
+                     ->delete(str_replace('storage/', '', $empleado->foto_url));
+                 }
                 $path = $request->file('foto_url')->store('empleados', 'public');
-
-            } else {
-                $path = null;
+                $data['foto_url'] = 'storage/'.$path;
+            }else {
+                $data['foto_url'] = $empleado->foto_url; // Mantener la foto actual si no se subió una nueva
             }
-            info('update', ['id' => $id, 'r' => $request->input('nombre'),
-                'path' => $path]);
+           $empleado->update($data);
 
-            $empleado = Empleado::find((int) $id);
-            $empleado->nombre = $request->input('nombre');
-            $empleado->apellido = $request->input('apellido');
-            $empleado->cedula = $request->input('cedula');
-            $empleado->email = $request->input('email');
-            $empleado->telefono = $request->input('telefono');
-            $empleado->direccion = $request->input('direccion');
-            $empleado->foto_url = $path ? 'storage/'.$path : $empleado->input('foto_url');
-            $empleado->cargo = $request->input('cargo');
-            $empleado->save();
-
-            return redirect()->route('empleados.index');
-
+            return redirect()->route('empleados.index')->with('success', 'Empleado actualizado exitosamente.');
         } catch (\Throwable $th) {
-            // throw $th;
             info('error', ['error' => $th->getMessage()]);
-
-            return back()->with('errors', $th->getMessage());
-
+            return back()->with('error', 'Error al actualizar el empleado: '.$th->getMessage());
         }
     }
 

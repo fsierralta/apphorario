@@ -158,8 +158,15 @@ class EmployeeScheduleController extends Controller
 
     public function showEmpleadoHorario(Request $request)
     {
-        $search = $request->input('search');
+       $search = $request->has('search') ? $request->input('search'):"";
+        if(!$request->has('page')){
+               $request->merge(['page' => 1]);
+               
+         }
+         info( 'page', ['page' => $request->input('page')]);   
+       
 
+        
         $empleados = Empleado::with(['schedules' => function ($q) {
             $q->with(['days'])
                 ->orderByPivot('start_date', 'desc');
@@ -185,10 +192,10 @@ class EmployeeScheduleController extends Controller
 
     }
 
-    public function showEmpleadoHorarioRegister(Empleado $empleado, $tipo)
+    public function showEmpleadoHorarioRegister(Request $request,Empleado $empleado, $tipo)
     {
         // Obtener el horario del empleado
-        //  info('empleado', ['empleado' => $empleado]);
+          info('empleado', ['empleado' => $empleado, "PAGE" => $request->input('page')]);
 
         try {
             // code
@@ -212,10 +219,9 @@ class EmployeeScheduleController extends Controller
                     'observacion' => null,
                 ]
             );
-            info('registroEntrada', ['registroEntrada' => $registroEntrada]);
 
-            return redirect()->route('showformhorario.show');
-            // return back();
+            return redirect()->route('showformhorario.show', ['page' => $request->input('page')])
+                ->with('success', "Registro exitoso: {$empleado->nombre} {$empleado->apellido}");
 
         } catch (\Throwable $th) {
             // throw $th;

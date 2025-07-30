@@ -43,10 +43,10 @@ class Empleado extends Model
     {
         return $this->schedules()
             ->wherePivot('is_active', true)
-            ->where('start_date', '<=', now())
+            ->wherePivot('start_date', '<=', now())
             ->where(function ($query) {
-                $query->whereNull('end_date')
-                    ->orWhere('end_date', '>=', now());
+                $query->wherePivotNull('end_date')
+                    ->orWherePivot('end_date', '>=', now());
 
             });
     }
