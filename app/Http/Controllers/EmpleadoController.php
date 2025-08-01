@@ -77,7 +77,7 @@ class EmpleadoController extends Controller
      */
     public function store(EmpleadoRequest $request, EmpleadoService $empleadoService)
     {
-        return $empleadoService->store($request, new Empleado);
+        return $empleadoService->store($request);
 
     }
 
