@@ -25,7 +25,7 @@ class ActividadController extends Controller
             ->where('user_id', '=', auth()->user()->id)
             ->get();
 
-        info('empleado:', ['data' => $empleados, 'user' => auth()->user()]);
+     //   info('empleado:', ['data' => $empleados, 'user' => auth()->user()]);
 
         return Inertia::render('movimiento/registro', [
             'empleados' => $empleados,
@@ -50,6 +50,8 @@ class ActividadController extends Controller
         if ($empleado->user_id !== auth()->id()) {
             abort(403, 'No autorizado para esta acción.');
         }
+      //  info('empleado:', ['data' => $empleado, 'user' => auth()->user()]);
+
 
         try {
             // 2. Obtener el horario activo del empleado de forma segura.

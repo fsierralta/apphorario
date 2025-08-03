@@ -292,10 +292,10 @@ class EmployeeScheduleController extends Controller
         try {
             // code...
             $empleadosQuery = Empleado::with([
-                'schedules' => function ($q) use ($fechai, $fechaf) {
-                    $q->with(['days', 'entradas' => function ($query) use ($fechai, $fechaf) {
+                'schedules' => function ($q) use ($fechai, $fechaf,$tipo) {
+                    $q->with(['days', 'entradas' => function ($query) use ($fechai, $fechaf,$tipo) {
                         $query->whereBetween('registro_fecha', [$fechai, $fechaf]);
-                        if ($tipo !== '') {
+                        if (isset($tipo) !== '') {
                             $query->where('tipo', '=', $tipo);
                         }
                     },
