@@ -42,9 +42,9 @@ class Empleado extends Model
     public function activeSchedule()
     {
         return $this->schedules()
-            ->wherePivot('is_active', true)
-            ->wherePivot('start_date', '<=', now())
-            ->wherePivot('end_date', '>=', now());
+            ->wherePivot('is_active', true);
+            // ->wherePivot('start_date', '<=', now())
+            // ->wherePivot('end_date', '>=', now());
 
            
     }

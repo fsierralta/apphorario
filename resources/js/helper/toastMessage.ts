@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-export default  function toastMessage(message: string, type: 'success' | 'error' | 'warning' | 'info' = 'success') {
+export default  function toastMessage(message: string, type: 'success' | 'error' | 'warning' | 'info'| 'message') {
     switch (type) {
         case 'success':
             toast.success(message);
@@ -12,8 +12,8 @@ export default  function toastMessage(message: string, type: 'success' | 'error'
             toast.warning(message);
             break;
         case 'info':
+        case 'message':
             toast.info(message);
             break;
     }
 }
-

@@ -3,7 +3,9 @@ import AppLayout from '@/layouts/auth/auth-simple-layout';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-
+import {  useEffect } from 'react';
+import {ToastContainer} from 'react-toastify';
+import toastMessage from '@/helper/toastMessage';
 // Declaración para los registros de entrada recibidos desde el backend
 interface arrayRegistroEntradas {
     id: number;
@@ -27,17 +29,23 @@ interface Empleado {
     registro_entradas:arrayRegistroEntradas[];
     [key: string]: unknown;
 }
+interface FlashProps {
+    message?: string;
+    error?: string;
+    success?: string;
+}
 
 interface PageProps {
     empleados: Empleado[];
     [key: string]: unknown;
+    flash: FlashProps;
 }
 
 
 
 
 export default function TimeTrackingIndex() {
-    const { empleados } = usePage<PageProps>().props;
+    const { empleados,flash } = usePage<PageProps>().props;
     
     console.log(empleados)
     const actions = [
@@ -83,6 +91,23 @@ export default function TimeTrackingIndex() {
 
     };
 
+    useEffect(() => {
+
+        const dataMessage= Object.entries(flash) ;
+        dataMessage.forEach(([key, value]) => {
+            if (value) {
+                toastMessage(value, key as 'success' | 'error' | 'warning' | 'info' | 'message');
+
+       
+        }
+    });
+
+
+       
+    }, [flash]);
+
+
+
     return (
         <AppLayout
         title='Registro de Asistencia'
@@ -90,6 +115,7 @@ export default function TimeTrackingIndex() {
      
         
         >
+         <ToastContainer/>
               <div className='justify-between items-center mx-auto'>
                 <Link
                   href={route('logout')}
