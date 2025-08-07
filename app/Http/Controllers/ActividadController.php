@@ -74,9 +74,9 @@ class ActividadController extends Controller
                 ]
             );
 
-            return redirect()->route('actividad.index')->with("success", "Registrada su:"."".
-                                                 strtoupper($tipo)." a las :"
-                                                 .now()->format('H:i:s') . " ");
+            return redirect()->route('actividad.index')->with("success", "Registrada su:".
+                                                 strtoupper($tipo)." a las:"
+                                                 .now()->format('H:i:s') );
         } catch (\Throwable $th) {
             info('error', ['error' => $th->getMessage()]);
             return back()->with('error', 'Ocurrió un error al registrar la actividad.'. ' ' . $th->getMessage());
