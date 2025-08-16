@@ -1,8 +1,8 @@
 // resources/js/Pages/Reports/AttendanceReport.tsx
-import  { useState  } from 'react';
+import  { useState ,Suspense } from 'react';
 import { Head,  router, usePage } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import { Button, Table, Select, DatePicker, Space, Card, Row, Col, Typography, Modal } from 'antd';
+import { Button, Table, Select, DatePicker, Space, Card, Row, Col, Typography} from 'antd';
 import { DownloadOutlined, SearchOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -13,6 +13,7 @@ import { Employee } from '@/types/employee';
 
 import AppLayout from "@/layouts/app-layout";
 import { toast,ToastContainer } from 'react-toastify';
+import React from 'react';
 
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
@@ -48,6 +49,7 @@ interface ScheduleDetails {
     break_end?: string;
   }>;
 }
+const ScheduleDetails = React.lazy(() => import('@/pages/Reports/ScheduleDetails'));
 
 const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employees }) => {
   const { filters: initialFilters } = usePage().props;
@@ -61,7 +63,7 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
     },
     ...(initialFilters || {})
 });
- console.log(attendance)
+  // Estado para manejar la carga y los detalles del horario
   const [loading, setLoading] = useState(false);
   const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
   const [scheduleDetails, setScheduleDetails] = useState<ScheduleDetails | null>(null);
@@ -158,13 +160,13 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
       title: 'Hora Entrada',
       dataIndex: 'hora_entrada',
       key: 'hora_entrada',
-      render: (text) => text || '-',
+      render: (text) =><span className="text-center text-bold text-bluered-500">{ text || '-'}</span>,
     },
     {
       title: 'Hora Salida',
       dataIndex: 'hora_salida',
       key: 'hora_salida',
-      render: (text) => text || '-',
+      render: (text) =><span className="text-center text-bold text-red-500">{ text || '-'}</span>,
     },
     {
       title: 'Inicio Descanso',
@@ -176,7 +178,7 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
       title: 'Fin Descanso',
       dataIndex: 'fin_descanso',
       key: 'fin_descanso',
-      render: (text) => text || '-',
+      render: (text) =>text || '-',
     },
     {
       title: 'Horario',
@@ -297,82 +299,17 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
         </div>
       </div>
       {/* Modal de Detalles de Horario */}
-      <Modal
-        title={`Detalles del Horario ${scheduleDetails?.name || ''}`}
-        open={scheduleModalVisible}
-        onCancel={() => setScheduleModalVisible(false)}
-        footer={[
-          <Button key="close" onClick={() => setScheduleModalVisible(false)}>
-            Cerrar
-          </Button>,
-        ]}
-        width={800}
-      >
-        {scheduleLoading ? (
-          <div className="text-center p-4">Cargando detalles del horario...</div>
-        ) : scheduleDetails ? (
-          <div>
-            <div className="mb-4">
-              <p><strong>Horario:</strong> {scheduleDetails.start_time} - {scheduleDetails.end_time}</p>
-            </div>
-            <Table 
-              dataSource={scheduleDetails.days}
-              rowKey="day"
-              pagination={false}
-              columns={[
-                {
-                  title: 'Día',
-                  dataIndex: 'day',
-                  key: 'day',
-                  render: (day) => {
-                    const daysMap: Record<string, string> = {
-                      monday: 'Lunes',
-                      tuesday: 'Martes',
-                      wednesday: 'Miércoles',
-                      thursday: 'Jueves',
-                      friday: 'Viernes',
-                      saturday: 'Sábado',
-                      sunday: 'Domingo'
-                    };
-                    return daysMap[day] || day;
-                  }
-                },
-                {
-                  title: 'Día Laboral',
-                  dataIndex: 'is_working_day',
-                  key: 'is_working_day',
-                  render: (isWorking) => isWorking ? 'Sí' : 'No'
-                },
-                {
-                  title: 'Hora Inicio',
-                  dataIndex: 'start_time',
-                  key: 'start_time',
-                  render: (time) => time || '-'
-                },
-                {
-                  title: 'Hora Fin',
-                  dataIndex: 'end_time',
-                  key: 'end_time',
-                  render: (time) => time || '-'
-                },
-                {
-                  title: 'Descanso',
-                  key: 'break',
-                  render: (_, record) => 
-                    record.break_start && record.break_end 
-                      ? `${record.break_start} - ${record.break_end}` 
-                      : 'Sin descanso'
-                }
-              ]}
-            />
-          </div>
-        ) : (
-          <div>No se encontraron detalles del horario</div>
-        )}
-      </Modal>
-      </AppLayout>
+      <Suspense fallback={<div>Cargando detalles del horario...</div>}>
+        <ScheduleDetails
+          scheduleModalVisible={scheduleModalVisible}
+          setScheduleModalVisible={setScheduleModalVisible}
+          scheduleDetails={scheduleDetails}
+          scheduleLoading={scheduleLoading}
+        />    
+      </Suspense>
+     </AppLayout>
     </>
   );
 };
 
-export default AttendanceReport;
+export default AttendanceReport
