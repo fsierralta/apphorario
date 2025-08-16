@@ -19,5 +19,19 @@ export interface Schedule {
   created_at?: string;
   updated_at?: string;
 }
+ export interface ScheduleDetails {
+  id: number;
+  name: string;
+  start_time: string;
+  end_time: string;
+  days: Array<{
+    day: string;
+    is_working_day: boolean;
+    start_time: string;
+    end_time: string;
+    break_start?: string;
+    break_end?: string;
+  }>
+}
 
 export type ScheduleFormData = Omit<Schedule, 'id' | 'created_at' | 'updated_at'>;

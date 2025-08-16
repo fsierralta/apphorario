@@ -1,21 +1,9 @@
  
  import React from 'react'
  import { Modal, Button, Table } from 'antd';
+ import type { ScheduleDetails } from '@/types/schedule'; // Asegúrate de que este tipo esté definido correctamente
  
- interface ScheduleDetails {
-  id: number;
-  name: string;
-  start_time: string;
-  end_time: string;
-  days: Array<{
-    day: string;
-    is_working_day: boolean;
-    start_time: string;
-    end_time: string;
-    break_start?: string;
-    break_end?: string;
-  }>
-}
+
  interface ScheduleDetailsProps {
   scheduleModalVisible: boolean;
   setScheduleModalVisible: (visible: boolean) => void;

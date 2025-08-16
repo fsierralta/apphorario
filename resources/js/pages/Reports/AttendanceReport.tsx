@@ -8,8 +8,9 @@ import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { AttendanceFilters } from '@/types/attendance';
-import { AttendanceRecord } from '@/types/attendance';
-import { Employee } from '@/types/employee';
+import type { AttendanceRecord } from '@/types/attendance';
+import type { Employee } from '@/types/employee';
+import type { ScheduleDetails as ScheduleDetailsType } from '@/types/schedule';
 
 import AppLayout from "@/layouts/app-layout";
 import { toast,ToastContainer } from 'react-toastify';
@@ -35,20 +36,6 @@ interface AttendanceReportProps extends PageProps {
   employees: Employee[];
 }
 
-interface ScheduleDetails {
-  id: number;
-  name: string;
-  start_time: string;
-  end_time: string;
-  days: Array<{
-    day: string;
-    is_working_day: boolean;
-    start_time: string;
-    end_time: string;
-    break_start?: string;
-    break_end?: string;
-  }>;
-}
 const ScheduleDetails = React.lazy(() => import('@/pages/Reports/ScheduleDetails'));
 
 const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employees }) => {
@@ -66,7 +53,7 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
   // Estado para manejar la carga y los detalles del horario
   const [loading, setLoading] = useState(false);
   const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
-  const [scheduleDetails, setScheduleDetails] = useState<ScheduleDetails | null>(null);
+  const [scheduleDetails, setScheduleDetails] = useState<ScheduleDetailsType | null>(null);
   const [scheduleLoading, setScheduleLoading] = useState(false);
 
   const fetchScheduleDetails = async (scheduleId: number) => {
@@ -160,7 +147,7 @@ const AttendanceReport: React.FC<AttendanceReportProps> = ({ attendance, employe
       title: 'Hora Entrada',
       dataIndex: 'hora_entrada',
       key: 'hora_entrada',
-      render: (text) =><span className="text-center text-bold text-bluered-500">{ text || '-'}</span>,
+      render: (text) =><span className="text-center text-bold text-blue-500">{ text || '-'}</span>,
     },
     {
       title: 'Hora Salida',
