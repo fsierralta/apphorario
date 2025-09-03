@@ -73,6 +73,13 @@ export default function Dashboard() {
                         <p className="text-xs text-amber-900 font-semibold">
                             Fecha de expiración de la licencia: {publicExpira ?  publicExpira : 'No disponible'}
                         </p>
+                         <p className="text-xs text-amber-900 font-semibold">
+                            Fecha de expiración de la licencia: {publicExpira ?  publicExpira : 'No disponible'}
+                        </p>
+                       <p className="text-xs text-amber-900 font-semibold">
+                            Fecha de expiración de la licencia: {publicExpira ?  publicExpira : 'No disponible'}
+                        </p>
+                      
                       
                     </footer>
                 </div>
