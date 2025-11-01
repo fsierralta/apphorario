@@ -46,6 +46,12 @@ const mainNavItems: NavItem[] = [
         title:'Lista de Asistencia',  
         href:route('reports.attendance'),
         icon:UserPen  
+    },
+    {
+        title:'Citas SPAD',  
+        href:route('spad.indexcita'),
+        icon:BookOpen  
+
     }
 
 

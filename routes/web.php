@@ -25,3 +25,4 @@ require __DIR__.'/empleadoSchedule.php';
 require __DIR__.'/actividad.php';
 require __DIR__.'/qr.php';
 require __DIR__.'/asistencia.php';
+require __DIR__.'/spad.php';
