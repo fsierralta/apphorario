@@ -86,4 +86,13 @@ class Empleado extends Model
     {
         return $this->hasMany(RegistroEntradas::class, 'empleado_id', 'id');
     }
+    public function citas(): HasMany
+    {
+        return $this->hasMany(Cita::class, 'empleado_id', 'id');
+    }
+    public function citasCliente(): HasMany
+    {
+        return $this->hasMany(Cita::class, 'cliente_id', 'id');
+    }
+    
 }

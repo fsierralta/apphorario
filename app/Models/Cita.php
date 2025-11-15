@@ -18,5 +18,14 @@ class Cita extends Model
         'estado',
      ];  
   
+     public function empleado()
+     {
+        return $this->belongsTo(Empleado::class);
+     }  
+     public function cliente()  
+     {
+        return $this->belongsTo(Cliente::class);
+     }      
+    
      
     }

@@ -9,3 +9,8 @@ export interface Employee {
     
     // Add other employee properties you need
 }
+
+export interface EmployeeHorario{
+    horas: string;
+
+}

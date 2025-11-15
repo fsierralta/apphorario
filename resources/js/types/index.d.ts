@@ -137,7 +137,64 @@ export interface EmpleadoHorarioDaysPaginated {
   // Otros campos de paginación si los necesitas
 }
 
-export type SelectOption = {
+export interface Cita {
+    id: number;
+    empleado_id: number;
+    fecha_hora: string;
+    created_at: string;
+    updated_at: string;
+    // Add other properties as needed based on your data structure
+}
+
+export interface SelectOption {
     label: string;
     value: any;
 };
+
+export interface EmpleadoCita {
+    // Employee fields
+    id: number;
+    created_at: string;
+    updated_at: string;
+    nombre: string;
+    apellido: string;
+    cedula: string;
+    telefono: string;
+    direccion: string;
+    foto_url: string;
+    cargo: string;
+    email: string;
+    user_id: number;
+    
+    // Appointment fields
+    cita_id: number;
+    cita_fecha_hora: string;
+    cita_estado: string;
+    cita_descripcion: string;
+    cita_cliente_id: number;
+    
+    // Client fields
+    cte_nombre: string;
+    cte_apellido: string;
+    cte_telefono: string;
+}
+
+export interface PaginatedEmpleadoCitas {
+    current_page: number;
+    data: EmpleadoCita[];
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: {
+        url: string | null;
+        label: string;
+        active: boolean;
+    }[];
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+}

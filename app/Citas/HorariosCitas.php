@@ -28,7 +28,6 @@ class HorariosCitas
         $duracionEnMinutos = $durationTime->hour * 60 + $durationTime->minute;
         while ($horaActual->lessThan($horaFin)) {
             $this->horas[] = $horaActual->format('H:i');
-             info("horas",["data" => $this->horas]  );
             $horaActual->addMinutes($duracionEnMinutos);
         }
         
