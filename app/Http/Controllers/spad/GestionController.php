@@ -122,7 +122,7 @@ class GestionController extends Controller
            'empleado_id' => 'required',
            'cliente_id' => 'required|exists:clientes,id',
            'hora' => 'required',
-           'fecha_hora' => 'required',
+           'fecha_hora' => 'required|after_or_equal:today',
            'estado' => 'required',
            'descripcion'=>"required"
         ]);   
