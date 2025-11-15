@@ -39,7 +39,7 @@ export default function ListaCita()     {
                             {empleado.foto_url && (
                                 <img 
                                     className="h-12 w-12 rounded-full object-cover border border-gray-200" 
-                                    src={empleado.foto_url} 
+                                    src={`/${empleado.foto_url}`} 
                                     alt={`${empleado.nombre} ${empleado.apellido}`}
                                 />
                             )}

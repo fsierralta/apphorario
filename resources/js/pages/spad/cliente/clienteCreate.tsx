@@ -1,6 +1,20 @@
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Cross2Icon } from "@radix-ui/react-icons";
+
+const Cross2Icon = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		viewBox="0 0 24 24"
+		fill="none"
+		xmlns="http://www.w3.org/2000/svg"
+		width="16"
+		height="16"
+		aria-hidden="true"
+		{...props}
+	>
+		<path d="M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+		<path d="M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+	</svg>
+);
 
 const DialogDemo = () => (
 	<Dialog.Root>

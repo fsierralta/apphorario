@@ -30,7 +30,7 @@ class GestionController extends Controller
         $citas=Cita::select("citas.*")
         ->join("empleados","citas.empleado_id","empleados.id")
         ->where("citas.estado","pendiente")
-          ->whereDate('citas.fecha_hora',">=",Carbon::now()->toDateString())
+          ->whereDate('citas.fecha_hora',"=",Carbon::now()->toDateString())
         ->get();
 
         
@@ -158,7 +158,7 @@ class GestionController extends Controller
         
            $data=explode("-",$empleado_id);
            $empleado_id=$data[1];
-
+         
           $empleado=Empleado::findOrFail($empleado_id);
           $listaCita=Empleado::select('empleados.*',
              'citas.id as cita_id',
@@ -173,7 +173,7 @@ class GestionController extends Controller
             ->join("clientes","clientes.id","citas.cliente_id")
              ->where("citas.estado","pendiente")
             ->where("empleados.id","=",$empleado_id)
-               ->whereDate("citas.fecha_hora","<=",Carbon::now()->toDateString())                      
+               ->whereDate("citas.fecha_hora",">=",Carbon::now()->toDateString())                      
               ->paginate(5); 
           return Inertia::render('spad/empleado/listaCitas',[
              "empleado"=>$empleado,

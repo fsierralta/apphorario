@@ -6,7 +6,7 @@ use App\Models\Empleado;
 use App\Models\RegistroEntradas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
+use Carbon\Carbon;
 class ActividadController extends Controller
 {
     /**
@@ -31,6 +31,32 @@ class ActividadController extends Controller
             'empleados' => $empleados,
         ]);
 
+    }
+    public function listaCita($empleado_id)
+    {
+       // $data=explode("-",$empleado_id);
+        //   $empleado_id=$data[1];
+         
+          $empleado=Empleado::findOrFail($empleado_id);
+          $listaCita=Empleado::select('empleados.*',
+             'citas.id as cita_id',
+             'citas.fecha_hora as  cita_fecha_hora',
+             'citas.estado as      cita_estado',
+             'citas.descripcion as cita_descripcion',
+             'citas.cliente_id as  cita_cliente_id',
+             "clientes.nombre as   cte_nombre",
+             "clientes.apellido as cte_apellido",
+             "clientes.telefono as cte_telefono")
+           ->join("citas","citas.empleado_id","empleados.id"  )
+            ->join("clientes","clientes.id","citas.cliente_id")
+             ->where("citas.estado","pendiente")
+            ->where("empleados.id","=",$empleado_id)
+               ->whereDate("citas.fecha_hora",">=",Carbon::now()->toDateString())                      
+              ->paginate(5); 
+          return Inertia::render('movimiento/listaCitas',[
+             "empleado"=>$empleado,
+             "citas"=>$listaCita
+          ]);
     }
 
     /**

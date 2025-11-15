@@ -8,5 +8,7 @@ Route::middleware(['auth', 'verified',EmpleadoMiddleware::class])->group(functio
 
 Route::post('/actividad/{empleado}/{tipo}', [ActividadController::class, 'store'])
     ->name('actividad.store');  
+ Route::get('/actividad/lista/cita/{empleado_id}',[ActividadController::class,"listaCita"])
+    ->name('actividad.listacita');   
 
 });

@@ -1,14 +1,16 @@
 import AppLayout from "@/layouts/app-layout"
 import { usePage, useForm, Link, router } from "@inertiajs/react"
 import { PageProps as InertiaPageProps } from '@inertiajs/core';
-import { useCallback, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import {ToastContainer} from "react-toastify";
 import toastMessage from '@/helper/toastMessage';
 import type { Employee } from "@/types/employee"
 import DialogDemo from '@/pages/spad/cliente/clienteCreate';
+
+
 interface PageProps extends InertiaPageProps {
     empleado: Employee
-    hora: string
+    hora: string[]
     errors: Record<string, any>
     flash: any
     clientes: {
@@ -26,13 +28,12 @@ interface PageProps extends InertiaPageProps {
 }
 
 interface FormData {
-    [key: string]: any
     empleado_id: string
     nombre: string
     apellido: string
     cliente_id: string
     estado: string
-    hora: string[]
+    hora: string
     descripcion: string
     fecha_hora: string
 }
@@ -45,9 +46,9 @@ export default function CitacreateForm() {
         apellido: empleado.apellido,
         cliente_id: '0',
         estado: 'pendiente',
-        hora:hora[0],
+        hora:'',
         descripcion: '',
-        fecha_hora:"2025-11-06",
+        fecha_hora:" ",
         });
     // console.log(usePage().props)
     const [search, setSearch] = useState('');
@@ -62,12 +63,9 @@ export default function CitacreateForm() {
 
    
 
-    const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newSearch = e.target.value;
-          
-      
+    const onSearch = () => {
         router.get(route('spad.showcitaform', {
-            search: newSearch,
+            search: search,
             empleado_id: `${data.empleado_id}`
         }), {
             preserveState: true,
@@ -76,11 +74,15 @@ export default function CitacreateForm() {
         });
     }
 
-    const onSubmitForm=(e)=>{
-         e.preventDefault()
-        router.post(route('spad.storecita',{...data,
-            search:search})
-        )}
+    const onSubmitForm = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault();
+        router.post(
+            route('spad.storecita', {
+                ...data,
+                search: search,
+            })
+        );
+    }
     
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -156,10 +158,10 @@ export default function CitacreateForm() {
                                 <select
                                     name="hora" 
                                     value={data.hora} 
-                                    onChange={(e) => setData('hora', [e.target.value])}
+                                    onChange={(e) => setData('hora', e.target.value)}
                                     className="w-full px-3 py-2 border border-amber-300 text-amber-900 bg-amber-600 rounded-md shadow-sm"
                                 >
-                                    <option value="">Seleccione una hora</option>
+
                                     { horas && horas.map((horaOption) => (
                                         <option key={horaOption} value={horaOption}>
                                             {horaOption}

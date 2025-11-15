@@ -116,12 +116,21 @@ export default function TimeTrackingIndex() {
         
         >
          <ToastContainer/>
-              <div className='justify-between items-center mx-auto'>
+              <div className='justify-between items-center mx-auto gap-4'>
                 <Link
                   href={route('logout')}
                   method='post'
                   className='bg-amber-300 rounded-md px-4 py-2 hover:bg-amber-700'
                 >Salir</Link>
+                
+                  <Link
+                      href={route('actividad.listacita',{empleado_id:empleados[0]?.id})}
+                       className='bg-amber-300 rounded-md px-4 py-2 hover:bg-amber-900 ml-4'
+                    >
+                      citas 
+                    </Link>
+
+              
               </div>
 
                 <div className="max-w-4xl mx-auto py-4 flex flex-col items-center">
