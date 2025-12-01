@@ -33,9 +33,10 @@ interface FormData {
     apellido: string
     cliente_id: string
     estado: string
-    hora: string
+    hora:string
     descripcion: string
     fecha_hora: string
+     [key: string]: string | number | undefined
 }
 
 export default function CitacreateForm() {
@@ -52,17 +53,10 @@ export default function CitacreateForm() {
         });
     // console.log(usePage().props)
     const [search, setSearch] = useState('');
-    
     const horas = hora;
     console.log("error",errors);
 
-    // Debounce search
     
-    // Update search from URL on initial load
-  
-
-   
-
     const onSearch = () => {
         router.get(route('spad.showcitaform', {
             search: search,
@@ -83,6 +77,7 @@ export default function CitacreateForm() {
             })
         );
     }
+  
     
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -116,7 +111,7 @@ export default function CitacreateForm() {
         >
            <ToastContainer/>
 
-            <div className="min-h-screen bg-black py-6 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-black py-2 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-md w-full mx-auto bg-amber-50 rounded-xl shadow-lg 
                                 overflow-hidden md:max-w-2xl p-8 border-2 border-amber-500">
                     <div className="text-center mb-8">
@@ -158,10 +153,10 @@ export default function CitacreateForm() {
                                 <select
                                     name="hora" 
                                     value={data.hora} 
-                                    onChange={(e) => setData('hora', e.target.value)}
+                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setData("hora", e.target.value)}
                                     className="w-full px-3 py-2 border border-amber-300 text-amber-900 bg-amber-600 rounded-md shadow-sm"
                                 >
-
+                                    <option value="">Seleccione una hora</option>
                                     { horas && horas.map((horaOption) => (
                                         <option key={horaOption} value={horaOption}>
                                             {horaOption}
@@ -189,17 +184,17 @@ export default function CitacreateForm() {
                                             type="button" 
                                             value={search}
                                             onClick={onSearch}
-                                            className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-colors"
+                                            className="px-4 py-2 bg-amber-600 text-white rounded-md
+                                             mx-4 hover:bg-amber-700 focus:outline-none focus:ring-2
+
+                                              focus:ring-amber-500 focus:ring-offset-2 transition-colors"
                                         >
                                             Buscar
-                                        </button>
-                                        <button 
-                                            type="button" 
-                                           
-                                            className="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-colors"
-                                        >
-                                            <DialogDemo/>
-                                        </button>
+                                        </button>  
+                                        <div className="mx-2">
+                                        <DialogDemo/>
+                                        </div>
+                                       
                                     </div>
 
                                     <div className="relative">
@@ -241,7 +236,7 @@ export default function CitacreateForm() {
                                                 id="fecha_hora"
                                                 name="fecha_hora"
                                                 value={data.fecha_hora}
-                                                onChange={(e) => setData('fecha_hora', e.target.value)}
+                                                onChange={(e) => setData('fecha_hora' , e.target.value)}
                                                 className="w-full px-3 py-2 border border-amber-300
                                                  bg-amber-600 text-amber-900 rounded-md 
                                                  shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
@@ -258,7 +253,7 @@ export default function CitacreateForm() {
                                               name="descripcion"
                                               id="descripcion"      
                                               value={data.descripcion}
-                                              onChange={(e) => setData('descripcion', e.target.value)}  
+                                              onChange={(e) => setData('descripcion' , e.target.value)}  
                                               className="w-full bg-amber-600 text-amber-900 rounded-md 
                                               shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 "       
                                             />

@@ -213,6 +213,48 @@ class GestionController extends Controller
 
     }
 
+    public function storeCliente(Request $request)
+    { 
+     // Log::info("store cliente",["store"=>$request->all()]);
+        $validate=$request->validate([
+           'nombre' => 'required',
+           'apellido' => 'required',
+           'cedula' => 'required|unique:clientes,cedula',
+           'telefono' => 'nullable',
+           'email' => 'required|unique:clientes,email',
+           'direccion' => 'nullable',
+           'foto_url' => 'nullable|url'
+        ]);   
+ 
+        try 
+        {
+        
+        
+         $cliente=new Cliente();
+         $cliente->nombre=$request->nombre;
+         $cliente->apellido=$request->apellido;
+         $cliente->cedula=$request->cedula;
+         $cliente->telefono=$request->telefono;
+         $cliente->email=$request->email;
+        // $cliente->direccion=$request->direccion;
+         //$cliente->foto_url=$request->foto_url;
+         $cliente->save();
+         session(["success"=>"Cita creada correctamente"]);
+         return back()->with(["success"=>"Cliente creado correctamente"]);
+        }
+         catch( Exception $e){
+          session(["error"=>$e->getMessage()." linea:".$e->getLine()]);
+          Log::error("error",["error"=>$e->getMessage()." linea:".$e->getLine()]);
+          return redirect()->route('spad.createcita')->with(["error" => "Error al crear el cliente"]);  
+        }
+
+
+
+
+
 
 
 }
+
+        }
+

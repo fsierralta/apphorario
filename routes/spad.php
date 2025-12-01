@@ -2,7 +2,7 @@
  use App\Http\Controllers\spad\GestionController;
  use App\Http\Middleware\AdminEmpleado;
  use Illuminate\Support\Facades\Route;
-
+ use App\HTTP\Controllers\ServicioController;
 
 
 Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () {
@@ -14,7 +14,19 @@ Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () 
     Route::post("spad/store/cita",[GestionController::class,'storeCita'])->name('spad.storecita');
     Route::get("spad/lista/cita/{empleado_id}",[GestionController::class,'listaCita'])->name('spad.listacita');
     Route::delete("spad/cita/delete/{cita}",[GestionController::class,'destroyCita'] )->name('spad.destroycita');
+    Route::post("spad/store/cliente",[GestionController::class,'storeCliente'] )->name('spad.storecliente');
+    Route::get('/spad/servicios', [ServicioController::class, 'index'])->name('spad.indexservicio');    
+    Route::get('/spad/servicio/create', [ServicioController::class, 'create'])->name('spad.createservicio');
+    Route::post('/spad/servicio/store', [ServicioController::class, 'store'])->name('spad.storeservicio');
+    Route::get('/spad/servicio/edit/{id}', [ServicioController::class, 'edit'])->name('spad.editservicio');
+    Route::put('/spad/servicio/update/{id}', [ServicioController::class, 'update'])->name('spad.updateservicio');
+    
+
+
 });
+
+ 
+
 
 
 
