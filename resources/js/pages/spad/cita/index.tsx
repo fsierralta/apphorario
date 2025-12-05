@@ -2,7 +2,8 @@ import React from 'react'
 import AppLayout from '@/layouts/app-layout'
 import { usePage, router, Link } from '@inertiajs/react';
 import type { Empleado, Paginated } from '@/types';
-import { TfiAgenda } from "react-icons/tfi";
+import { TfiAgenda, TfiCreditCard } from "react-icons/tfi";
+
 
 interface Cita {
     id: number;
@@ -64,7 +65,14 @@ export default function Index() {
     <AppLayout     breadcrumbs={breadcrumbs}     >
          <div>
             <h1 className="text-4xl font-extrabold text-amber-900 drop-shadow-lg mb-6 text-center">Citas SPAD</h1>
-         
+            <div className='my-4 '>
+                <button className='bg-amber-900 text-amber-900 font-bold px-3 py-2
+                 rounded shadow hover:bg-amber-400 transition flex items-center gap-2'
+               
+                 >{`Facturar`}
+                 <TfiCreditCard />
+                </button>
+            </div>
            <div className="overflow-x-auto">
                <table className="min-w-full bg-white border border-amber-200">
                    <thead>
@@ -83,15 +91,25 @@ export default function Index() {
                                <td className="py-2 px-4 border-b border-amber-200 text-amber-900">{hora}</td>
                                {empleados && empleados.data.length > 0 
                                    ? empleados.data.map((empleado) => (
-                                       <td key={empleado.id} className="py-2 px-4 border-b border-amber-200">
-                                           <button
+                                       <td key={empleado.id} className="py-2 px-4 border-b border-amber-200 ">
+                                        <div className='flex gap-2'>
+                                          <button
                                             value={`${hora}-${empleado.id}`}
                                             name={`${hora}`}
                                             onClick={onClickCita}
                                             className="bg-amber-300 text-amber-900 font-bold px-3 py-1 rounded shadow hover:bg-amber-400 transition text-sm"
                                            >
-                                               <span className='text-amber-900'>{`Asignar Cita`} {getCita(empleado.id,hora) &&<TfiAgenda />}</span>
+                                               <span className='text-amber-900'>{`Cita`} {getCita(empleado.id,hora) &&<TfiAgenda />}</span>
                                            </button>
+                                          
+                                         </div>
+
+                                        
+
+
+                                       
+                                           
+                                           
                                        </td>
                                    ))
                                    : null

@@ -215,7 +215,7 @@ class GestionController extends Controller
 
     public function storeCliente(Request $request)
     { 
-     // Log::info("store cliente",["store"=>$request->all()]);
+    Log::info("store cliente",["store"=>$request->all()]);
         $validate=$request->validate([
            'nombre' => 'required',
            'apellido' => 'required',

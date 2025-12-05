@@ -57,6 +57,12 @@ const mainNavItems: NavItem[] = [
         title:'Servicios SPAD',  
         href:route('spad.indexservicio'),
         icon:BookOpen
+    },
+    {
+        title:'Categorias SPAD',  
+        href:route('spad.indexcategoria'),
+        icon:BookOpen   
+        
     }
 
 

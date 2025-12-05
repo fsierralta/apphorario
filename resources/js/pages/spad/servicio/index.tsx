@@ -12,15 +12,14 @@ import {
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
+   
 } from "@/components/ui/pagination"
 import { PageProps } from "@/types";
 import { PaginatedData } from "@/types/paginated-data";
 import { Servicio } from "@/types/servicio";
+import ServicioEdit from "./servicioEdit";
 
 export default function ServicioIndex() {
     const { servicios } = usePage<PageProps<{ servicios: PaginatedData<Servicio> }>>().props
@@ -66,6 +65,7 @@ export default function ServicioIndex() {
                                 <TableHead className="text-amber-900 font-bold ">Descripción</TableHead>
                                 <TableHead className="text-amber-900 font-bold ">Precio</TableHead>
                                 <TableHead className="text-amber-900 font-bold ">Estado</TableHead>
+                                <TableHead className="text-amber-900 font-bold ">Categoria</TableHead>
                                 <TableHead className="text-amber-900 font-bold ">Acciones</TableHead>
 
                             </TableRow>
@@ -82,11 +82,11 @@ export default function ServicioIndex() {
                                     <TableCell className="text-amber-900 font-bold ">{servicio.descripcion}</TableCell>
                                     <TableCell className="text-amber-900 font-bold ">{servicio.precio}</TableCell>
                                     <TableCell className="text-amber-900 font-bold ">{servicio.estado}</TableCell>
-                                    <TableCell className="flex gap-4 "><Link 
-                                    className="bg-amber-400 hover:bg-amber-500 text-amber-700 font-bold py-1 px-2 rounded   "
-                                      href={"#"}>Edit</Link> <Link href={"#"}
-                                      className="bg-red-500  hover:bg-red-700 font-bol py-1 px-2 rounded "
-                                      >Eliminar</Link></TableCell>
+                                    <TableCell className="text-amber-900 font-bold ">{servicio.categoria_nombre}</TableCell>
+                                                                        <TableCell className="flex gap-4 "><ServicioEdit servicio={servicio} />
+                                                                             <Link href={"#"}
+                                                                            className="bg-red-500  hover:bg-red-700 font-bol py-1 px-2 rounded "
+                                                                            >Eliminar</Link></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

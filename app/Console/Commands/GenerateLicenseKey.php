@@ -43,7 +43,7 @@ class GenerateLicenseKey extends Command
        
     }
 
-    public function encryptLicencia($licencia,$endDate)
+    public function encryptLicencia($licencia)
 
     {
       
@@ -61,7 +61,7 @@ class GenerateLicenseKey extends Command
          
         $this->startDate = Carbon::parse($startDate)->toDateString();
         $this->endDate = Carbon::parse($startDate)->addDays($days)->toDateString();
-        Log::info(["startDate"=>$startDate,"endDate"=>$endDate]);
+        Log::info("fecha de licencia",["startDate"=>$this->startDate,"endDate"=>$this->endDate]);
 
         $licencia = [
             'licencia' => 'ControlHorario',
@@ -69,6 +69,6 @@ class GenerateLicenseKey extends Command
             'activo' => true,
         ];
           
-        $this->encryptLicencia($licencia,$endDate);
+        $this->encryptLicencia($licencia);
     }
 }

@@ -55,6 +55,10 @@ export default function CitacreateForm() {
     const [search, setSearch] = useState('');
     const horas = hora;
     console.log("error",errors);
+                if (errors.nombre) toastMessage(errors.nombre,'error');
+                if (errors.apellido) toastMessage(errors.apellido,'error');
+                if (errors.cedula) toastMessage(errors.cedula,'error');
+                if (errors.email) toastMessage(errors.email,'error');
 
     
     const onSearch = () => {

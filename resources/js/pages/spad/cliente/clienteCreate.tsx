@@ -28,31 +28,7 @@ const DialogDemo = () => {
     const [open, setOpen] = React.useState(false);
 
 const  onSalvar=()=>{
-	router.post(route('spad.storecliente'),{
-		onSuccess:()=> {
-			console.log('Datos salvados con éxito');
-            toastMessage('Cliente creado con éxito', 'success');
-            setOpen(false);
-		},
-		onError:(errors:{
-			nombre?:string,
-			apellido?:string,
-			cedula?:string,
-			email?:string
-		})=> {
-
-			console.log('Error al salvar los datos:', errors);
-
-			if (errors.nombre) toastMessage(errors.nombre,'error');
-			if (errors.apellido) toastMessage(errors.apellido,'error');
-			if (errors.cedula) toastMessage(errors.cedula,'error');
-			if (errors.email) toastMessage(errors.email,'error');
-             
-			toastMessage("Error al salvar los datos",'error');
-
-		}
-	});
-
+	router.post(route('spad.storecliente',{...data}));
 	console.log('Salvar datos:', data);	
  }
 

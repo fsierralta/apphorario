@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -17,12 +17,16 @@ import AuthenticatedLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 
 const CreateServicioPage = () => {
+  const{categorias}=usePage().props;
+   console.log(categorias);
   const { data, setData, post, processing, errors } = useForm<{
     nombre_servicio: string;
     descripcion: string;
     precio: string;
     estado: string;
     foto_url: File | null;
+    categoria_id?: number;
+
   }>({
     nombre_servicio: '',
     descripcion: '',
@@ -63,6 +67,28 @@ const CreateServicioPage = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+             <div className="space-y-2">
+              <Label htmlFor="categoria_id">Categoría</Label>
+              <Select
+                value={data.categoria_id?.toString() || ''}
+                onValueChange={(value) => setData('categoria_id', Number(value))}
+              >
+                <SelectTrigger id="categoria_id">
+                  <SelectValue placeholder="Seleccione una categoría" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categorias.map((categoria: { id: number; nombre: string }) => (
+                    <SelectItem key={categoria.id} value={categoria.id.toString()}>
+                      {categoria.nombre}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.categoria_id && (
+                <p className="text-red-500 text-xs mt-1">{errors.categoria_id}</p>
+              )}
+            </div>  
+
             <div className="space-y-2">
               <Label htmlFor="nombre_servicio">Nombre del Servicio</Label>
               <Input
