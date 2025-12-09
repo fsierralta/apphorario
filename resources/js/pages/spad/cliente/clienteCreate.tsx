@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import {router} from "@inertiajs/react";
-import toastMessage from "@/helper/toastMessage";
+
 
  interface PropData{
   nombre: string

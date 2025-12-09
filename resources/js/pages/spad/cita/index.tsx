@@ -15,19 +15,13 @@ interface Cita {
 }
 
 export default function Index() {
-    const { empleados, horas, errors, citas } = usePage<{ 
+    const { empleados, horas,citas } = usePage<{ 
         empleados: Paginated<Empleado>, 
         horas: string[],
         citas: Cita[]
     }>().props;
-    
-    console.log(empleados);
-    console.log(horas);
-    console.log(errors);
-    console.log(citas);
-
-
-     const breadcrumbs=[
+   
+    const breadcrumbs=[
         {
             title:'Dashboard',
             href:'/dashboard'
@@ -48,15 +42,7 @@ export default function Index() {
         if(cita){
                return true
             }
-       
-        
         return false
-
-     
-
-
-              
-       
 
     }
 

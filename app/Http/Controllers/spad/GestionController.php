@@ -256,5 +256,5 @@ class GestionController extends Controller
 
 }
 
-        }
+}
 
