@@ -38,8 +38,9 @@ class ScheduleController extends Controller
                 // code...
                 $schedule = Schedule::create($validated);
 
-                foreach ($validated['days'] as $day) {       $schedule->days()->create($day);
-             
+                foreach ($validated['days'] as $day) {
+                    $schedule->days()->create($day);
+
                 }
             } catch (\Throwable $th) {
                 // throw $th;

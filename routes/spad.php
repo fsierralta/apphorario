@@ -1,5 +1,6 @@
 <?php
- use App\Http\Controllers\spad\GestionController;
+ use App\Http\Controllers\ComisionController;
+use App\Http\Controllers\spad\GestionController;
  use App\Http\Middleware\AdminEmpleado;
  use Illuminate\Support\Facades\Route;
  use App\HTTP\Controllers\ServicioController;
@@ -22,6 +23,8 @@ Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () 
     Route::get('/spad/servicio/edit/{servicio}', [ServicioController::class, 'edit'])->name('spad.editservicio');
     Route::put('/spad/servicio/update/{id}', [ServicioController::class, 'update'])->name('spad.updateservicio');
     //-------------
+
+
     Route::get('/spad/categorias/{search?}', [CategoriaController::class, 'index'])
     ->name('spad.indexcategoria');
     Route::get('/spad/categoria/create', [CategoriaController::class, 'create'])->name('spad.createcategoria');

@@ -30,7 +30,7 @@ class EmpleadoService
                 $path = $request->file('foto_url')->store('empleados', 'public');
                 $data['foto_url'] = 'storage/'.$path;
             }
-            
+
             // Crear el usuario
             $user = User::create([
                 'name' => strtoupper(str_replace(' ', '', $data['nombre'])),
@@ -38,11 +38,11 @@ class EmpleadoService
                 'password' => bcrypt(trim($data['cedula'])),
                 'role' => 'empleado',
             ]);
-            
+
             // Asignar el user_id y crear el empleado
             $data['user_id'] = $user->id;
             Empleado::create($data);
-            
+
             DB::commit();
 
             return redirect()->route('empleados.index')->with('success', 'Empleado creado exitosamente.');

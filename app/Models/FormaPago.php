@@ -9,9 +9,10 @@ class FormaPago extends Model
 {
     /** @use HasFactory<\Database\Factories\FormaPagoFactory> */
     use HasFactory;
-    protected $fillable=[
-        "nombre_forma_pago",
-        "descripcion",
-        "nombre_corto"
+
+    protected $fillable = [
+        'nombre_forma_pago',
+        'descripcion',
+        'nombre_corto',
     ];
 }

@@ -37,24 +37,26 @@ class AppServiceProvider extends ServiceProvider
             abort(403, 'Licencia inválida o ausente.');
         }
         // Share the expiration date with Inertia
-        $publicExpira=env('LICENCIA_APP_VIEW');
+        $publicExpira = env('LICENCIA_APP_VIEW');
         Inertia::share([
             'publicExpira' => $publicExpira ? $this->publicExpira() : null,
-          
+
         ]);
 
-        
-
     }
-    public function publicExpira(){
+
+    public function publicExpira()
+    {
         try {
             $licenciaCruda = env('LICENCIA_APP');
             $datos = json_decode(Crypt::decryptString($licenciaCruda), true);
             $expira = Carbon::parse($datos['fecha_expiracion'])->format('d-m-Y');
+
             return $expira;
         } catch (\Exception $e) {
             Log::error('Error al obtener fecha de expiración: '.$e->getMessage());
+
             return null;
-        }   
+        }
     }
 }

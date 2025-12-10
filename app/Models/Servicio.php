@@ -9,7 +9,8 @@ class Servicio extends Model
 {
     /** @use HasFactory<\Database\Factories\ServicioFactory> */
     use HasFactory;
-    protected $fillable=[
+
+    protected $fillable = [
 
         'nombre_servicio',
         'descripcion',
@@ -18,6 +19,4 @@ class Servicio extends Model
         'estado',
 
     ];
-    
-    
 }

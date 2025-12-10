@@ -18,8 +18,8 @@ class CategoriaFactory extends Factory
     {
         return [
             //
-            'nombre' =>"MANICURE Y PEDICURE",
-            'descripcion' => "SERVICIO PARA PIES Y MANOS",
+            'nombre' => 'MANICURE Y PEDICURE',
+            'descripcion' => 'SERVICIO PARA PIES Y MANOS',
             'estado' => 'activo',
             'foto_url' => null,
 

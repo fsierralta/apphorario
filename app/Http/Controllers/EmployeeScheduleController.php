@@ -22,7 +22,7 @@ class EmployeeScheduleController extends Controller
 
         try {
             // code...
-           // info('horario', ['r' => $request->toArray()]);
+            // info('horario', ['r' => $request->toArray()]);
             $validated = $request->validate([
                 'empleado_id' => 'required|exists:empleados,id',
                 'schedule_id' => 'required|exists:schedules,id',
@@ -39,7 +39,6 @@ class EmployeeScheduleController extends Controller
             if ($request->input('deactivate_others')) {
                 if ($empleado->schedules()->where('schedule_id', '!=', $validated['schedule_id'])->exists()) {
                     $schedulesToDeactivate = $empleado->schedules()->where('schedule_id', '!=', $validated['schedule_id'])->get();
-                    
 
                     foreach ($schedulesToDeactivate as $schedule) {
                         $empleado->schedules()->updateExistingPivot($schedule->id, ['is_active' => false]);
@@ -158,15 +157,13 @@ class EmployeeScheduleController extends Controller
 
     public function showEmpleadoHorario(Request $request)
     {
-       $search = $request->has('search') ? $request->input('search'):"";
-        if(!$request->has('page')){
-               $request->merge(['page' => 1]);
-               
-         }
-       //  info( 'page', ['page' => $request->input('page')]);   
-       
+        $search = $request->has('search') ? $request->input('search') : '';
+        if (! $request->has('page')) {
+            $request->merge(['page' => 1]);
 
-        
+        }
+        //  info( 'page', ['page' => $request->input('page')]);
+
         $empleados = Empleado::with(['schedules' => function ($q) {
             $q->with(['days'])
                 ->orderByPivot('start_date', 'desc');
@@ -192,10 +189,10 @@ class EmployeeScheduleController extends Controller
 
     }
 
-    public function showEmpleadoHorarioRegister(Request $request,Empleado $empleado, $tipo)
+    public function showEmpleadoHorarioRegister(Request $request, Empleado $empleado, $tipo)
     {
         // Obtener el horario del empleado
-         // info('empleado', ['empleado' => $empleado, "PAGE" => $request->input('page')]);
+        // info('empleado', ['empleado' => $empleado, "PAGE" => $request->input('page')]);
 
         try {
             // code
@@ -292,8 +289,8 @@ class EmployeeScheduleController extends Controller
         try {
             // code...
             $empleadosQuery = Empleado::with([
-                'schedules' => function ($q) use ($fechai, $fechaf,$tipo) {
-                    $q->with(['days', 'entradas' => function ($query) use ($fechai, $fechaf,$tipo) {
+                'schedules' => function ($q) use ($fechai, $fechaf, $tipo) {
+                    $q->with(['days', 'entradas' => function ($query) use ($fechai, $fechaf, $tipo) {
                         $query->whereBetween('registro_fecha', [$fechai, $fechaf]);
                         if (isset($tipo) !== '') {
                             $query->where('tipo', '=', $tipo);

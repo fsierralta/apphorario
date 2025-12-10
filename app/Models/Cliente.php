@@ -8,6 +8,7 @@ class Cliente extends Model
 {
     //
     protected $table = 'clientes';
+
     protected $fillable = [
         'nombre',
         'apellido',
@@ -16,10 +17,6 @@ class Cliente extends Model
         'cedula',
         'direccion',
         'foto_url',
-        
 
     ];
-
-
-    
 }

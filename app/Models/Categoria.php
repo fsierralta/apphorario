@@ -9,11 +9,11 @@ class Categoria extends Model
 {
     /** @use HasFactory<\Database\Factories\CategoriaFactory> */
     use HasFactory;
+
     protected $fillable = [
         'nombre',
         'descripcion',
         'estado',
         'foto_url',
     ];
-    
 }

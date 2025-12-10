@@ -4,62 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Models\Comision;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ComisionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $comisiones = Comision::all();
+        return Inertia::render('spad/comision/index', ['comisions' => $comisiones]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return Inertia::render('spad/comision/create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'comision' => 'required|string|max:255',
+            'valor' => 'required|numeric',
+        ]);
+
+        Comision::create($request->all());
+
+        return redirect()->route('comision.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comision $comision)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Comision $comision)
     {
-        //
+        return Inertia::render('spad/comision/edit', ['comision' => $comision]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Comision $comision)
     {
-        //
+        $request->validate([
+            'comision' => 'required|string|max:255',
+            'valor' => 'required|numeric',
+        ]);
+
+        $comision->update($request->all());
+
+        return redirect()->route('comision.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Comision $comision)
     {
-        //
+        $comision->delete();
+
+        return redirect()->route('comision.index');
     }
 }

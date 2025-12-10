@@ -63,7 +63,14 @@ const mainNavItems: NavItem[] = [
         href:route('spad.indexcategoria'),
         icon:BookOpen   
         
+    },
+    {
+        title:"Comsiones",
+        href:route('comision.index'),
+        icon:BookOpen
+
     }
+
 
 
 

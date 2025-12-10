@@ -6,8 +6,8 @@ use App\Http\Requests\Empleado\EmpleadoRequest;
 use App\Models\Empleado;
 use App\Models\User;
 use App\service\EmpleadoService;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class EmpleadoController extends Controller
 {
@@ -122,20 +122,21 @@ class EmpleadoController extends Controller
 
             if ($request->hasFile('foto_url')) {
                 // Opcional: Aquí podrías agregar lógica para eliminar la foto anterior.
-                 if ($empleado->foto_url) {
+                if ($empleado->foto_url) {
                     Storage::disk('public')
-                     ->delete(str_replace('storage/', '', $empleado->foto_url));
-                 }
+                        ->delete(str_replace('storage/', '', $empleado->foto_url));
+                }
                 $path = $request->file('foto_url')->store('empleados', 'public');
                 $data['foto_url'] = 'storage/'.$path;
-            }else {
+            } else {
                 $data['foto_url'] = $empleado->foto_url; // Mantener la foto actual si no se subió una nueva
             }
-           $empleado->update($data);
+            $empleado->update($data);
 
             return redirect()->route('empleados.index')->with('success', 'Empleado actualizado exitosamente.');
         } catch (\Throwable $th) {
             info('error', ['error' => $th->getMessage()]);
+
             return back()->with('error', 'Error al actualizar el empleado: '.$th->getMessage());
         }
     }

@@ -167,6 +167,12 @@ export default function CitacreateForm() {
                                         </option>
                                     ))}
                                 </select>
+                                <div>
+                                    {errors.hora  &&
+                                     <div className="text-red-500 text-sm mt-1">
+                                                    {errors.hora}
+                                                </div>}
+                                </div>
                             </div>
                             
                             <div className="space-y-4">

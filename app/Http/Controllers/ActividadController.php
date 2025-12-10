@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use App\Models\RegistroEntradas;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Carbon\Carbon;
+
 class ActividadController extends Controller
 {
     /**
@@ -25,38 +26,40 @@ class ActividadController extends Controller
             ->where('user_id', '=', auth()->user()->id)
             ->get();
 
-     //   info('empleado:', ['data' => $empleados, 'user' => auth()->user()]);
+        //   info('empleado:', ['data' => $empleados, 'user' => auth()->user()]);
 
         return Inertia::render('movimiento/registro', [
             'empleados' => $empleados,
         ]);
 
     }
+
     public function listaCita($empleado_id)
     {
-       // $data=explode("-",$empleado_id);
+        // $data=explode("-",$empleado_id);
         //   $empleado_id=$data[1];
-         
-          $empleado=Empleado::findOrFail($empleado_id);
-          $listaCita=Empleado::select('empleados.*',
-             'citas.id as cita_id',
-             'citas.fecha_hora as  cita_fecha_hora',
-             'citas.estado as      cita_estado',
-             'citas.descripcion as cita_descripcion',
-             'citas.cliente_id as  cita_cliente_id',
-             "clientes.nombre as   cte_nombre",
-             "clientes.apellido as cte_apellido",
-             "clientes.telefono as cte_telefono")
-           ->join("citas","citas.empleado_id","empleados.id"  )
-            ->join("clientes","clientes.id","citas.cliente_id")
-             ->where("citas.estado","pendiente")
-            ->where("empleados.id","=",$empleado_id)
-               ->whereDate("citas.fecha_hora",">=",Carbon::now()->toDateString())                      
-              ->paginate(5); 
-          return Inertia::render('movimiento/listaCitas',[
-             "empleado"=>$empleado,
-             "citas"=>$listaCita
-          ]);
+
+        $empleado = Empleado::findOrFail($empleado_id);
+        $listaCita = Empleado::select('empleados.*',
+            'citas.id as cita_id',
+            'citas.fecha_hora as  cita_fecha_hora',
+            'citas.estado as      cita_estado',
+            'citas.descripcion as cita_descripcion',
+            'citas.cliente_id as  cita_cliente_id',
+            'clientes.nombre as   cte_nombre',
+            'clientes.apellido as cte_apellido',
+            'clientes.telefono as cte_telefono')
+            ->join('citas', 'citas.empleado_id', 'empleados.id')
+            ->join('clientes', 'clientes.id', 'citas.cliente_id')
+            ->where('citas.estado', 'pendiente')
+            ->where('empleados.id', '=', $empleado_id)
+            ->whereDate('citas.fecha_hora', '>=', Carbon::now()->toDateString())
+            ->paginate(5);
+
+        return Inertia::render('movimiento/listaCitas', [
+            'empleado' => $empleado,
+            'citas' => $listaCita,
+        ]);
     }
 
     /**
@@ -76,8 +79,7 @@ class ActividadController extends Controller
         if ($empleado->user_id !== auth()->id()) {
             abort(403, 'No autorizado para esta acción.');
         }
-      //  info('empleado:', ['data' => $empleado, 'user' => auth()->user()]);
-
+        //  info('empleado:', ['data' => $empleado, 'user' => auth()->user()]);
 
         try {
             // 2. Obtener el horario activo del empleado de forma segura.
@@ -100,12 +102,13 @@ class ActividadController extends Controller
                 ]
             );
 
-            return redirect()->route('actividad.index')->with("success", "Registrada su:".
-                                                 strtoupper($tipo)." a las:"
-                                                 .now()->format('H:i:s') );
+            return redirect()->route('actividad.index')->with('success', 'Registrada su:'.
+                                                 strtoupper($tipo).' a las:'
+                                                 .now()->format('H:i:s'));
         } catch (\Throwable $th) {
             info('error', ['error' => $th->getMessage()]);
-            return back()->with('error', 'Ocurrió un error al registrar la actividad.'. ' ' . $th->getMessage());
+
+            return back()->with('error', 'Ocurrió un error al registrar la actividad.'.' '.$th->getMessage());
         }
 
     }

@@ -16,12 +16,12 @@ return new class extends Migration
             $table->timestamps();
             $table->string('nombre')->comment('Nombre del empleado');
             $table->string('apellido')->comment('Apellido del empleado');
-            $table->string(('cedula'))->unique()->index('cedula_index')->comment('Cédula del empleado');
+            $table->string('cedula')->unique()->index('cedula_index')->comment('Cédula del empleado');
             $table->string('telefono')->comment('Teléfono del empleado');
             $table->string('direccion')->comment('Dirección del empleado');
             $table->string('foto_url')->nullable()->comment('URL de la foto del empleado');
             $table->string('cargo')->nullable()->comment('Cargo del empleado');
-             $table->string('email')->unique();
+            $table->string('email')->unique();
             
 
         });
