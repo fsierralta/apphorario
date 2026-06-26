@@ -26,11 +26,17 @@ class GestionController extends Controller
 
     public function indexCita(Request $request)
     {
+        
+        if($request->filled('fecha')){
+            $fecha = $request->fecha;
+        }else{
+            $fecha = Carbon::now()->toDateString();
+        }
 
         $citas = Cita::select('citas.*')
             ->join('empleados', 'citas.empleado_id', 'empleados.id')
             ->where('citas.estado', 'pendiente')
-            ->whereDate('citas.fecha_hora', '=', Carbon::now()->toDateString())
+            ->whereDate('citas.fecha_hora', '=', $fecha)
             ->get();
 
         $empleados = Empleado::select('empleados.*')
@@ -41,6 +47,7 @@ class GestionController extends Controller
             'empleados' => $empleados,
             'horas' => $this->horast,
             'citas' => $citas,
+            'fecha' => $fecha,
 
         ]);
     }

@@ -7,4 +7,6 @@ export interface Servicio {
     precio: number;
     foto_url: string;
     estado: string;
+    categoria_nombre: string;
+ 
 }

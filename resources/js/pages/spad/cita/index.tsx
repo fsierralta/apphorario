@@ -15,10 +15,11 @@ interface Cita {
 }
 
 export default function Index() {
-    const { empleados, horas,citas } = usePage<{ 
+    const { empleados, horas,citas,fecha } = usePage<{ 
         empleados: Paginated<Empleado>, 
         horas: string[],
         citas: Cita[]
+        fecha: string;
     }>().props;
    
     const breadcrumbs=[
@@ -58,6 +59,13 @@ export default function Index() {
                  >{`Facturar`}
                  <TfiCreditCard />
                 </button>
+                <div className='my-4 flex justify-end gap-4'>
+                   
+                     <label htmlFor="fecha" className='bg-amber-300 text-amber-900 font-bold px-3 py-1
+                     rounded shadow hover:bg-amber-400 transition text-sm'>Fecha:</label>
+                    <input type="date" name="fecha" id="fecha" value={fecha} onChange={(e) => router.get(route('spad.indexcita', { fecha: e.target.value }))} className='bg-amber-300 text-amber-900 font-bold px-3 py-1
+                     rounded shadow hover:bg-amber-400 transition text-sm'/>
+                </div>
             </div>
            <div className="overflow-x-auto">
                <table className="min-w-full bg-white border border-amber-200">

@@ -20,6 +20,12 @@ import { PageProps } from "@/types";
 import { PaginatedData } from "@/types/paginated-data";
 import { Servicio } from "@/types/servicio";
 import ServicioEdit from "./servicioEdit";
+interface Link {
+    url: string;
+    label: string;
+    active: boolean;
+}
+
 
 export default function ServicioIndex() {
     const { servicios } = usePage<PageProps<{ servicios: PaginatedData<Servicio> }>>().props
@@ -71,7 +77,7 @@ export default function ServicioIndex() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {servicios.data.map((servicio) => (
+                            {servicios.data.map((servicio:Servicio) => (
                                 <TableRow key={servicio.id}>
                                     <TableCell className="text-amber-900 font-bold ">{servicio.id}</TableCell>
                                     <TableCell className="text-amber-900 font-bold ">
@@ -95,7 +101,7 @@ export default function ServicioIndex() {
                 <div className="mt-4">
                     <Pagination>
                         <PaginationContent>
-                            {servicios.links.map((link, index) => (
+                            {servicios.links.map((link:Link, index:number) => (
                                 <PaginationItem key={index}>
                                     {link.url ? (
                                         <PaginationLink href={link.url} isActive={link.active}
