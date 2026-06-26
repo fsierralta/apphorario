@@ -1,0 +1,116 @@
+{
+  "lista_de_precios": [
+    {
+      "descripcion": "Manos Sencillas",
+      "precio": "7"
+    },
+    {
+      "descripcion": "Pies Sencillos",
+      "precio": "7"
+    },
+    {
+      "descripcion": "Manos DND",
+      "precio": "12"
+    },
+    {
+      "descripcion": "Pies DND",
+      "precio": "12"
+    },
+    {
+      "descripcion": "Manos TrueGel OPI",
+      "precio": "13"
+    },
+    {
+      "descripcion": "Pies TrueGel OPI",
+      "precio": "13"
+    },
+    {
+      "descripcion": "Nivelación",
+      "precio": "15"
+    },
+    {
+      "descripcion": "Nivelación Cuccio",
+      "precio": "19"
+    },
+    {
+      "descripcion": "Resina/Polly",
+      "precio": "23"
+    },
+    {
+      "descripcion": "Sistema de Resina/Polly",
+      "precio": "25"
+    },
+    {
+      "descripcion": "Dip",
+      "precio": "22"
+    },
+    {
+      "descripcion": "Gelly",
+      "precio": "21"
+    },
+    {
+      "descripcion": "Bozo",
+      "precio": "3"
+    },
+    {
+      "descripcion": "Limpieza de Cejas",
+      "precio": "6"
+    },
+    {
+      "descripcion": "Cejas Semi",
+      "precio": "7"
+    },
+    {
+      "descripcion": "Patilla",
+      "precio": "5"
+    },
+    {
+      "descripcion": "Mentón",
+      "precio": "5"
+    },
+    {
+      "descripcion": "Nariz",
+      "precio": "3"
+    },
+    {
+      "descripcion": "Rostro completo",
+      "precio": "12"
+    },
+    {
+      "descripcion": "Oreja caballero",
+      "precio": "5"
+    },
+    {
+      "descripcion": "Línea de Ombligo",
+      "precio": "8"
+    },
+    {
+      "descripcion": "Axilas",
+      "precio": "8"
+    },
+    {
+      "descripcion": "Bikini",
+      "precio": "15"
+    },
+    {
+      "descripcion": "Brasilero",
+      "precio": "20"
+    },
+    {
+      "descripcion": "Media Pierna",
+      "precio": "15"
+    },
+    {
+      "descripcion": "Pierna Completa",
+      "precio": "21"
+    },
+    {
+      "descripcion": "Lifting",
+      "precio": "15"
+    },
+    {
+      "descripcion": "Laminado",
+      "precio": "15"
+    }
+  ]
+}
