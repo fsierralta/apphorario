@@ -65,10 +65,15 @@ const mainNavItems: NavItem[] = [
         
     },
     {
-        title:"Comsiones",
+        title:"Comisiones SPAD",
         href:route('comision.index'),
         icon:BookOpen
 
+    },
+    {
+        title: "Comision Empleados SPAD",
+        href: route("spad.indexcomision_empledo"),
+        icon: BookOpen
     }
 
 

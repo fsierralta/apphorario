@@ -5,6 +5,7 @@ use App\Http\Controllers\spad\GestionController;
  use Illuminate\Support\Facades\Route;
  use App\HTTP\Controllers\ServicioController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ComisionEmpledoController;
 
 
 Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () {
@@ -32,6 +33,15 @@ Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () 
     Route::put('/spad/categoria/update/{categoria}', [CategoriaController::class, 'update'])->name('spad.updatecategoria');
     Route::get('/spad/categoria/edit/{categoria}', [CategoriaController::class, 'edit'])->name('spad.editcategoria');
     Route::delete('spad/categoria/delete/{categoria}', [CategoriaController::class, 'destroy'])->name('spad.deletecategoria');    
+
+    //comsiones empledos
+    Route::get('/spad/comision_empledo', [ComisionEmpledoController::class, 'index'])->name('spad.indexcomision_empledo');
+    Route::get('/spad/comision_empledo/create', [ComisionEmpledoController::class, 'create'])->name('spad.createcomision_empledo');
+    Route::post('/spad/comision_empledo/store', [ComisionEmpledoController::class, 'store'])->name('spad.storecomision_empledo');
+    Route::put('/spad/comision_empledo/update/{comision_empledo}', [ComisionEmpledoController::class, 'update'])->name('spad.updatecomision_empledo');
+    Route::get('/spad/comision_empledo/edit/{comision_empledo}', [ComisionEmpledoController::class, 'edit'])->name('spad.editcomision_empledo');
+    Route::delete('spad/comision_empledo/delete/{comision_empledo}', [ComisionEmpledoController::class, 'destroy'])->name('spad.deletecomision_empledo');   
+
 
 
 

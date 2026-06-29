@@ -1,0 +1,9 @@
+- [x] Run pending migrations (`php artisan migrate`)
+- [x] Update `ComisionEmpledo` Eloquent model with fillable attributes and relationships
+- [x] Implement `ComisionEmpledoController` logic (`index`, `create`, `store`, `edit`, `update`, `destroy`)
+- [x] Create frontend directory `resources/js/pages/spad/comision_empledo`
+- [x] Create `index.tsx` view for comision_empledos CRUD
+- [x] Create `create.tsx` view for assigning comision to empleado
+- [x] Create `edit.tsx` view for updating comision assignment
+- [x] Add navigation sidebar link in `app-sidebar.tsx`
+- [x] Verify everything works properly (manual verification)
