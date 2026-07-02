@@ -1,6 +1,10 @@
 import React from "react";
-import { router, } from "@inertiajs/react";
+import { router, usePage, } from "@inertiajs/react";
 import AppLayout from "@/layouts/app-layout";
+import toastMessage from "@/helper/toastMessage";
+import {ToastContainer} from 'react-toastify';
+import { FlashMessage } from '@/types';
+ import { useEffect } from 'react';
 
 
 interface Comision {
@@ -14,6 +18,7 @@ interface Props {
 }
 
 const ComisionIndex: React.FC<Props> = ({ comisions }) => {
+  const { flash } = usePage<{ flash: FlashMessage }>().props
   const handleEdit = (id: number) => {
     // Redirigir a la vista de edición o abrir modal (a implementar)
     router.visit(route("comision.edit", {comision:id}));
@@ -25,9 +30,30 @@ const ComisionIndex: React.FC<Props> = ({ comisions }) => {
     }
   };
 
+
+   useEffect(() => {
+    if(flash.success){
+      toastMessage(flash.success, 'success');
+    }
+    if(flash.error){
+      toastMessage(flash.error, 'error');
+    }
+    
+    if(flash.message){
+      toastMessage(flash.message, 'info');
+    }
+   
+   
+  }, [flash]);
   return (
+    
+    
+    
+   
+
     <AppLayout>
       <div className="max-w-2xl mx-auto p-4">
+        <ToastContainer />
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold text-amber-900">Comisiones</h1>
           <button

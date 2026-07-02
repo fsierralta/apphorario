@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid ,UserCircle2,UserPen} from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, UserCircle2, UserPen } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -17,69 +17,59 @@ const mainNavItems: NavItem[] = [
         title: 'Empleados',
         href: route('empleados.index'),
         icon: UserCircle2,
-
     },
     {
-      title:'Horario'  ,
-      href:route('schedules.index'),
-      icon:UserPen
-
-
+        title: 'Horario',
+        href: route('schedules.index'),
+        icon: UserPen,
     },
     {
-        title:'Asignar Horario',
-        href:route('asignar.show'),
-        icon:UserPen
-
-
-    },{
-        title:'Horario Empleado',
-        href:route('empleado.horario'),
-        icon:UserPen
+        title: 'Asignar Horario',
+        href: route('asignar.show'),
+        icon: UserPen,
     },
     {
-        title:'Registrar Entrada',
-        href:route('showformhorario.show'),
-        icon:UserPen
+        title: 'Horario Empleado',
+        href: route('empleado.horario'),
+        icon: UserPen,
     },
     {
-        title:'Lista de Asistencia',  
-        href:route('reports.attendance'),
-        icon:UserPen  
+        title: 'Registrar Entrada',
+        href: route('showformhorario.show'),
+        icon: UserPen,
     },
     {
-        title:'Citas SPAD',  
-        href:route('spad.indexcita'),
-        icon:BookOpen  
-
+        title: 'Lista de Asistencia',
+        href: route('reports.attendance'),
+        icon: UserPen,
     },
     {
-        title:'Servicios SPAD',  
-        href:route('spad.indexservicio'),
-        icon:BookOpen
+        title: 'SPAD',
+        href: '#',
+        icon: BookOpen,
+        items: [
+            {
+                title: 'Citas',
+                href: route('spad.indexcita'),
+            },
+            {
+                title: 'Servicios',
+                href: route('spad.indexservicio'),
+            },
+            {
+                title: 'Categorías',
+                href: route('spad.indexcategoria'),
+            },
+            {
+                title: 'Comisiones',
+                href: route('comision.index'),
+            },
+            {
+                title: 'Comisión Empleados',
+                href: route('spad.indexcomision_empledo'),
+            },
+        ],
     },
-    {
-        title:'Categorias SPAD',  
-        href:route('spad.indexcategoria'),
-        icon:BookOpen   
-        
-    },
-    {
-        title:"Comisiones SPAD",
-        href:route('comision.index'),
-        icon:BookOpen
-
-    },
-    {
-        title: "Comision Empleados SPAD",
-        href: route("spad.indexcomision_empledo"),
-        icon: BookOpen
-    }
-
-
-
-
-
 ];
 
 const footerNavItems: NavItem[] = [
@@ -88,7 +78,6 @@ const footerNavItems: NavItem[] = [
         href: '#',
         icon: Folder,
     },
-   
 ];
 
 export function AppSidebar() {

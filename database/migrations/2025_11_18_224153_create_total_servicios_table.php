@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('descuento', 5, 2)->default(0);
             $table->decimal('subtotal', 10, 2)->default(0);
             $table->string('nro_factura')->unique();
+            $table->foreign('nro_factura')->references('nro_factura')->on('control_recibos')->onDelete('cascade');
             
 
 

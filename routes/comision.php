@@ -9,5 +9,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('comision', [ComisionController::class, 'store'])->name('comision.store');
     Route::get('comision/{comision}/edit', [ComisionController::class, 'edit'])->name('comision.edit');
     Route::put('comision/{comision}', [ComisionController::class, 'update'])->name('comision.update');
-    Route::delete('comisions/{comision}', [ComisionController::class, 'destroy'])->name('comisions.destroy');
+    Route::delete('comision/{comision}', [ComisionController::class, 'destroy'])->name('comision.destroy');
 });

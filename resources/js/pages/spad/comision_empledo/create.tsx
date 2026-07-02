@@ -2,6 +2,13 @@ import React from "react";
 import { useForm, router, usePage } from "@inertiajs/react";
 import AppLayout from "@/layouts/app-layout";
 import { PageProps } from "@/types";
+import { z } from "zod";
+import toastMessage from "@/helper/toastMessage";
+import {ToastContainer} from 'react-toastify';
+import { FlashMessage } from '@/types';
+ import { useEffect } from 'react';
+
+
 
 interface Empleado {
   id: number;
@@ -21,18 +28,48 @@ interface Props {
 }
 
 const ComisionEmpledoCreate: React.FC = () => {
-  const { empleados, comisiones } = usePage<PageProps<Props>>().props;
+  const { empleados, comisiones,errors,flash:FlashMessage } = usePage<PageProps<Props>>().props;
 
-  const { data, setData, post, processing, errors } = useForm({
-    empleado_id: "",
-    comision_id: "",
+
+  const { data, setData, post, processing } = useForm({
+    empleado_id: 0,
+    comision_id: 0 ,
+  });``
+  
+  const validarFormulario = z.object({
+    empleado_id: z.number().min(1, "El empleado es requerido, por favor seleccionar un empleado."),
+    comision_id: z.number().min(1, "La comisión es requerida, por favor seleccionar una comisión."),
   });
-
+  
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    post(route("spad.storecomision_empledo"));
+   e.preventDefault();
+   try{
+    validarFormulario.parse(data);
+
+}catch(error){
+  if(error instanceof z.ZodError){
+    const errorMessages = error.issues.map(x => ({message : x.message}));
+    toastMessage(errorMessages[0].message, 'error');
+    return;
+  }
+}
+
+    router.post(route("spad.storecomision_empledo"),data);
   };
 
+  useEffect(() => {
+    if(FlashMessage.success){
+      toastMessage(FlashMessage.success, 'success');
+    }
+    if(FlashMessage.error){
+      toastMessage(FlashMessage.error, 'error');
+    }
+    
+    if(FlashMessage.message){
+      toastMessage(FlashMessage.message, 'info');
+    }
+  }, [FlashMessage]);
+  
   return (
     <AppLayout
       breadcrumbs={[
@@ -42,6 +79,7 @@ const ComisionEmpledoCreate: React.FC = () => {
       ]}
     >
       <div className="max-w-2xl mx-auto p-6">
+          <ToastContainer />
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-amber-900">Asignar Comisión a Empleado</h1>
           <p className="text-sm text-amber-700 mt-1">Crea una nueva asociación de comisión para un empleado.</p>
@@ -56,7 +94,7 @@ const ComisionEmpledoCreate: React.FC = () => {
               id="empleado_id"
               name="empleado_id"
               value={data.empleado_id}
-              onChange={(e) => setData("empleado_id", e.target.value)}
+              onChange={(e) => setData("empleado_id", parseInt(e.target.value))}
               className="mt-1 block w-full px-3 py-2 bg-amber-500 text-amber-900 border border-amber-200 rounded-md shadow-sm focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
             >
               <option value="">-- Selecciona un Empleado --</option>
@@ -67,7 +105,7 @@ const ComisionEmpledoCreate: React.FC = () => {
               ))}
             </select>
             {errors.empleado_id && (
-              <p className="mt-1 text-sm text-red-650 font-medium">{errors.empleado_id}</p>
+              <p className="mt-1 text-sm text-red-650 font-medium bg-red-500">{errors.empleado_id}</p>
             )}
           </div>
 
@@ -79,8 +117,8 @@ const ComisionEmpledoCreate: React.FC = () => {
               id="comision_id"
               name="comision_id"
               value={data.comision_id}
-              onChange={(e) => setData("comision_id", e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-amber-500 text-amber-900 border border-amber-200 rounded-md shadow-sm focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
+              onChange={(e) => setData("comision_id", parseInt(e.target.value))}
+              className="bg-amber-500 text-amber-900 border border-amber-200 rounded-md shadow-sm focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
             >
               <option value="">-- Selecciona una Comisión --</option>
               {comisiones.map((com: Comision) => (
@@ -90,7 +128,7 @@ const ComisionEmpledoCreate: React.FC = () => {
               ))}
             </select>
             {errors.comision_id && (
-              <p className="mt-1 text-sm text-red-650 font-medium">{errors.comision_id}</p>
+              <p className="mt-1 text-sm text-red-650 bg-red-500 font-medium">{errors.comision_id}</p>
             )}
           </div>
 

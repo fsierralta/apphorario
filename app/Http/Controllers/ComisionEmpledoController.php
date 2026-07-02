@@ -42,6 +42,7 @@ class ComisionEmpledoController extends Controller
         $request->validate([
             'empleado_id' => 'required|exists:empleados,id',
             'comision_id' => 'required|exists:comisions,id',
+            
         ]);
 
         $exists = ComisionEmpledo::where('empleado_id', $request->empleado_id)

@@ -23,12 +23,12 @@ class ComisionController extends Controller
     {
         $request->validate([
             'comision' => 'required|string|max:255',
-            'valor' => 'required|numeric',
+            'valor' => 'required|numeric|max:100|min:1',
         ]);
 
         Comision::create($request->all());
 
-        return redirect()->route('comision.index');
+        return redirect()->route('comision.index')->with('success', 'Comisión creada exitosamente.');
     }
 
     public function edit(Comision $comision)
@@ -45,13 +45,13 @@ class ComisionController extends Controller
 
         $comision->update($request->all());
 
-        return redirect()->route('comision.index');
+        return redirect()->route('comision.index')->with('success', 'Comisión actualizada exitosamente.');
     }
 
     public function destroy(Comision $comision)
     {
         $comision->delete();
 
-        return redirect()->route('comision.index');
+        return redirect()->route('comision.index')->with('success', 'Comisión eliminada exitosamente.');
     }
 }

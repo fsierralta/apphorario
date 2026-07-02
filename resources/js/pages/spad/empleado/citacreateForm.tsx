@@ -52,9 +52,12 @@ export default function CitacreateForm() {
         fecha_hora:" ",
         });
     // console.log(usePage().props)
+    const ahora = new Date();
+    const horaActual = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
     const [search, setSearch] = useState('');
-    const horas = hora;
-    console.log("error",errors);
+    const horas =  hora.filter((item) => item >= horaActual);
+   
+   
                 if (errors.nombre) toastMessage(errors.nombre,'error');
                 if (errors.apellido) toastMessage(errors.apellido,'error');
                 if (errors.cedula) toastMessage(errors.cedula,'error');
