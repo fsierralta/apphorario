@@ -6,6 +6,7 @@ use App\Http\Controllers\spad\GestionController;
  use App\HTTP\Controllers\ServicioController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ComisionEmpledoController;
+use App\Http\Controllers\RegistroServicioController;
 
 
 Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () {
@@ -42,9 +43,12 @@ Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () 
     Route::get('/spad/comision_empledo/edit/{comision_empledo}', [ComisionEmpledoController::class, 'edit'])->name('spad.editcomision_empledo');
     Route::delete('spad/comision_empledo/delete/{comision_empledo}', [ComisionEmpledoController::class, 'destroy'])->name('spad.deletecomision_empledo');   
 
-
-
-
+    Route::get('/spad/registro-servicios', [RegistroServicioController::class, 'index'])->name('registro-servicio.index');
+    Route::get('/spad/registro-servicios/create', [RegistroServicioController::class, 'create'])->name('registro-servicio.create');
+    Route::post('/spad/registro-servicios', [RegistroServicioController::class, 'store'])->name('registro-servicio.store');
+    Route::get('/spad/registro-servicios/{registroServicio}/edit', [RegistroServicioController::class, 'edit'])->name('registro-servicio.edit');
+    Route::put('/spad/registro-servicios/{registroServicio}', [RegistroServicioController::class, 'update'])->name('registro-servicio.update');
+    Route::delete('/spad/registro-servicios/{registroServicio}', [RegistroServicioController::class, 'destroy'])->name('registro-servicio.destroy');
 
 });
 

@@ -21,7 +21,14 @@ return new class extends Migration
             $table->decimal('descuento', 5, 2)->default(0);
             $table->decimal('subtotal', 10, 2)->default(0);
             $table->string('nro_factura')->unique();
-            $table->foreign('nro_factura')->references('nro_factura')->on('control_recibos')->onDelete('cascade');
+            $table->unsignedBigInteger("empleado_id");
+            $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
+            $table->unsignedBigInteger("cliente_id");
+            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
+            $table->decimal("comision_valor",10,2)->nullable();
+            $table->date("fecha")->default(now());
+            $table->string("comision_estado")->default("pendiente");
+            
             
 
 

@@ -19,7 +19,9 @@ return new class extends Migration
             $table->decimal('monto', 10, 2);
             $table->foreign('total_servicio_id')->references('id')->on('total_servicios')->onDelete('cascade');
             $table->foreign('forma_pago_id')->references('id')->on('forma_pagos')->onDelete('cascade');
-            
+            $table->unsignedBigInteger("empleado_id");
+            $table->unsignedBigInteger("comision_valor");
+            $table->date("fecha")->default(now());
         });
     }
 

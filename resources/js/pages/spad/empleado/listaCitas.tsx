@@ -121,7 +121,11 @@ export default function ListaCita()     {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 gap-2">
                                         <div className="flex gap-2">
-                                        <Link href={'#'} 
+                                        <Link 
+                                          href={route('registro-servicio.create', {
+                                            cliente_id: cita.cita_cliente_id,
+                                            empleado_id: empleado.id,
+                                          })}
                                           className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
                                         >
                                             Servicios
