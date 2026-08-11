@@ -22,27 +22,33 @@ const ComisionCreate: React.FC = () => {
     const { name, value } = e.target;
     setValues(values => ({
       ...values,
-      [name]: value,
+       [name]: value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+     setValues( values=>({ ...values, valor: Number(values.valor) }));
+    
     try {
+
       validadComsion.parse(values);
     } catch (error) {
+      console.log(error)
       if (error instanceof z.ZodError) {
         const errorMessages = error.issues.map(issue => issue.message);
         toastMessage(errorMessages[0], 'error');
         return;
       }
     } 
-
-    router.post(route("comision.store"), {
+      router.post(route("comision.store"), {
         ...values,
         valor: Number(values.valor)
     });
+
+   
   };
+  
 
    useEffect(() => {
     if(flash.success){
@@ -94,8 +100,11 @@ const ComisionCreate: React.FC = () => {
               id="valor"
               name="valor"
               type="number"
+              min={1}
+              max={100}
+              step={0.01}
               value={values.valor}
-              onChange={handleChange}
+              onChange={(e)=>setValues( {...values,valor:Number(e.target.value)})}
               className="mt-1 block w-full px-3 py-2 bg-amber-500 text-amber-900 border
                border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
             />

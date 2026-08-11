@@ -61,7 +61,7 @@ export default function RegistroServicioIndex() {
                                     <td className="px-4 py-3 text-sm">{item.id}</td>
                                     <td className="px-4 py-3 text-sm">{item.servicio?.nombre_servicio ?? '-'}</td>
                                     <td className="px-4 py-3 text-sm">{item.cliente ? `${item.cliente.nombre} ${item.cliente.apellido}` : '-'}</td>
-                                    <td className="px-4 py-3 text-sm">{item.fecha_servicio}</td>
+                                    <td className="px-4 py-3 text-sm">{new Date(item.fecha_servicio).toLocaleDateString()}</td>
                                     <td className="px-4 py-3 text-sm">{item.cantidad}</td>
                                     <td className="px-4 py-3 text-sm">{item.precio}</td>
                                     <td className="px-4 py-3 text-sm">

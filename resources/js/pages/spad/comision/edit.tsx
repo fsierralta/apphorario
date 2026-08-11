@@ -6,10 +6,14 @@ interface Comision {
   id: number;
   comision: string;
   valor: number;
+ 
 }
 
 interface Props {
   comision: Comision;
+   [key: string]: any;
+
+  
 }
 
 const ComisionEdit: React.FC = () => {

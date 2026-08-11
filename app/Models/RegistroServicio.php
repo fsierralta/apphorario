@@ -16,6 +16,16 @@ class RegistroServicio extends Model
         'fecha_servicio',
         'cantidad',
         'precio',
+        'impuesto',
+        'descuento',
+        'subtotal',
+        'total',
+        'comision_valor',
+        'comision_estado',
+        'empleado_id',
+        'nro_factura',
+        'fecha',
+        
     ];
 
     protected $casts = [

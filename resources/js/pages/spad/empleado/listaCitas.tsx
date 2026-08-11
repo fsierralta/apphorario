@@ -9,9 +9,7 @@ export default function ListaCita()     {
          empleado: EmpleadoCita;
          citas: PaginatedEmpleadoCitas;
      }>().props;
-      console.log(empleado)
-      console.log(citas)
-      
+    
     return(
         <AppLayout
          breadcrumbs={[

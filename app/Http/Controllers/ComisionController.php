@@ -21,10 +21,21 @@ class ComisionController extends Controller
 
     public function store(Request $request)
     {
+
+        $messenge = [
+            'comision.required' => 'La comisión es requerida por favor digite una comisión',
+            'comision.string' => 'La comisión debe ser una cadena de texto por favor digite una comisión',
+            'comision.max' => 'La comisión no puede exceder los 255 caracteres por favor digite una comisión',
+            'valor.required' => 'El valor es requerido por favor digite un valor',
+            'valor.numeric' => 'El valor debe ser un número por favor digite un número',
+            'valor.min' => 'El valor debe ser mayor o igual a 1 por favor digite un valor',
+            'valor.max' => 'El valor debe ser menor o igual a 100 por favor digite un valor',
+        ];
+
         $request->validate([
             'comision' => 'required|string|max:255',
-            'valor' => 'required|numeric|max:100|min:1',
-        ]);
+            'valor' => 'required|numeric|min:1|max:100',
+        ], $messenge);
 
         Comision::create($request->all());
 

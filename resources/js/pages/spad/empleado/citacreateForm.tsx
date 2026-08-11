@@ -55,7 +55,13 @@ export default function CitacreateForm() {
     const ahora = new Date();
     const horaActual = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
     const [search, setSearch] = useState('');
-    const horas =  hora.filter((item) => item >= horaActual);
+    const stricHora =import.meta.env.VITE_HORARIO_STRIC;
+    let horas:string[] = [];
+    if(stricHora==="S"){
+        horas =  hora.filter((item) => item >= horaActual);
+    }else{
+        horas = hora;
+    }
    
    
                 if (errors.nombre) toastMessage(errors.nombre,'error');

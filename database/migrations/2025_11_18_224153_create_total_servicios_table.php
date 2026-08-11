@@ -28,7 +28,7 @@ return new class extends Migration
             $table->decimal("comision_valor",10,2)->nullable();
             $table->date("fecha")->default(now());
             $table->string("comision_estado")->default("pendiente");
-            
+                
             
 
 

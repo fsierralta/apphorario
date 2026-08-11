@@ -36,7 +36,7 @@ class GenerateLicenseKey extends Command
         try {
             //code. 
              $fecha1 = $this->argument('fecha');
-               $fecha2 = intval($this->argument('days'));
+             $fecha2 = intval($this->argument('days'));
             if (! preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha1)) {
             $this->error('La fecha debe tener el formato YYYY-MM-DD');
 
