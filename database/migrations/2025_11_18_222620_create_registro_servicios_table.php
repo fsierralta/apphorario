@@ -21,8 +21,8 @@ return new class extends Migration
             $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
             $table->decimal('cantidad')->default(1);
             $table->decimal('precio',10, 2);
-            
-
+            $table->unsignedBigInteger('total_servicio_id')->nullable();
+            $table->foreign('total_servicio_id')->references('id')->on('total_servicios')->onDelete('cascade');
         });
     }
 

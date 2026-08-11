@@ -44,6 +44,7 @@ class RegistroServicioCrudTest extends TestCase
             $table->unsignedBigInteger('cliente_id');
             $table->decimal('cantidad')->default(1);
             $table->decimal('precio', 10, 2);
+            $table->unsignedBigInteger('total_servicio_id')->nullable();
         });
     }
 

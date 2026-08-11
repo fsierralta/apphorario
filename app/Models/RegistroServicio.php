@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class RegistroServicio extends Model
 {
     /** @use HasFactory<\Database\Factories\RegistroServicioFactory> */
@@ -16,6 +18,7 @@ class RegistroServicio extends Model
         'fecha_servicio',
         'cantidad',
         'precio',
+        'total_servicio_id',
         'impuesto',
         'descuento',
         'subtotal',
@@ -40,5 +43,13 @@ class RegistroServicio extends Model
     public function cliente()
     {
         return $this->belongsTo(Cliente::class);
+    }
+
+    /**
+     * Get the total service summary/invoice associated with this record.
+     */
+    public function totalServicio(): BelongsTo
+    {
+        return $this->belongsTo(TotalServicio::class, 'total_servicio_id');
     }
 }
