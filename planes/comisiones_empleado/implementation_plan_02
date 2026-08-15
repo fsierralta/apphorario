@@ -1,0 +1,48 @@
+# Plan de Implementación: Integrar TotalServicio en el CRUD de RegistroServicio
+
+Este plan detalla los cambios para que, al registrar servicios, se cree automáticamente el registro correspondiente en la tabla `total_servicios`, asociando los ítems de `registro_servicios` a dicho total. Asimismo, se adaptará el listado, la actualización y la eliminación.
+
+## Cambios Propuestos
+
+### Backend
+
+#### [MODIFY] [RegistroServicioController.php](file:///d:/site/apphorario/app/Http/Controllers/RegistroServicioController.php)
+- **`index()`**: Eager load de la relación `totalServicio`.
+- **`store()`**:
+  - Resolver `empleado_id` (del query param o en su defecto del empleado asociado al usuario autenticado).
+  - Calcular el subtotal y total de los ítems recibidos.
+  - Generar un número de factura único (`nro_factura`).
+  - Crear el registro en `total_servicios` y asociar su ID (`total_servicio_id`) a cada `registro_servicios` creado.
+  - Todo el proceso envuelto en una transacción de base de datos (`DB::transaction`).
+- **`update()`**:
+  - Al actualizar un registro de servicio, si está asociado a un `total_servicio_id`, recalcular los totales del registro padre en `total_servicios` y actualizarlos.
+- **`destroy()`**:
+  - Al eliminar un registro de servicio, recalcular los totales en `total_servicios`. Si ya no quedan registros de servicio asociados, eliminar el registro padre de `total_servicios`.
+
+---
+
+### Frontend
+
+#### [MODIFY] [create.tsx](file:///d:/site/apphorario/resources/js/pages/spad/registro-servicio/create.tsx)
+- Destructurar y enviar `empleado_id` en la petición POST para guardarlo en `total_servicios`.
+
+#### [MODIFY] [index.tsx](file:///d:/site/apphorario/resources/js/pages/spad/registro-servicio/index.tsx)
+- Agregar la columna **Factura** para mostrar el número de factura (`nro_factura`) asociado a cada registro de servicio.
+
+---
+
+### Pruebas
+
+#### [MODIFY] [RegistroServicioCrudTest.php](file:///d:/site/apphorario/tests/Feature/RegistroServicioCrudTest.php)
+- Adaptar las pruebas de creación, actualización y borrado del CRUD para que utilicen un `TotalServicio` válido y pasen con el nuevo flujo de la base de datos.
+
+## Plan de Verificación
+
+### Pruebas Automatizadas
+- Correr pruebas: `php artisan test --filter=RegistroServicioCrudTest`
+
+### Verificación Manual
+- Crear un nuevo registro con múltiples servicios desde la interfaz.
+- Verificar que en el listado se muestre el número de factura.
+- Editar la cantidad/precio de un servicio y comprobar que se actualice la factura.
+- Eliminar un servicio y verificar la actualización/eliminación del total.

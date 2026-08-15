@@ -68,6 +68,10 @@ const mainNavItems: NavItem[] = [
                 title: 'Comisión Empleados',
                 href: route('spad.indexcomision_empledo'),
             },
+            {
+                title: 'Formas de Pago',
+                href: route('spad.indexformapago'),
+            },
         ],
     },
 ];

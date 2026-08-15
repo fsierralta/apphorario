@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\ComisionEmpleado;
 
 class Empleado extends Model
 {
@@ -95,4 +96,10 @@ class Empleado extends Model
     {
         return $this->hasMany(Cita::class, 'cliente_id', 'id');
     }
+
+    public function comision_empleado(): HasMany    
+    {
+        return $this->hasMany(ComisionEmpledo::class, 'empleado_id', 'id');
+    }
+    
 }

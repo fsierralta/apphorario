@@ -1,0 +1,11 @@
+- [x] Backend: Actualizar RegistroServicioController
+    - [x] Actualizar index() (con eager load de totalServicio)
+    - [x] Actualizar store() (crear TotalServicio, asociar items, transacciones)
+    - [x] Actualizar update() (recalcular totales del TotalServicio asociado)
+    - [x] Actualizar destroy() (recalcular o eliminar TotalServicio si queda vacío)
+- [x] Frontend: Actualizar vistas React
+    - [x] Actualizar create.tsx (enviar empleado_id en la petición)
+    - [x] Actualizar index.tsx (añadir columna Factura)
+- [x] Tests: Adaptar RegistroServicioCrudTest
+    - [x] Actualizar pruebas unitarias para contemplar flujo de facturación
+- [x] Verificación: Correr tests unitarios

@@ -6,6 +6,7 @@ use App\Http\Controllers\spad\GestionController;
  use App\HTTP\Controllers\ServicioController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ComisionEmpledoController;
+use App\Http\Controllers\FormaPagoController;
 use App\Http\Controllers\RegistroServicioController;
 
 
@@ -48,7 +49,14 @@ Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () 
     Route::post('/spad/registro-servicios', [RegistroServicioController::class, 'store'])->name('registro-servicio.store');
     Route::get('/spad/registro-servicios/{registroServicio}/edit', [RegistroServicioController::class, 'edit'])->name('registro-servicio.edit');
     Route::put('/spad/registro-servicios/{registroServicio}', [RegistroServicioController::class, 'update'])->name('registro-servicio.update');
-    Route::delete('/spad/registro-servicios/{registroServicio}', [RegistroServicioController::class, 'destroy'])->name('registro-servicio.destroy');
+    Route::get('/spad/registro-servicios/{totalServicio}/detail', [RegistroServicioController::class, 'detail'])->name('registro-servicio.detail');
+
+    Route::get('/spad/formaPago', [FormaPagoController::class, 'index'])->name('spad.indexformapago');
+    Route::get('/spad/formaPago/create', [FormaPagoController::class, 'create'])->name('spad.createformapago');
+    Route::post('/spad/formaPago', [FormaPagoController::class, 'store'])->name('spad.storeformapago');
+    Route::get('/spad/formaPago/{formaPago}/edit', [FormaPagoController::class, 'edit'])->name('spad.editformapago');
+    Route::put('/spad/formaPago/{formaPago}', [FormaPagoController::class, 'update'])->name('spad.updateformapago');
+    Route::delete('/spad/formaPago/{formaPago}', [FormaPagoController::class, 'destroy'])->name('spad.deleteformapago');
 
 });
 

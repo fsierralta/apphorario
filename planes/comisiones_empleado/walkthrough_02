@@ -1,0 +1,48 @@
+# Walkthrough: Integración de TotalServicio en el CRUD de RegistroServicio
+
+Hemos implementado con éxito la integración para calcular, registrar y sincronizar los totales mediante el modelo `TotalServicio` al realizar operaciones CRUD de `RegistroServicio`.
+
+## Cambios Realizados
+
+### Backend (Controlador)
+1. **`RegistroServicioController.php`**:
+   - **`index()`**: Añadido eager loading de `totalServicio` para optimizar consultas y disponibilizar los datos de la factura al listado React.
+   - **`store()`**: 
+     - Se implementó la resolución automática de `empleado_id` (a través del query param o mediante el empleado vinculado al usuario autenticado).
+     - Se introdujo el cálculo dinámico del subtotal de todos los servicios registrados.
+     - Se implementó la generación automática de un número de factura único con formato `FAC-YYYYMMDDHHMMSS-RAND`.
+     - Se encapsuló la creación del registro padre `TotalServicio` y la de sus registros hijos `RegistroServicio` vinculados en una transacción SQL (`DB::transaction`).
+   - **`update()`**:
+     - Se añadió lógica de actualización en transacción para recalcular y actualizar el subtotal y total en `TotalServicio` al editar cualquier ítem de servicio.
+   - **`destroy()`**:
+     - Se introdujo lógica en transacción para recalcular los totales al eliminar un ítem. En caso de que se elimine el último servicio vinculado a un total, se elimina automáticamente el registro padre para evitar registros huérfanos.
+
+---
+
+### Frontend (React / Inertia)
+1. **`create.tsx`**:
+   - Se adaptó para destructurar `empleado_id` de las propiedades e incluirlo en la petición POST del formulario.
+2. **`index.tsx`**:
+   - Se actualizó el tipado del ítem para incluir la relación `total_servicio`.
+   - Se añadió la columna **Factura** en la tabla del listado para mostrar dinámicamente el campo `nro_factura`.
+
+---
+
+### Pruebas Automatizadas
+1. **`RegistroServicioCrudTest.php`**:
+   - Se añadió soporte para tablas `total_servicios`, `empleados` y `users` en la base de datos de pruebas SQLite en memoria.
+   - Se incorporó la prueba unitaria `test_controller_store_creates_total_servicio_and_registro_servicios()` que simula un flujo completo de creación, valida el redireccionamiento, el cálculo automático del subtotal y la correcta vinculación a la factura.
+
+---
+
+## Verificación
+
+- **Pruebas Automatizadas**: Corrimos el set de pruebas completo. El test de integración CRUD de `RegistroServicio` pasa satisfactoriamente:
+  ```bash
+  Tests\Feature\RegistroServicioCrudTest
+  ✓ can create update and delete a registro servicio                                                             0.35s  
+  ✓ controller store creates total servicio and registro servicios                                               0.17s  
+
+  Tests:    2 passed (12 assertions)
+  Duration: 0.80s
+  ```

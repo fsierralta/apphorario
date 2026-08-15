@@ -53,12 +53,15 @@ export default function Index() {
          <div>
             <h1 className="text-4xl font-extrabold text-amber-900 drop-shadow-lg mb-6 text-center">Citas SPAD</h1>
             <div className='my-4 '>
-                <button className='bg-amber-900 text-amber-900 font-bold px-3 py-2
+             <div className='my-4 flex justify-end gap-4'>
+                <Link href={route('registro-servicio.index') } className='bg-amber-900 text-amber-900 font-bold px-3 py-2
                  rounded shadow hover:bg-amber-400 transition flex items-center gap-2'
                
                  >{`Facturar`}
                  <TfiCreditCard />
-                </button>
+                </Link>
+                </div>
+
                 <div className='my-4 flex justify-end gap-4'>
                    
                      <label htmlFor="fecha" className='bg-amber-300 text-amber-900 font-bold px-3 py-1

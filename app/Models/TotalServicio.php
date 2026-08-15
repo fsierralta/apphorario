@@ -35,7 +35,7 @@ class TotalServicio extends Model
      */
     public function empleado(): BelongsTo
     {
-        return $this->belongsTo(Empleado::class);
+        return $this->belongsTo(Empleado::class, 'empleado_id');
     }
 
     /**

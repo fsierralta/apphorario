@@ -22,7 +22,7 @@ interface ItemServicio {
 }
 
 export default function RegistroServicioCreate() {
-  const { servicios, clientes, cliente_id } = usePage<PageProps<{ servicios: ServicioOption[]; clientes: ClienteOption[]; cliente_id?: string; empleado_id?: string }>>().props;
+  const { servicios, clientes, cliente_id, empleado_id } = usePage<PageProps<{ servicios: ServicioOption[]; clientes: ClienteOption[]; cliente_id?: string; empleado_id?: string }>>().props;
 
   const clienteSeleccionado = clientes.find((cliente: ClienteOption) => String(cliente.id) === String(cliente_id));
 
@@ -54,6 +54,9 @@ export default function RegistroServicioCreate() {
     const formData = new FormData();
     formData.append('cliente_id', cliente_id ? String(cliente_id) : '');
     formData.append('fecha_servicio', fecha_servicio);
+    if (empleado_id) {
+      formData.append('empleado_id', String(empleado_id));
+    }
 
     items.forEach((item, index) => {
       formData.append(`items[${index}][servicio_id]`, item.servicio_id);

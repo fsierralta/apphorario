@@ -52,4 +52,10 @@ class RegistroServicio extends Model
     {
         return $this->belongsTo(TotalServicio::class, 'total_servicio_id');
     }
+
+    public function empleado(): BelongsTo
+    {
+        return $this->belongsTo(Empleado::class,);
+    }
+
 }
