@@ -33,23 +33,35 @@ class RegistroServicioController extends Controller
         return round(($subtotal * (float) $comisionEmpleado->comision->valor) / 100, 2);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $fechaInicio = $request->filled('fecha_inicio')
+            ? $request->query('fecha_inicio')
+            : now()->toDateString();
+
+        $fechaFin = $request->filled('fecha_fin')
+            ? $request->query('fecha_fin')
+            : now()->toDateString();
+
         $totalServicios = TotalServicio::query()
             ->join('empleados', 'total_servicios.empleado_id', '=', 'empleados.id')
             ->join('clientes', 'total_servicios.cliente_id', '=', 'clientes.id')
-            ->select('total_servicios.*','empleados.nombre','empleados.apellido','clientes.nombre as cliente_name')
+            ->select('total_servicios.*', 'empleados.nombre', 'empleados.apellido', 'clientes.nombre as cliente_name')
+            ->whereBetween('total_servicios.fecha', [$fechaInicio, $fechaFin])
             ->latest()
             ->paginate(10);
 
-          // return response()->json($totalServicios);
-     
+        $totalServicios->appends([
+            'fecha_inicio' => $fechaInicio,
+            'fecha_fin' => $fechaFin,
+        ]);
 
         return Inertia::render('spad/total-servicio/index', [
             'totalServicios' => $totalServicios,
+            'fechaInicio' => $fechaInicio,
+            'fechaFin' => $fechaFin,
         ]);
-
-    }  
+    }
 
     public function detail($totalServicioId){
         $registroServicios = RegistroServicio::query()

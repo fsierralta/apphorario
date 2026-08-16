@@ -221,6 +221,63 @@ class RegistroServicioCrudTest extends TestCase
         ]);
     }
 
+    public function test_index_filters_total_servicios_by_date_range(): void
+    {
+        $user = \App\Models\User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        $empleado = \App\Models\Empleado::create([
+            'nombre' => 'Juan',
+            'apellido' => 'Gómez',
+            'user_id' => $user->id,
+        ]);
+
+        $clienteDentro = Cliente::create([
+            'nombre' => 'Ana',
+            'apellido' => 'Pérez',
+        ]);
+
+        $clienteFuera = Cliente::create([
+            'nombre' => 'Luis',
+            'apellido' => 'Mora',
+        ]);
+
+        \App\Models\TotalServicio::create([
+            'cliente_id' => $clienteDentro->id,
+            'empleado_id' => $empleado->id,
+            'fecha' => '2026-07-02',
+            'subtotal' => 100,
+            'impuesto' => 0,
+            'descuento' => 0,
+            'total' => 100,
+            'nro_factura' => 'FAC-20260702-001',
+            'comision_valor' => 0,
+            'comision_estado' => 'pendiente',
+        ]);
+
+        \App\Models\TotalServicio::create([
+            'cliente_id' => $clienteFuera->id,
+            'empleado_id' => $empleado->id,
+            'fecha' => '2026-07-10',
+            'subtotal' => 200,
+            'impuesto' => 0,
+            'descuento' => 0,
+            'total' => 200,
+            'nro_factura' => 'FAC-20260710-002',
+            'comision_valor' => 0,
+            'comision_estado' => 'pendiente',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('registro-servicio.index', [
+            'fecha_inicio' => '2026-07-01',
+            'fecha_fin' => '2026-07-05',
+        ]));
+
+        $response->assertOk();
+        $this->assertSame(1, \App\Models\TotalServicio::whereBetween('fecha', ['2026-07-01', '2026-07-05'])->count());
+    }
+
     public function test_controller_store_calculates_employee_commission_value(): void
     {
         $servicio = Servicio::create([

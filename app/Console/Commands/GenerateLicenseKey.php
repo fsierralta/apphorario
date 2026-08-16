@@ -33,6 +33,7 @@ class GenerateLicenseKey extends Command
     public function handle()
     {
         //
+        
         try {
             //code. 
              $fecha1 = $this->argument('fecha');

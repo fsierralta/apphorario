@@ -1,6 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { Link, router, usePage } from '@inertiajs/react';
 import type { BreadcrumbItem, PageProps, PaginationLink } from '@/types';
+import { useState } from 'react';
 
 interface RegistroServicioItem {
     id: number;
@@ -23,17 +24,40 @@ interface RegistroServicioPaginated {
 }
 
 export default function RegistroServicioIndex() {
-    const { registroServicios } = usePage<PageProps<{ registroServicios: RegistroServicioPaginated }>>().props;
+    const { registroServicios, fechaInicio: initialFechaInicio, fechaFin: initialFechaFin } = usePage<PageProps<{ registroServicios: RegistroServicioPaginated; fechaInicio?: string; fechaFin?: string }>>().props;
+    const [fechaInicio, setFechaInicio] = useState<string>(initialFechaInicio ?? new Date().toISOString().split('T')[0]);
+    const [fechaFin, setFechaFin] = useState<string>(initialFechaFin ?? new Date().toISOString().split('T')[0]);
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Registro de Servicios', href: '#' },
     ];
-    console.log(registroServicios);
 
     const handleDelete = (id: number) => {
         if (window.confirm('¿Desea eliminar este registro?')) {
             router.delete(route('registro-servicio.destroy', { registroServicio: id }));
         }
+    };
+
+    const aplicarFiltro = () => {
+        router.get(
+            route('registro-servicio.index'),
+            { fecha_inicio: fechaInicio, fecha_fin: fechaFin },
+            { preserveState: true, preserveScroll: true },
+        );
+    };
+
+    const limpiarFiltro = () => {
+        const hoy = new Date().toISOString().split('T')[0];
+        setFechaInicio(hoy);
+        setFechaFin(hoy);
+
+        router.get(route('registro-servicio.index'), {
+            fecha_inicio: hoy,
+            fecha_fin: hoy,
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+        });
     };
 
     return (
@@ -47,6 +71,43 @@ export default function RegistroServicioIndex() {
             >
               Crear registro
             </Link>
+          </div>
+
+          <div className="mb-4 grid gap-3 rounded-lg border border-amber-200 bg-white p-4 md:grid-cols-4">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-amber-900">Fecha inicio</label>
+              <input
+                type="date"
+                value={fechaInicio}
+                onChange={(e) => setFechaInicio(e.target.value)}
+                className="w-full rounded-md border border-amber-300 bg-white px-3 py-2 text-sm text-amber-900 focus:border-amber-500 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium text-amber-900">Fecha fin</label>
+              <input
+                type="date"
+                value={fechaFin}
+                onChange={(e) => setFechaFin(e.target.value)}
+                className="w-full rounded-md border border-amber-300 bg-white px-3 py-2 text-sm text-amber-900 focus:border-amber-500 focus:outline-none"
+              />
+            </div>
+            <div className="flex items-end gap-2">
+              <button
+                type="button"
+                onClick={aplicarFiltro}
+                className="inline-flex h-10 items-center justify-center rounded-md bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-700"
+              >
+                Filtrar
+              </button>
+              <button
+                type="button"
+                onClick={limpiarFiltro}
+                className="inline-flex h-10 items-center justify-center rounded-md border border-amber-300 bg-white px-4 py-2 text-sm font-semibold text-amber-700 hover:bg-amber-50"
+              >
+                Limpiar
+              </button>
+            </div>
           </div>
 
           <div className="overflow-hidden rounded-lg border border-amber-200 bg-amber-500 shadow-sm">

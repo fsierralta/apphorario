@@ -1,15 +1,17 @@
 import AppLayout from '@/layouts/app-layout';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import type { BreadcrumbItem, PageProps, PaginationLink } from '@/types';
+import { useState } from 'react';
 
 interface TotalServicioItem {
     id: number;
     nro_factura: string;
     total: string;
     fecha: string;
-     nombre: string; 
-     apellido: string ;
-    cliente_name:string;
+    nombre: string;
+    apellido: string;
+    cliente_name: string;
+    empleado_id: number;
 }
 
 interface TotalServicioPaginated {
@@ -18,12 +20,36 @@ interface TotalServicioPaginated {
 }
 
 export default function TotalServicioIndex() {
-    const { totalServicios } = usePage<PageProps<{ totalServicios: TotalServicioPaginated }>>().props;
+    const { totalServicios, fechaInicio: initialFechaInicio, fechaFin: initialFechaFin } = usePage<PageProps<{ totalServicios: TotalServicioPaginated; fechaInicio?: string; fechaFin?: string }>>().props;
+    const [fechaInicio, setFechaInicio] = useState<string>(initialFechaInicio ?? new Date().toISOString().split('T')[0]);
+    const [fechaFin, setFechaFin] = useState<string>(initialFechaFin ?? new Date().toISOString().split('T')[0]);
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Total de Servicios', href: '#' },
     ];
-    console.log(totalServicios);
+
+    const aplicarFiltro = () => {
+        router.get(
+            route('registro-servicio.index'),
+            { fecha_inicio: fechaInicio, fecha_fin: fechaFin },
+            { preserveState: true, preserveScroll: true },
+        );
+    };
+
+    const limpiarFiltro = () => {
+        const hoy = new Date().toISOString().split('T')[0];
+        setFechaInicio(hoy);
+        setFechaFin(hoy);
+
+        router.get(route('registro-servicio.index'), {
+            fecha_inicio: hoy,
+            fecha_fin: hoy,
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="p-4">
@@ -31,10 +57,47 @@ export default function TotalServicioIndex() {
                     <h1 className="text-2xl font-bold text-amber-700">Total de Servicios</h1>
                     <Link
                         href={route('registro-servicio.create')}
-                            className="inline-flex items-center rounded-md bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-700"
-                        >
-                        Crear Total
+                        className="inline-flex items-center rounded-md bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-700"
+                    >
+                        Servicios
                     </Link>
+                </div>
+
+                <div className="mb-4 grid gap-3 rounded-lg border border-amber-200 bg-white p-4 md:grid-cols-4">
+                    <div>
+                        <label className="mb-1 block text-sm font-medium text-amber-900">Fecha inicio</label>
+                        <input
+                            type="date"
+                            value={fechaInicio}
+                            onChange={(e) => setFechaInicio(e.target.value)}
+                            className="w-full rounded-md border border-amber-300 bg-amber-600 px-3 py-2 text-sm text-amber-900 focus:border-amber-500 focus:outline-none"
+                        />
+                    </div>
+                    <div>
+                        <label className="mb-1 block text-sm font-medium text-amber-900">Fecha fin</label>
+                        <input
+                            type="date"
+                            value={fechaFin}
+                            onChange={(e) => setFechaFin(e.target.value)}
+                            className="w-full rounded-md border border-amber-300 bg-amber-600 px-3 py-2 text-sm text-amber-900 focus:border-amber-500 focus:outline-none"
+                        />
+                    </div>
+                    <div className="flex items-end gap-2">
+                        <button
+                            type="button"
+                            onClick={aplicarFiltro}
+                            className="inline-flex h-10 items-center justify-center rounded-md bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-700"
+                        >
+                            Filtrar
+                        </button>
+                        <button
+                            type="button"
+                            onClick={limpiarFiltro}
+                            className="inline-flex h-10 items-center justify-center rounded-md border border-amber-300 bg-amber-600 px-4 py-2 text-sm font-semibold text-amber-900 hover:bg-amber-700"
+                        >
+                            Limpiar
+                        </button>
+                    </div>
                 </div>
 
                 <div className="overflow-hidden rounded-lg border border-amber-200 bg-amber-500 shadow-sm">
@@ -65,6 +128,12 @@ export default function TotalServicioIndex() {
                                             className="rounded bg-amber-300 px-3 py-1.5 text-white hover:bg-amber-400"
                                         >
                                             Detalle
+                                        </Link>
+                                        <Link
+                                            href={route('registro-servicio.create',{cliente_id: item.id,empleado_id: item.empleado_id})}
+                                            className=" ml-4 inline-flex items-center rounded-md bg-amber-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-amber-700"
+                                        >
+                                            Servicios
                                         </Link>
                                     </td>
                                 </tr>
