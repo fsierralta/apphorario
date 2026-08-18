@@ -120,7 +120,7 @@ export default function ComisionValorCancelacionIndex() {
           <button
             type="button"
             onClick={limpiarFiltro}
-            className="inline-flex items-center rounded-md border border-amber-300 bg-white px-4 py-2 text-sm font-semibold text-amber-700 hover:bg-amber-50"
+            className="inline-flex items-center rounded-md border border-amber-300 bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600"
           >
             Limpiar
           </button>

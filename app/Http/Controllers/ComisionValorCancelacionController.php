@@ -15,8 +15,8 @@ class ComisionValorCancelacionController extends Controller
 {
     public function index(Request $request)
     {
-        $fechaInicio = $request->filled('fecha_inicio') ? $request->query('fecha_inicio') : null;
-        $fechaFin = $request->filled('fecha_fin') ? $request->query('fecha_fin') : null;
+        $fechaInicio = $request->filled('fecha_inicio') ? $request->query('fecha_inicio') : now();
+        $fechaFin = $request->filled('fecha_fin') ? $request->query('fecha_fin') : now()        ;
        info('Datos recibidos para filtrar cancelaciones de comisión: ', $request->all());
         $query = ComisionValorCancelacion::query()
             ->with(['totalServicio', 'empleado', 'formaPago'])
