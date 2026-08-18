@@ -13,6 +13,7 @@ use  Illuminate\Support\Facades\DB;
 use App\Models\Empleado;
 use App\Models\Cliente;
 use App\Models\Servicio;   
+use Carbon\Carbon;
 class RegistroServicioController extends Controller
 {
     public function __construct(private readonly RegistroServicioService $service)
@@ -35,6 +36,8 @@ class RegistroServicioController extends Controller
 
     public function index(Request $request)
     {
+       info('Datos recibidos para filtrar total servicios: ', $request->all());
+       
         $fechaInicio = $request->filled('fecha_inicio')
             ? $request->query('fecha_inicio')
             : now()->toDateString();
@@ -47,7 +50,7 @@ class RegistroServicioController extends Controller
             ->join('empleados', 'total_servicios.empleado_id', '=', 'empleados.id')
             ->join('clientes', 'total_servicios.cliente_id', '=', 'clientes.id')
             ->select('total_servicios.*', 'empleados.nombre', 'empleados.apellido', 'clientes.nombre as cliente_name')
-            ->whereBetween('total_servicios.fecha', [$fechaInicio, $fechaFin])
+            ->whereBetween('total_servicios.fecha', [Carbon::parse($fechaInicio), Carbon::parse($fechaFin)])
             ->latest()
             ->paginate(10);
 

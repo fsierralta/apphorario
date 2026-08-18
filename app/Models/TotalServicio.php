@@ -22,6 +22,10 @@ class TotalServicio extends Model
         'comision_estado',
     ];
 
+    protected $casts = [
+        'fecha' => 'date',
+    ];
+
     /**
      * Get the service records grouped by this total.
      */
@@ -44,5 +48,15 @@ class TotalServicio extends Model
     public function cliente(): BelongsTo
     {
         return $this->belongsTo(Cliente::class);
+    }
+
+    public function pagos(): HasMany
+    {
+        return $this->hasMany(TotalServicioFormaPago::class, 'total_servicio_id');
+    }
+
+    public function cancelaciones(): HasMany
+    {
+        return $this->hasMany(ComisionValorCancelacion::class, 'total_servicio_id');
     }
 }

@@ -135,6 +135,12 @@ export default function TotalServicioIndex() {
                                         >
                                             Servicios
                                         </Link>
+                                        <Link
+                                            href={route('total-servicio.pagos.index', { totalServicio: item.id })}
+                                            className="ml-2 inline-flex items-center rounded-md bg-emerald-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700"
+                                        >
+                                            Pagos
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}

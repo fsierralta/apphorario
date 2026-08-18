@@ -97,6 +97,26 @@ class RegistroServicioCrudTest extends TestCase
             $table->decimal('precio', 10, 2);
             $table->unsignedBigInteger('total_servicio_id')->nullable();
         });
+
+        Schema::create('forma_pagos', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre_forma_pago');
+            $table->string('nombre_corto')->nullable();
+            $table->text('descripcion')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('total_servicio_forma_pagos', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('total_servicio_id');
+            $table->unsignedBigInteger('forma_pago_id');
+            $table->decimal('monto', 10, 2);
+            $table->unsignedBigInteger('empleado_id');
+            $table->decimal('comision_valor', 10, 2)->nullable();
+            $table->date('fecha');
+            $table->string('nro_factura')->nullable();
+            $table->timestamps();
+        });
     }
 
     protected function tearDown(): void
@@ -328,6 +348,67 @@ class RegistroServicioCrudTest extends TestCase
             'subtotal' => 50.00,
             'comision_valor' => 5.00,
             'comision_estado' => 'pendiente',
+        ]);
+    }
+
+    public function test_total_servicio_can_accept_multiple_payment_methods_until_it_matches_total(): void
+    {
+        $user = \App\Models\User::factory()->create(['id' => 1]);
+
+        $empleado = \App\Models\Empleado::create([
+            'nombre' => 'Juan',
+            'apellido' => 'Gómez',
+            'user_id' => $user->id,
+        ]);
+
+        $cliente = Cliente::create([
+            'nombre' => 'Ana',
+            'apellido' => 'Pérez',
+        ]);
+
+        $totalServicio = \App\Models\TotalServicio::create([
+            'cliente_id' => $cliente->id,
+            'empleado_id' => $empleado->id,
+            'fecha' => '2026-07-02',
+            'subtotal' => 100,
+            'impuesto' => 0,
+            'descuento' => 0,
+            'total' => 100,
+            'nro_factura' => 'FAC-20260702-050',
+            'comision_valor' => 0,
+            'comision_estado' => 'pendiente',
+        ]);
+
+        $forma1 = \App\Models\FormaPago::create([
+            'nombre_forma_pago' => 'Efectivo',
+            'nombre_corto' => 'EF',
+            'descripcion' => 'Pago en efectivo',
+        ]);
+
+        $forma2 = \App\Models\FormaPago::create([
+            'nombre_forma_pago' => 'Zelle',
+            'nombre_corto' => 'ZL',
+            'descripcion' => 'Pago por zelle',
+        ]);
+
+        $response = $this->actingAs($user)->post(route('total-servicio.pagos.store', ['totalServicio' => $totalServicio->id]), [
+            'pagos' => [
+                ['forma_pago_id' => $forma1->id, 'monto' => 40],
+                ['forma_pago_id' => $forma2->id, 'monto' => 60],
+            ],
+            'empleado_id' => $empleado->id,
+        ]);
+
+        $response->assertRedirect(route('registro-servicio.index'));
+        $this->assertDatabaseHas('total_servicio_forma_pagos', [
+            'total_servicio_id' => $totalServicio->id,
+            'forma_pago_id' => $forma1->id,
+            'monto' => '40.00',
+        ]);
+        $this->assertDatabaseHas('total_servicio_forma_pagos', [
+            'total_servicio_id' => $totalServicio->id,
+            'forma_pago_id' => $forma2->id,
+            'monto' => '60.00',
         ]);
     }
 }

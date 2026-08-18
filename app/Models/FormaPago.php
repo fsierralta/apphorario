@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FormaPago extends Model
 {
@@ -15,4 +16,9 @@ class FormaPago extends Model
         'descripcion',
         'nombre_corto',
     ];
+
+    public function comisionValorCancelaciones(): HasMany
+    {
+        return $this->hasMany(ComisionValorCancelacion::class, 'forma_pago_id');
+    }
 }

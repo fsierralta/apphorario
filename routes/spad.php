@@ -8,6 +8,8 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ComisionEmpledoController;
 use App\Http\Controllers\FormaPagoController;
 use App\Http\Controllers\RegistroServicioController;
+use App\Http\Controllers\ComisionValorCancelacionController;
+use App\Http\Controllers\TotalServicioFormaPagoController;
 
 
 Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () {
@@ -50,6 +52,8 @@ Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () 
     Route::get('/spad/registro-servicios/{registroServicio}/edit', [RegistroServicioController::class, 'edit'])->name('registro-servicio.edit');
     Route::put('/spad/registro-servicios/{registroServicio}', [RegistroServicioController::class, 'update'])->name('registro-servicio.update');
     Route::get('/spad/registro-servicios/{totalServicio}/detail', [RegistroServicioController::class, 'detail'])->name('registro-servicio.detail');
+    Route::get('/spad/total-servicio/{totalServicio}/pagos', [TotalServicioFormaPagoController::class, 'index'])->name('total-servicio.pagos.index');
+    Route::post('/spad/total-servicio/{totalServicio}/pagos', [TotalServicioFormaPagoController::class, 'store'])->name('total-servicio.pagos.store');
 
     Route::get('/spad/formaPago', [FormaPagoController::class, 'index'])->name('spad.indexformapago');
     Route::get('/spad/formaPago/create', [FormaPagoController::class, 'create'])->name('spad.createformapago');
@@ -57,6 +61,14 @@ Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () 
     Route::get('/spad/formaPago/{formaPago}/edit', [FormaPagoController::class, 'edit'])->name('spad.editformapago');
     Route::put('/spad/formaPago/{formaPago}', [FormaPagoController::class, 'update'])->name('spad.updateformapago');
     Route::delete('/spad/formaPago/{formaPago}', [FormaPagoController::class, 'destroy'])->name('spad.deleteformapago');
+
+    Route::get('/spad/comision-valor-cancelacion', [ComisionValorCancelacionController::class, 'index'])->name('spad.indexcomisionvalorcancelacion');
+    Route::get('/spad/comision-valor-cancelacion/create', [ComisionValorCancelacionController::class, 'create'])->name('spad.createcomisionvalorcancelacion');
+    Route::post('/spad/comision-valor-cancelacion', [ComisionValorCancelacionController::class, 'store'])->name('spad.storecomisionvalorcancelacion');
+    Route::get('/spad/comision-valor-cancelacion/{comisionValorCancelacion}/edit', [ComisionValorCancelacionController::class, 'edit'])->name('spad.editcomisionvalorcancelacion');
+    Route::get('/spad/comision-valor-cancelacion/{comisionValorCancelacion}/recibo', [ComisionValorCancelacionController::class, 'reciboPdf'])->name('spad.recibo.comisionvalorcancelacion');
+    Route::put('/spad/comision-valor-cancelacion/{comisionValorCancelacion}', [ComisionValorCancelacionController::class, 'update'])->name('spad.updatecomisionvalorcancelacion');
+    Route::delete('/spad/comision-valor-cancelacion/{comisionValorCancelacion}', [ComisionValorCancelacionController::class, 'destroy'])->name('spad.deletecomisionvalorcancelacion');
 
 });
 

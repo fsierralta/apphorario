@@ -101,5 +101,10 @@ class Empleado extends Model
     {
         return $this->hasMany(ComisionEmpledo::class, 'empleado_id', 'id');
     }
+
+    public function comisionValorCancelaciones(): HasMany
+    {
+        return $this->hasMany(ComisionValorCancelacion::class, 'empleado_id', 'id');
+    }
     
 }

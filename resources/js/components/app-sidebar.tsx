@@ -72,6 +72,10 @@ const mainNavItems: NavItem[] = [
                 title: 'Formas de Pago',
                 href: route('spad.indexformapago'),
             },
+            {
+                title: 'Cancelación Comisiones',
+                href: route('spad.indexcomisionvalorcancelacion'),
+            },
         ],
     },
 ];
