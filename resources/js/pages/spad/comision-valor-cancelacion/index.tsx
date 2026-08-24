@@ -112,6 +112,18 @@ export default function ComisionValorCancelacionIndex() {
         <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-end">
           <button
             type="button"
+            onClick={() => {
+              const params = new URLSearchParams();
+              if (fechaInicio) params.set('fecha_inicio', fechaInicio);
+              if (fechaFin) params.set('fecha_fin', fechaFin);
+              window.open(`${route('spad.reporte.comisionvalorcancelacion')}?${params.toString()}`, '_blank', 'noopener,noreferrer');
+            }}
+            className="inline-flex items-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+          >
+            Reporte PDF aplicado
+          </button>
+          <button
+            type="button"
             onClick={aplicarFiltro}
             className="inline-flex items-center rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600"
           >

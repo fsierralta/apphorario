@@ -220,4 +220,50 @@ class ComisionValorCancelacionCrudTest extends TestCase
         $this->assertSame(25.0, (float) $payload['props']['totales']['monto_cancelado']);
         $this->assertSame('Primera cancelación', $payload['props']['cancelaciones']['data'][0]['motivo']);
     }
+
+    public function test_the_pdf_report_only_includes_applied_cancellations_in_the_date_range(): void
+    {
+        $empleado = Empleado::create(['nombre' => 'Ana']);
+        $formaPago = FormaPago::create(['nombre_forma_pago' => 'Efectivo']);
+        $totalServicio = TotalServicio::create([
+            'empleado_id' => $empleado->id,
+            'cliente_id' => 1,
+            'total' => 200.00,
+            'comision_valor' => 25.00,
+            'nro_factura' => 'FAC-005',
+            'fecha' => '2026-08-10',
+        ]);
+
+        ComisionValorCancelacion::create([
+            'total_servicio_id' => $totalServicio->id,
+            'empleado_id' => $empleado->id,
+            'forma_pago_id' => $formaPago->id,
+            'monto_cancelado' => 10.00,
+            'motivo' => 'Aplicada dentro del rango',
+            'fecha_cancelacion' => '2026-08-12',
+            'estado' => 'aplicado',
+        ]);
+
+        ComisionValorCancelacion::create([
+            'total_servicio_id' => $totalServicio->id,
+            'empleado_id' => $empleado->id,
+            'forma_pago_id' => $formaPago->id,
+            'monto_cancelado' => 15.00,
+            'motivo' => 'Pendiente dentro del rango',
+            'fecha_cancelacion' => '2026-08-20',
+            'estado' => 'pendiente',
+        ]);
+
+        $request = new \Illuminate\Http\Request([
+            'fecha_inicio' => '2026-08-01',
+            'fecha_fin' => '2026-08-31',
+        ]);
+
+        $response = app(\App\Http\Controllers\ComisionValorCancelacionController::class)->reportePdf($request);
+
+        $this->assertSame('text/html; charset=utf-8', $response->headers->get('Content-Type'));
+        $this->assertStringContainsString('Aplicada dentro del rango', $response->getContent());
+        $this->assertStringNotContainsString('Pendiente dentro del rango', $response->getContent());
+        $this->assertStringContainsString('$ 10.00', $response->getContent());
+    }
 }

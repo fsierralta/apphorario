@@ -198,6 +198,28 @@ class ComisionValorCancelacionController extends Controller
         ])->header('Content-Type', 'text/html; charset=utf-8');
     }
 
+    public function reportePdf(Request $request)
+    {
+        $fechaInicio = $request->filled('fecha_inicio') ? Carbon::parse($request->query('fecha_inicio')) : null;
+        $fechaFin = $request->filled('fecha_fin') ? Carbon::parse($request->query('fecha_fin')) : null;
+
+        $cancelaciones = ComisionValorCancelacion::query()
+            ->with(['totalServicio', 'empleado', 'formaPago'])
+            ->where('estado', 'aplicado')
+            ->when($fechaInicio, fn ($query) => $query->whereDate('fecha_cancelacion', '>=', $fechaInicio))
+            ->when($fechaFin, fn ($query) => $query->whereDate('fecha_cancelacion', '<=', $fechaFin))
+            ->orderBy('fecha_cancelacion')
+            ->orderBy('id')
+            ->get();
+
+        return response()->view('spad.comision-valor-cancelacion.reporte', [
+            'cancelaciones' => $cancelaciones,
+            'total' => (float) $cancelaciones->sum('monto_cancelado'),
+            'fechaInicio' => $fechaInicio?->format('d/m/Y'),
+            'fechaFin' => $fechaFin?->format('d/m/Y'),
+        ])->header('Content-Type', 'text/html; charset=utf-8');
+    }
+
     protected function syncEstadoComision(TotalServicio $totalServicio): void
     {
         $totalCancelado = (float) $totalServicio->cancelaciones()->sum('monto_cancelado');

@@ -65,6 +65,7 @@ Route::middleware(['auth', 'verified',AdminEmpleado::class])->group(function () 
     Route::get('/spad/comision-valor-cancelacion', [ComisionValorCancelacionController::class, 'index'])->name('spad.indexcomisionvalorcancelacion');
     Route::get('/spad/comision-valor-cancelacion/create', [ComisionValorCancelacionController::class, 'create'])->name('spad.createcomisionvalorcancelacion');
     Route::post('/spad/comision-valor-cancelacion', [ComisionValorCancelacionController::class, 'store'])->name('spad.storecomisionvalorcancelacion');
+    Route::get('/spad/comision-valor-cancelacion/reporte', [ComisionValorCancelacionController::class, 'reportePdf'])->name('spad.reporte.comisionvalorcancelacion');
     Route::get('/spad/comision-valor-cancelacion/{comisionValorCancelacion}/edit', [ComisionValorCancelacionController::class, 'edit'])->name('spad.editcomisionvalorcancelacion');
     Route::get('/spad/comision-valor-cancelacion/{comisionValorCancelacion}/recibo', [ComisionValorCancelacionController::class, 'reciboPdf'])->name('spad.recibo.comisionvalorcancelacion');
     Route::put('/spad/comision-valor-cancelacion/{comisionValorCancelacion}', [ComisionValorCancelacionController::class, 'update'])->name('spad.updatecomisionvalorcancelacion');
