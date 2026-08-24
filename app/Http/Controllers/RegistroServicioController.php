@@ -63,6 +63,8 @@ class RegistroServicioController extends Controller
             'totalServicios' => $totalServicios,
             'fechaInicio' => $fechaInicio,
             'fechaFin' => $fechaFin,
+            'totalServiciosCount' => $totalServicios->sum('total'),
+
         ]);
     }
 

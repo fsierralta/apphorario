@@ -12,6 +12,7 @@ interface TotalServicioItem {
     apellido: string;
     cliente_name: string;
     empleado_id: number;
+    totalServiciosCount?: number;
 }
 
 interface TotalServicioPaginated {
@@ -20,7 +21,7 @@ interface TotalServicioPaginated {
 }
 
 export default function TotalServicioIndex() {
-    const { totalServicios, fechaInicio: initialFechaInicio, fechaFin: initialFechaFin } = usePage<PageProps<{ totalServicios: TotalServicioPaginated; fechaInicio?: string; fechaFin?: string }>>().props;
+    const { totalServicios, fechaInicio: initialFechaInicio, fechaFin: initialFechaFin, totalServiciosCount } = usePage<PageProps<{ totalServicios: TotalServicioPaginated; fechaInicio?: string; fechaFin?: string; totalServiciosCount?: number }>>().props;
     const [fechaInicio, setFechaInicio] = useState<string>(initialFechaInicio ?? new Date().toISOString().split('T')[0]);
     const [fechaFin, setFechaFin] = useState<string>(initialFechaFin ?? new Date().toISOString().split('T')[0]);
 
@@ -35,7 +36,7 @@ export default function TotalServicioIndex() {
             { preserveState: true, preserveScroll: true },
         );
     };
-
+    
     const limpiarFiltro = () => {
         const hoy = new Date().toISOString().split('T')[0];
         setFechaInicio(hoy);
@@ -109,6 +110,7 @@ export default function TotalServicioIndex() {
                                 <th className="px-4 py-3 text-left text-sm font-semibold text-amber-900">Cliente</th>
                                 <th className="px-4 py-3 text-left text-sm font-semibold text-amber-900">Total</th>
                                 <th className="px-4 py-3 text-left text-sm font-semibold text-amber-900">Factura</th>
+                                <th className="px-4 py-3 text-left text-sm font-semibold text-amber-900">Monto</th>
                                 <th className="px-4 py-3 text-left text-sm font-semibold text-amber-900">Fecha</th>
                                 <th className="px-4 py-3 text-left text-sm font-semibold text-amber-900">Acciones</th>
                             </tr>
@@ -121,6 +123,7 @@ export default function TotalServicioIndex() {
                                     <td className="px-4 py-3 text-sm">{item.cliente_name} </td>
                                     <td className="px-4 py-3 text-sm font-semibold text-amber-900">{item.total ?? '-'}</td>
                                     <td className="px-4 py-3 text-sm font-semibold text-amber-900">{item.nro_factura ?? '-'}</td>
+                                    <td className="px-4 py-3 text-sm font-semibold text-amber-900">{item.total ?? '-'}</td>
                                     <td className="px-4 py-3 text-sm">{new Date(item.fecha).toLocaleDateString()}</td>
                                     <td className="px-4 py-3 text-sm">
                                         <Link
@@ -145,6 +148,12 @@ export default function TotalServicioIndex() {
                                 </tr>
                             ))}
                         </tbody>
+                        <tfoot className="bg-amber-100">
+                            <tr>
+                                <td colSpan={3} className="px-4 py-3 text-left text-sm font-semibold text-amber-900">Total Servicios:</td>
+                                <td colSpan={5} className="px-4 py-3 text-left text-sm font-semibold text-amber-900">{totalServiciosCount?.toFixed(2)}</td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
 
